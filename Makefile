@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/07 13:10:01 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/07 15:17:47 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,10 @@ re		: fclean all
 
 bonus	: $(NAME)
 
+# ^Cなどを消す設定方法
+rloff	:
+	echo 'set echo-control-characters off' >> ~/.inputrc
+
 nm		: fclean $(OBJS)
 	make -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) -o $(NAME)
@@ -76,4 +80,4 @@ debug	: fclean $(OBJS)
 leak	:
 	leaks -quiet -atExit -- ./$(NAME)
 
-.PHONY	: all clean fclean re bonus nm debug
+.PHONY	: all clean fclean re bonus rloff nm debug leak
