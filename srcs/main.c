@@ -6,11 +6,25 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/07 10:18:39 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/07 11:28:57 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+// ctrl+C
+void	sig_int_input()
+{
+	// ft_putstr_fd("\b\b  \b\n", STDERR_FILENO);
+	// ft_putstr_fd("ctrl+C", STDERR_FILENO);
+	write(STDERR_FILENO, "ctrl+C\n", 7);
+}
+// "ctrl+\"
+void	sig_quit_input()
+{
+	// ft_putstr_fd("\b\b  \b\b", STDERR_FILENO);
+	// ft_putstr_fd("ctrl+\\", STDERR_FILENO);
+	write(STDERR_FILENO, "ctrl+\\\n", 7);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -23,6 +37,18 @@ int	main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
+		// signal処理
+		if (signal(SIGINT, sig_int_input) == SIG_ERR)
+		{
+			ft_putstr_fd(strerror(errno), STDERR_FILENO);
+			exit (EXIT_FAILURE);
+		}
+		if (signal(SIGQUIT, sig_quit_input) == SIG_ERR)
+		{
+			ft_putstr_fd(strerror(errno), STDERR_FILENO);
+			exit (EXIT_FAILURE);
+		}
+		// 入力受付
 		command = readline("absolute path -> ");
 		if (command && ft_strlen(command) > 0)
 		{
@@ -33,6 +59,7 @@ int	main(int argc, char **argv, char **envp)
 				return (EXIT_SUCCESS);
 				// break ;
 			}
+			// builtin funcの処理
 			pid = fork();
 			if (pid < 0)
 			{
@@ -61,6 +88,7 @@ int	main(int argc, char **argv, char **envp)
 					return (EXIT_FAILURE);
 				}
 			}
+			// 履歴の付け足し
 			add_history(command);
 		}
 		free(command);
