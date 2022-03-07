@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/07 10:15:54 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/07 13:10:01 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,8 @@ SRCS	:=	main.c
 ifndef RL_PATH
 RL_PATH	:=/usr/local/opt/readline
 endif
-RL_INCDIR	:=	-I$(RL_PATH)/include
-RL_ARC	:=	-L$(RL_PATH)/lib -lreadline -lhistory
+RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
+RL_ARC	:=	-L$(RL_PATH)/lib -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 INCDIR	:= -I./includes
 OBJDIR	:=	./objs
