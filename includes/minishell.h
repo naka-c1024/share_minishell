@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/06 07:48:00 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/08 10:55:03 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,7 @@
 
 // rl_clear_history, rl_replace_line が見つからない
 // ↑discordで検索, rl_clear_historyは使わないがrl_replace_line関数はsignalで^Cの時に使うから注意
+
+# define RL_MSG	"\033[33m""my_shell ""\033[m"
 
 #endif

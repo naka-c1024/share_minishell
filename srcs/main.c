@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/08 10:48:13 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/08 10:53:02 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 		init_signal(SIGINT, sigint_before_rl);
 		init_signal(SIGQUIT, SIG_IGN); // SIGQUITを無視
 		// 入力受付
-		line = readline("absolute path -> ");
+		line = readline(RL_MSG);
 		// ctrl+Dの処理
 		if (!line)
 		{
