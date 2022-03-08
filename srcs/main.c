@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/08 10:01:37 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/08 10:48:13 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	char	**split_ln;
-
+	char	*path;
 	pid_t pid;
 	int status;
-	int ret;
 
 	while (1)
 	{
@@ -79,6 +78,15 @@ int	main(int argc, char **argv, char **envp)
 				free(line);
 				return (EXIT_SUCCESS);
 			}
+			path = NULL;
+			// if (ft_strncmp(split_ln[0], "/bin/", 5))
+			// {
+			// 	path = ft_strjoin("/bin/ls", split_ln[0]);
+			// }
+			// else
+			// {
+			// 	path = split_ln[0];
+			// }
 			// builtin funcの処理
 			pid = fork();
 			if (pid < 0)
@@ -87,22 +95,30 @@ int	main(int argc, char **argv, char **envp)
 				free(line);
 				return (EXIT_FAILURE);
 			}
-			else if (pid == 0)
+			else if (pid == 0) // 子プロセスは親プロセスのデータをコピーしただけで書き換えることはできない
 			{
-				if (execve(split_ln[0], split_ln, envp) == -1)
+				if (execve(split_ln[0], split_ln, envp) == -1) // 絶対pathでの実行
 				{
-					printf("bash: %s: command not found\n", line);
-					return (EXIT_FAILURE);
+					path = ft_strjoin("/bin/", split_ln[0]);
+					if (execve(path, split_ln, envp) == -1) // /bin/を付け足した絶対pathの実行
+					{
+						printf("bash: %s: command not found\n", line);
+						return (EXIT_FAILURE);
+					}
 				}
 			}
 			else
 			{
-				ret = wait(&status);
-				if (ret < 0)
+				if (wait(&status) < 0)
 				{
+					free(path);
 					write(STDERR_FILENO, "\n", 1);
 					free(line);
 					return (EXIT_FAILURE);
+				}
+				else
+				{
+					free(path);
 				}
 			}
 			// 履歴の付け足し
