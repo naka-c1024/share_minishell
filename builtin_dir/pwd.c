@@ -25,12 +25,7 @@ int	my_pwd(void)
 	pwd_buf = getcwd(NULL, 0);
 	if (pwd_buf == NULL)
 	{
-		if (errno == ENOENT)
-			write(STDERR_FILENO, "No such file or directory\n", 26);
-		if (errno == EACCES)
-			write(STDERR_FILENO, "Permission denied\n", 18);
-		if (errno == ENAMETOOLONG)
-			write(STDERR_FILENO, "File name too long\n", 19);
+		printf("pwd: %s\n", strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	printf("%s\n", pwd_buf);
