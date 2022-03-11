@@ -34,9 +34,7 @@ int	my_pwd(void)
 }
 
 // 1行削除
-<<<<<<< HEAD
-=======
->>>>>>> origin
+
 int	main(int argc, char **argv, char **envp) // 引数はexecveの第二引数が来るものとして考える
 {
 	int	exit_value;
