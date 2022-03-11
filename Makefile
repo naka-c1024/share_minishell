@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/08 09:18:04 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/11 15:04:11 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
 # env | grep Malloc
 NO_BUILTIN_FLAGS	:=	-fno-builtin
 
-VPATH	:=	srcs # これでSRCSに<./srcs/>を書かなくて済む
-SRCS	:=	main.c
+VPATH	:=	srcs:srcs/signal # これでSRCSに<./srcs/>を書かなくて済む
+SRCS	:=	main.c signal.c
 
 ifndef RL_PATH
 RL_PATH	:=/usr/local/opt/readline

@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/08 10:55:03 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/11 15:05:17 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,11 @@
 // ↑discordで検索, rl_clear_historyは使わないがrl_replace_line関数はsignalで^Cの時に使うから注意
 
 # define RL_MSG	"\033[33m""my_shell ""\033[m"
+
+// signal
+void	sigint_before_rl(int not_use);
+void	sigint_after_rl(int not_use);
+void	sigquit_after_rl(int not_use);
+void	init_signal(int sig_num, void (*func)(int not_use));
 
 #endif
