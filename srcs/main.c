@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/10 12:53:08 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/10 22:15:51 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int	main(int argc, char **argv, char **envp)
 			safe_free(&line);
 			continue ;
 		}
+
+
 		abs_flg = 0;
 		path = NULL;
 		split_ln = ft_split(line, ' ');
