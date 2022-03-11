@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/11 15:04:11 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/11 15:52:08 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,7 @@ NO_BUILTIN_FLAGS	:=	-fno-builtin
 VPATH	:=	srcs:srcs/signal # これでSRCSに<./srcs/>を書かなくて済む
 SRCS	:=	main.c signal.c
 
-ifndef RL_PATH
 RL_PATH	:=/usr/local/opt/readline
-endif
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
 RL_ARC	:=	-L$(RL_PATH)/lib -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
