@@ -135,7 +135,7 @@ int	my_exit(char **split_ln)
 		printf("bash: exit: %s: numeric argument required\n", split_ln[1]);
 		return (255);
 	}
-	arg_value = my_atol(split_ln[1]); // 実装する
+	arg_value = my_atol(split_ln[1]);
 	ft_putendl_fd("exit", STDERR_FILENO);
 	return (arg_value);
 }
@@ -165,7 +165,7 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(split_ln[0], "exit", 5) == 0)
 		{
 			exit_status = my_exit(split_ln);
-			if (exit_status != 1)
+			if (exit_status != 1) // これ大事, 1の時はexitしない
 			{
 				split_free(split_ln);
 				safe_free(&line);
