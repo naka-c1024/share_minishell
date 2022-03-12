@@ -25,7 +25,7 @@ int	my_pwd(void)
 	pwd_buf = getcwd(NULL, 0);
 	if (pwd_buf == NULL)
 	{
-		printf("pwd: %s\n", strerror(errno));
+		perror("pwd");
 		return (EXIT_FAILURE);
 	}
 	printf("%s\n", pwd_buf);
