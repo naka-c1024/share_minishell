@@ -1,4 +1,4 @@
-SRCS	:=	cd.c
+SRCS	:=	env.c
 
 NAME	:=	minishell_test
 CC		:=	gcc

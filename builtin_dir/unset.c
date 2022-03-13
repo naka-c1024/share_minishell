@@ -110,6 +110,58 @@ t_envlist	*create_envlist(char **envp)
 	return (head);
 }
 
+bool	is_env_var(char *str, t_envlist *envlist)
+{
+	size_t	len;
+	size_t	i;
+
+	len = ft_strlen(str);
+	i = 0;
+	while (envlist)
+	{
+		if (ft_strncmp(str, envlist->key, len + 1) == 0) // +1するのはnull文字まで見るため
+			return (true);
+		envlist = envlist->next;
+	}
+	return (false);
+}
+
+int	my_unset(char **split_ln, t_envlist **envlist)
+{
+	size_t	i;
+	size_t	len;
+	t_envlist	*tmp;
+
+	i = 0;
+	while (split_ln[i])
+	{
+		if (is_env_var(split_ln[i], *envlist) == true)
+		{
+			printf("environ variableです\n");
+			// unsetの内容をここで実装
+			while (*envlist)
+			{
+				tmp = *envlist;
+				len = ft_strlen(split_ln[i]);
+				if (ft_strncmp(split_ln[i], (*envlist)->key, len + 1) == 0) // +1するのはnull文字まで見るため
+				{
+					tmp = (*envlist)->next;
+					// free_listでまとめられるかも
+					free((*envlist)->key);
+					free((*envlist)->value);
+					free((*envlist));
+					*envlist = tmp;
+				}
+				(*envlist) = (*envlist)->next;
+			}
+
+		}
+		i++;
+	}
+
+	return (0);
+}
+
 int	my_env(t_envlist *envlist) // 引数をexecve関数の第3引数と同じものがくることを想定
 {
 	int	i;
@@ -137,7 +189,7 @@ int	main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
-		line = readline("\033[33m""env test(exitも使える): ""\033[m"); // 入力受付
+		line = readline("\033[33m""unset test(exit,envも使える): ""\033[m"); // 入力受付
 		if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			write(STDERR_FILENO, "exit\n", 5);
@@ -156,7 +208,11 @@ int	main(int argc, char **argv, char **envp)
 			safe_free(&line);
 			return (EXIT_FAILURE);
 		}
-		if (ft_strncmp(split_ln[0], "env", 4) == 0)
+		if (ft_strncmp(split_ln[0], "unset", 6) == 0)
+		{
+			exit_status = my_unset(split_ln, &envlist);
+		}
+		else if (ft_strncmp(split_ln[0], "env", 4) == 0)
 		{
 			exit_status = my_env(envlist);
 		}

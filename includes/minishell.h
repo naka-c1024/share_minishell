@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/11 15:05:17 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/13 09:57:10 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 # include "../libft/libft.h"
 
-# include <readline/readline.h> // rl
-# include <readline/history.h> // rl histroy
+# include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line, rl_redisplay
+# include <readline/history.h> // rl_clear_history, add_history
 # include <stdio.h> // printf, perror
 # include <stdlib.h> // malloc, free, exit, getenv
-# include <unistd.h> // write, access, read, close, fork, getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname
+# include <unistd.h> // write, access, read, close, fork, getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot
 # include <fcntl.h> // open
 # include <sys/wait.h> // wait, waitpid, wait3, wait4
 # include <signal.h> // signal, sigaction, sigemptyset, sigaddset, kill

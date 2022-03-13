@@ -1,8 +1,10 @@
-# include <readline/readline.h> // rl
-# include <readline/history.h> // rl histroy
+# include "libft/libft.h"
+
+# include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line, rl_redisplay
+# include <readline/history.h> // rl_clear_history, add_history
 # include <stdio.h> // printf, perror
 # include <stdlib.h> // malloc, free, exit, getenv
-# include <unistd.h> // write, access, read, close, fork, getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname
+# include <unistd.h> // write, access, read, close, fork, getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot
 # include <fcntl.h> // open
 # include <sys/wait.h> // wait, waitpid, wait3, wait4
 # include <signal.h> // signal, sigaction, sigemptyset, sigaddset, kill
@@ -17,8 +19,6 @@
 # include <stdint.h> // macro(linux)
 # include <stdbool.h> // bool
 # include <errno.h> // errno
-
-# include "libft/libft.h"
 
 void	safe_free(char **ptr)
 {
@@ -46,7 +46,11 @@ int	my_cd(char **split_ln) // 環境変数の設定は未実装(PWD, OLDPWD)
 		// cd $HOMEは絶対でも相対でもないからやらなくていい
 		return (0);
 	}
-	chdir(split_ln[1]);
+	if (chdir(split_ln[1]) == -1)
+	{
+		perror("cd");
+		return (EXIT_FAILURE);
+	}
 	return (0);
 }
 
@@ -81,12 +85,6 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(split_ln[0], "cd", 3) == 0)
 		{
 			exit_status = my_cd(split_ln);
-			if (exit_status != 0)
-			{
-				split_free(split_ln);
-				safe_free(&line);
-				return (exit_status);
-			}
 		}
 		else if (ft_strncmp(split_ln[0], "pwd", 4) == 0)
 		{
