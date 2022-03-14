@@ -38,7 +38,6 @@ void	split_free(char **ptr)
 	}
 	free(ptr);
 }
-/* -------------------------------------------- */
 
 typedef struct s_envlist
 {
@@ -110,67 +109,77 @@ t_envlist	*create_envlist(char **envp)
 	return (head);
 }
 
-bool	is_env_var(char *str, t_envlist *envlist)
+int	my_env(t_envlist *envlist)
 {
-	size_t	len;
-	size_t	i;
-
-	len = ft_strlen(str);
-	i = 0;
-	while (envlist)
-	{
-		if (ft_strncmp(str, envlist->key, len + 1) == 0) // +1するのはnull文字まで見るため
-			return (true);
-		envlist = envlist->next;
-	}
-	return (false);
-}
-
-int	my_unset(char **split_ln, t_envlist **envlist)
-{
-	size_t	i;
-	size_t	len;
-	t_envlist	*tmp;
-
-	i = 0;
-	while (split_ln[i])
-	{
-		if (is_env_var(split_ln[i], *envlist) == true)
-		{
-			printf("environ variableです\n");
-			// unsetの内容をここで実装
-			while (*envlist)
-			{
-				tmp = *envlist;
-				len = ft_strlen(split_ln[i]);
-				if (ft_strncmp(split_ln[i], (*envlist)->key, len + 1) == 0) // +1するのはnull文字まで見るため
-				{
-					tmp = (*envlist)->next;
-					// free_listでまとめられるかも
-					free((*envlist)->key);
-					free((*envlist)->value);
-					free((*envlist));
-					*envlist = tmp;
-				}
-				(*envlist) = (*envlist)->next;
-			}
-
-		}
-		i++;
-	}
-
-	return (0);
-}
-
-int	my_env(t_envlist *envlist) // 引数をexecve関数の第3引数と同じものがくることを想定
-{
-	int	i;
-
-	i = 0;
 	while (envlist)
 	{
 		printf("%s=%s\n", envlist->key, envlist->value);
 		envlist = envlist->next;
+	}
+	return (0);
+}
+// ここまでは共通事項
+/* -------------------------------------------- */
+// ここからunset
+t_envlist	*get_eq_envptr(char *str, t_envlist *envlist)
+{
+	size_t	len;
+	size_t	i;
+	t_envlist	*tmp;
+
+	len = ft_strlen(str);
+	i = 0;
+	tmp = envlist;
+	while (tmp)
+	{
+		if (ft_strncmp(str, tmp->key, len + 1) == 0) // +1するのはnull文字まで見るため
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+int	my_unset(char **split_ln, t_envlist **envlist) // このenvlistを渡すと元の値も変わる
+{
+	size_t		i;
+	t_envlist	*tmp;
+	t_envlist	*eq_envptr;
+	size_t		len;
+	t_envlist	**cp_elist;
+
+	i = 1;
+	while (split_ln[i])
+	{
+		// eq_envptr = get_eq_envptr(split_ln[i], *envlist);
+		// if (eq_envptr)
+		// {
+		// 	tmp = eq_envptr->next;
+		// 	free(eq_envptr->key);
+		// 	free(eq_envptr->value);
+		// 	free(eq_envptr);
+		// 	eq_envptr = tmp;
+		// }
+
+		cp_elist = envlist;
+		// cp_elistはenvlistの一番上のアドレスだけを複製しているから、
+		// そこから辿るアクセスした配列は元のままで*cp_elistにそのまま代入すると値が書き変わってしまう
+		while (*cp_elist)
+		{
+			len = ft_strlen(split_ln[i]);
+			if (ft_strncmp(split_ln[i], (*cp_elist)->key, len + 1) == 0)
+			{
+				tmp = (*cp_elist)->next; // tmpは元の値
+				free((*cp_elist)->key);
+				free((*cp_elist)->value);
+				free((*cp_elist));
+				*cp_elist = tmp; // *cp_elistは元の値
+				break ;
+			}
+		// (*cp_elist) = (*cp_elist)->next; // これだと元の値を書き換えてしまうのでNG
+			cp_elist = &(*cp_elist)->next;
+		}
+
+		i++;
 	}
 	return (0);
 }
@@ -209,18 +218,12 @@ int	main(int argc, char **argv, char **envp)
 			return (EXIT_FAILURE);
 		}
 		if (ft_strncmp(split_ln[0], "unset", 6) == 0)
-		{
-			exit_status = my_unset(split_ln, &envlist);
-		}
+			exit_status = my_unset(split_ln, &envlist); // ここを実装中
 		else if (ft_strncmp(split_ln[0], "env", 4) == 0)
-		{
 			exit_status = my_env(envlist);
-		}
 		else
-		{
 			printf("Bad argument\n");
-		}
-		add_history(line); // 履歴の付け足し
+		add_history(line);
 		safe_free(&line);
 		split_free(split_ln);
 	}

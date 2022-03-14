@@ -112,9 +112,6 @@ t_envlist	*create_envlist(char **envp)
 
 int	my_env(t_envlist *envlist) // 引数をexecve関数の第3引数と同じものがくることを想定
 {
-	int	i;
-
-	i = 0;
 	while (envlist)
 	{
 		printf("%s=%s\n", envlist->key, envlist->value);
