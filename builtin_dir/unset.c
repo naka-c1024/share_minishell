@@ -121,24 +121,6 @@ int	my_env(t_envlist *envlist)
 // ここまでは共通事項
 /* -------------------------------------------- */
 // ここからunset
-t_envlist	*get_eq_envptr(char *str, t_envlist *envlist)
-{
-	size_t	len;
-	size_t	i;
-	t_envlist	*tmp;
-
-	len = ft_strlen(str);
-	i = 0;
-	tmp = envlist;
-	while (tmp)
-	{
-		if (ft_strncmp(str, tmp->key, len + 1) == 0) // +1するのはnull文字まで見るため
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
 int	my_unset(char **split_ln, t_envlist **envlist) // このenvlistを渡すと元の値も変わる
 {
 	size_t		i;
@@ -150,35 +132,24 @@ int	my_unset(char **split_ln, t_envlist **envlist) // このenvlistを渡すと�
 	i = 1;
 	while (split_ln[i])
 	{
-		// eq_envptr = get_eq_envptr(split_ln[i], *envlist);
-		// if (eq_envptr)
-		// {
-		// 	tmp = eq_envptr->next;
-		// 	free(eq_envptr->key);
-		// 	free(eq_envptr->value);
-		// 	free(eq_envptr);
-		// 	eq_envptr = tmp;
-		// }
-
 		cp_elist = envlist;
 		// cp_elistはenvlistの一番上のアドレスだけを複製しているから、
-		// そこから辿るアクセスした配列は元のままで*cp_elistにそのまま代入すると値が書き変わってしまう
+		// そこから辿るアクセスした配列は元のままなので、*cp_elistに代入すると値が書き変わってしまう
 		while (*cp_elist)
 		{
 			len = ft_strlen(split_ln[i]);
 			if (ft_strncmp(split_ln[i], (*cp_elist)->key, len + 1) == 0)
 			{
-				tmp = (*cp_elist)->next; // tmpは元の値
+				tmp = (*cp_elist)->next; // tmpは(*cp_elist使ってるから)元の値,envlistを書き換えたいからok
 				free((*cp_elist)->key);
 				free((*cp_elist)->value);
 				free((*cp_elist));
-				*cp_elist = tmp; // *cp_elistは元の値
+				*cp_elist = tmp; // *cp_elistは元の値,envlistを書き換えたいからok
 				break ;
 			}
 		// (*cp_elist) = (*cp_elist)->next; // これだと元の値を書き換えてしまうのでNG
 			cp_elist = &(*cp_elist)->next;
 		}
-
 		i++;
 	}
 	return (0);
