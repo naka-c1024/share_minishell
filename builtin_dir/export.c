@@ -173,14 +173,62 @@ void	print_export(t_envlist *envlist)
 	}
 }
 
+int	set_new_node(char *str, t_envlist **envlist)
+{
+	t_envlist	*newlist;
+	char		*val_location;
+
+	newlist = (t_envlist *)malloc(sizeof(t_envlist));
+	if (!newlist)
+	{
+		perror("malloc");
+		return (1);
+	}
+	val_location = str;
+	while (val_location && *val_location != '=')
+		val_location++;
+	*val_location = '\0'; // '='を'\0'に変える
+	newlist->key = ft_strdup(str);
+	newlist->value = ft_strdup(++val_location);
+	newlist->next = NULL;
+	ms_lstadd_back(envlist, newlist);
+	write(1, "ok\n", 3); // debug
+	return (0);
+}
+
+int	set_env(char **split_ln, t_envlist **envlist)
+{
+	size_t	i;
+	size_t	exit_status;
+
+	exit_status = 0;
+	i = 1;
+	while (split_ln[i])
+	{
+		// 重複するcase
+		// unsetで消した後exportする
+		exit_status = set_new_node(split_ln[i], envlist);
+		i++;
+	}
+	return (exit_status);
+}
+
 int	my_export(char **split_ln, t_envlist **envlist)
 {
+	int	exit_status;
+
+	exit_status = 0;
 	if (split_ln[1] == NULL)
 	{
 		print_export(*envlist);
-		return (0);
+		return (exit_status);
 	}
-	return (0);
+	else
+	{
+		// 引数checkする関数 四則演算など,左だけならset_new_node関数のwhileで見た方が良さそう
+		exit_status = set_env(split_ln,envlist);
+	}
+	return (exit_status);
 }
 
 int	main(int argc, char **argv, char **envp)
