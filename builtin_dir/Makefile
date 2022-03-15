@@ -1,4 +1,4 @@
-SRCS	:=	unset.c
+SRCS	:=	export.c
 
 NAME	:=	minishell_test
 CC		:=	gcc
