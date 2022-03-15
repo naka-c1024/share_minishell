@@ -173,10 +173,36 @@ void	print_export(t_envlist *envlist)
 	}
 }
 
+void	remove_duplicate(char *str, t_envlist **envlist)
+{
+	t_envlist	**cp_elist;
+	t_envlist	*tmp;
+	size_t		len;
+
+	cp_elist = envlist;
+	while (*cp_elist)
+	{
+		len = ft_strlen(str);
+		if (ft_strncmp(str, (*cp_elist)->key, len + 1) == 0)
+		{
+			tmp = (*cp_elist)->next;
+			free((*cp_elist)->key);
+			free((*cp_elist)->value);
+			free((*cp_elist));
+			*cp_elist = tmp;
+			break ;
+		}
+		cp_elist = &(*cp_elist)->next;
+	}
+}
+
 int	set_new_node(char *str, t_envlist **envlist)
 {
 	t_envlist	*newlist;
 	char		*val_location;
+	t_envlist	**cp_elist;
+	t_envlist	*tmp;
+	size_t		len;
 
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
@@ -188,11 +214,11 @@ int	set_new_node(char *str, t_envlist **envlist)
 	while (val_location && *val_location != '=')
 		val_location++;
 	*val_location = '\0'; // '='を'\0'に変える
+	remove_duplicate(str, envlist); // 重複している環境変数をあらかじめ削除
 	newlist->key = ft_strdup(str);
 	newlist->value = ft_strdup(++val_location);
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);
-	write(1, "ok\n", 3); // debug
 	return (0);
 }
 
@@ -205,8 +231,6 @@ int	set_env(char **split_ln, t_envlist **envlist)
 	i = 1;
 	while (split_ln[i])
 	{
-		// 重複するcase
-		// unsetで消した後exportする
 		exit_status = set_new_node(split_ln[i], envlist);
 		i++;
 	}
