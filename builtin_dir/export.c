@@ -312,6 +312,26 @@ int	set_new_node(char *str, t_envlist **envlist)
 	return (0);
 }
 
+bool	can_export(char *str)
+{
+	size_t	i;
+
+	if (ft_isdigit(str[0]))
+		return (false);
+	i = 0;
+	while (str[i] && str[i] != '=') // メタ文字は無視
+	{
+		if ('#' <= str[i] && str[i] <= '/')
+			return (false);
+		else if (str[i] == ':' || str[i] == '?' || str[i] == '@')
+			return (false);
+		else if ('[' <= str[i] && str[i] <= '^')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 int	set_env(char **split_ln, t_envlist **envlist)
 {
 	size_t	i;
@@ -321,7 +341,19 @@ int	set_env(char **split_ln, t_envlist **envlist)
 	i = 1;
 	while (split_ln[i])
 	{
-		exit_status = set_new_node(split_ln[i], envlist);
+		if (can_export(split_ln[i]) == false)
+		{
+			printf("bash: export: `%s': not a valid identifier\n", split_ln[i]);
+			exit_status = 1;
+		}
+		else if (exit_status == 1)
+		{
+			set_new_node(split_ln[i], envlist);
+		}
+		else if (exit_status == 0)
+		{
+			exit_status = set_new_node(split_ln[i], envlist);
+		}
 		i++;
 	}
 	return (exit_status);
@@ -365,7 +397,7 @@ int	main(int argc, char **argv, char **envp)
 			write(STDERR_FILENO, "exit\n", 5);
 			safe_free(&line);
 			free_list(envlist);
-			return (EXIT_SUCCESS);
+			return (exit_status);
 		}
 		if (ft_strlen(line) == 0) // 改行だけの場合,空文字列がくる
 		{
