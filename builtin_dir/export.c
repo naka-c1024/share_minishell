@@ -156,21 +156,111 @@ int	my_unset(char **split_ln, t_envlist **envlist) // このenvlistを渡すと�
 /* -------------------------------------------- */
 // ここからexport
 
-void	print_export(t_envlist *envlist)
+static size_t	list_cnt(t_envlist *envlist)
 {
-	t_envlist	*tmp;
+	size_t	i;
 
-	tmp = envlist;
-	while (tmp)
+	i = 0;
+	while (envlist)
 	{
-		if (ft_strncmp(tmp->key, "_", 2) == 0)
+		envlist = envlist->next;
+		i++;
+	}
+	return (i);
+}
+
+char	**list_to_array(t_envlist *envlist)
+{
+	char	**rtn;
+	size_t	i;
+	size_t	key_len;
+	size_t	value_len;
+	const size_t	else_len = 14; // null文字含めず(declare -x )+(=")+(")
+	size_t	list_size;
+
+	list_size = list_cnt(envlist);
+	list_size -= 1; // -1してるのはアンダースコアがいらないから
+	rtn = malloc(sizeof(char *) * (list_size) + 1);
+	i = 0;
+	while (envlist)
+	{
+		if (ft_strncmp(envlist->key, "_", 2) == 0)
 		{
-			tmp = tmp->next;
+			envlist = envlist->next;
 			continue ;
 		}
-		printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
-		tmp = tmp->next;
+		key_len = ft_strlen(envlist->key);
+		value_len = ft_strlen(envlist->value);
+		rtn[i] = (char *)malloc(key_len + value_len + else_len + 1);
+		if (!rtn[i])
+		{
+			perror("malloc");
+			return (NULL);
+		}
+		ft_strlcpy(rtn[i], "declare -x ", 11 + 1);
+		ft_strlcat(rtn[i], envlist->key, 11 + key_len + 1);
+		ft_strlcat(rtn[i], "=\"", 11 + key_len + 2 + 1);
+		ft_strlcat(rtn[i], envlist->value, 11 + key_len + 2 + value_len + 1);
+		ft_strlcat(rtn[i], "\"", 11 + key_len + 2 + value_len + 1 + 1);
+		envlist = envlist->next;
+		i++;
 	}
+	rtn[i] = NULL;
+	return (rtn);
+}
+
+void	free_darray(char **darray)
+{
+	size_t	i;
+
+	i = 0;
+	while (darray[i])
+	{
+		free(darray[i]);
+		i++;
+	}
+	free(darray);
+}
+
+char	**bubble_sort(char **darray)
+{
+	int	i;
+	int	j;
+	char	*tmp;
+
+	i = 0;
+	while (darray[i])
+	{
+		j = i + 1;
+		while (darray[j])
+		{
+			if (strcmp(darray[i], darray[j]) > 0)
+			{
+				tmp = darray[i];
+				darray[i] = darray[j];
+				darray[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (darray);
+}
+
+void	print_export(t_envlist *envlist)
+{
+	char	**darray;
+	size_t	i;
+
+	darray = list_to_array(envlist);
+	darray = bubble_sort(darray);
+	i = 0;
+	while (darray[i])
+	{
+		printf("%s\n", darray[i]);
+		i++;
+	}
+	free_darray(darray);
 }
 
 void	remove_duplicate(char *str, t_envlist **envlist)
@@ -249,7 +339,6 @@ int	my_export(char **split_ln, t_envlist **envlist)
 	}
 	else
 	{
-		// 引数checkする関数 四則演算など,左だけならset_new_node関数のwhileで見た方が良さそう
 		exit_status = set_env(split_ln,envlist);
 	}
 	return (exit_status);
