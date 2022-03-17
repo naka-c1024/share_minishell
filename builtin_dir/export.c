@@ -190,7 +190,10 @@ char	**list_to_array(t_envlist *envlist)
 			continue ;
 		}
 		key_len = ft_strlen(envlist->key);
-		value_len = ft_strlen(envlist->value);
+		if (envlist->value == NULL)
+			value_len = 0;
+		else
+			value_len = ft_strlen(envlist->value);
 		rtn[i] = (char *)malloc(key_len + value_len + else_len + 1);
 		if (!rtn[i])
 		{
@@ -199,6 +202,12 @@ char	**list_to_array(t_envlist *envlist)
 		}
 		ft_strlcpy(rtn[i], "declare -x ", 11 + 1);
 		ft_strlcat(rtn[i], envlist->key, 11 + key_len + 1);
+		if (envlist->value == NULL)
+		{
+			envlist = envlist->next;
+			i++;
+			continue ;
+		}
 		ft_strlcat(rtn[i], "=\"", 11 + key_len + 2 + 1);
 		ft_strlcat(rtn[i], envlist->value, 11 + key_len + 2 + value_len + 1);
 		ft_strlcat(rtn[i], "\"", 11 + key_len + 2 + value_len + 1 + 1);
@@ -289,7 +298,7 @@ void	remove_duplicate(char *str, t_envlist **envlist)
 int	set_new_node(char *str, t_envlist **envlist)
 {
 	t_envlist	*newlist;
-	char		*val_location;
+	char		*eq_location;
 	t_envlist	**cp_elist;
 	t_envlist	*tmp;
 	size_t		len;
@@ -300,13 +309,13 @@ int	set_new_node(char *str, t_envlist **envlist)
 		perror("malloc");
 		return (1);
 	}
-	val_location = str;
-	while (val_location && *val_location != '=')
-		val_location++;
-	*val_location = '\0'; // '='を'\0'に変える
+	eq_location = str;
+	while (eq_location && *eq_location != '=')
+		eq_location++;
+	*eq_location = '\0'; // '='を'\0'に変える
 	remove_duplicate(str, envlist); // 重複している環境変数をあらかじめ削除
 	newlist->key = ft_strdup(str);
-	newlist->value = ft_strdup(++val_location);
+	newlist->value = ft_strdup(++eq_location);
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);
 	return (0);
@@ -332,10 +341,64 @@ bool	can_export(char *str)
 	return (true);
 }
 
+bool	is_equal(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+		{
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
+bool	is_env_key(char *str, t_envlist *envlist)
+{
+	size_t	len;
+
+	len = ft_strlen(str);
+	while (envlist)
+	{
+		if (ft_strncmp(str, envlist->key, len + 1) == 0) // +1するのはnull文字まで見るため
+			return (true);
+		envlist = envlist->next;
+	}
+	return (false);
+}
+
+int	no_equal(char *str, t_envlist **envlist)
+{
+	t_envlist	*newlist;
+	t_envlist	**cp_elist;
+	t_envlist	*tmp;
+	size_t		len;
+
+	if (is_env_key(str, *envlist) == true) // すでにkeyがある場合は何もしない
+	{
+		return (0);
+	}
+	newlist = (t_envlist *)malloc(sizeof(t_envlist));
+	if (!newlist)
+	{
+		perror("malloc");
+		return (1);
+	}
+	newlist->key = ft_strdup(str);
+	newlist->value = NULL; // valueをnullにしている,envもexport単体もvalueがnullかどうかで出力をコントロールする
+	newlist->next = NULL;
+	ms_lstadd_back(envlist, newlist);
+	return (0);
+}
+
 int	set_env(char **split_ln, t_envlist **envlist)
 {
 	size_t	i;
-	size_t	exit_status;
+	int		exit_status;
 
 	exit_status = 0;
 	i = 1;
@@ -346,15 +409,18 @@ int	set_env(char **split_ln, t_envlist **envlist)
 			printf("bash: export: `%s': not a valid identifier\n", split_ln[i]);
 			exit_status = 1;
 		}
+		else if (is_equal(split_ln[i]) == false)
+		{
+			if (exit_status == 1)
+				no_equal(split_ln[i], envlist); // valueがないパターンの関数
+			else if (exit_status == 0)
+				exit_status = no_equal(split_ln[i], envlist); // valueがないパターンの関数
+		}
 		else if (exit_status == 1)
-		{
 			set_new_node(split_ln[i], envlist);
-		}
 		else if (exit_status == 0)
-		{
 			exit_status = set_new_node(split_ln[i], envlist);
-		}
-		i++;
+		i++; // norm対応でここを消す
 	}
 	return (exit_status);
 }
