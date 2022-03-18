@@ -15,16 +15,21 @@ static size_t	list_cnt(t_envlist *envlist)
 
 char	**list_to_array(t_envlist *envlist)
 {
-	char	**rtn;
-	size_t	i;
-	size_t	key_len;
-	size_t	value_len;
-	const size_t	else_len = 14; // null文字含めず(declare -x )+(=")+(")
-	size_t	list_size;
+	char			**rtn;
+	size_t			i;
+	size_t			key_len;
+	size_t			value_len;
+	const size_t	else_len = 14; // null文字含めず(declare -x )+(=")+("),normで消すかも
+	size_t			list_size;
 
 	list_size = list_cnt(envlist);
 	list_size -= 1; // -1してるのはアンダースコアがいらないから
 	rtn = malloc(sizeof(char *) * (list_size) + 1);
+	if (!rtn)
+	{
+		print_error("export: malloc", NULL, errno);
+		return (NULL);
+	}
 	i = 0;
 	while (envlist)
 	{
@@ -41,7 +46,7 @@ char	**list_to_array(t_envlist *envlist)
 		rtn[i] = (char *)malloc(key_len + value_len + else_len + 1);
 		if (!rtn[i])
 		{
-			perror("malloc");
+			print_error("export: malloc", NULL, errno);
 			return (NULL);
 		}
 		ft_strlcpy(rtn[i], "declare -x ", 11 + 1);
@@ -75,10 +80,24 @@ void	free_darray(char **darray)
 	free(darray);
 }
 
+int	my_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] || s2[i])
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
+}
+
 char	**bubble_sort(char **darray)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*tmp;
 
 	i = 0;
@@ -87,7 +106,7 @@ char	**bubble_sort(char **darray)
 		j = i + 1;
 		while (darray[j])
 		{
-			if (strcmp(darray[i], darray[j]) > 0)
+			if (my_strcmp(darray[i], darray[j]) > 0)
 			{
 				tmp = darray[i];
 				darray[i] = darray[j];
@@ -106,11 +125,13 @@ void	print_export(t_envlist *envlist)
 	size_t	i;
 
 	darray = list_to_array(envlist);
+	if (!darray)
+		return ;
 	darray = bubble_sort(darray);
 	i = 0;
 	while (darray[i])
 	{
-		printf("%s\n", darray[i]);
+		ft_putendl_fd(darray[i], STDOUT_FILENO);
 		i++;
 	}
 	free_darray(darray);
@@ -150,7 +171,7 @@ int	set_new_node(char *str, t_envlist **envlist)
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
 	{
-		perror("malloc");
+		print_error("export: malloc", NULL, errno);
 		return (1);
 	}
 	eq_location = str;
@@ -229,7 +250,7 @@ int	no_equal(char *str, t_envlist **envlist)
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
 	{
-		perror("malloc");
+		print_error("export: malloc:", NULL, errno);
 		return (1);
 	}
 	newlist->key = ft_strdup(str);
@@ -237,6 +258,13 @@ int	no_equal(char *str, t_envlist **envlist)
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);
 	return (0);
+}
+
+void	not_a_valid_identifier(char *str)
+{
+	ft_putstr_fd("my_shell: export: `", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 }
 
 int	set_env(char **split_ln, t_envlist **envlist)
@@ -250,7 +278,7 @@ int	set_env(char **split_ln, t_envlist **envlist)
 	{
 		if (can_export(split_ln[i]) == false)
 		{
-			printf("bash: export: `%s': not a valid identifier\n", split_ln[i]);
+			not_a_valid_identifier(split_ln[i]);
 			exit_status = 1;
 		}
 		else if (is_equal(split_ln[i]) == false)

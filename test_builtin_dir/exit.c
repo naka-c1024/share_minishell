@@ -10,9 +10,9 @@ static int	read_sign(char c)
 
 static bool	check_arg_value(char *str)
 {
-	size_t	i;
-	size_t	len;
-	int		sign;
+	size_t		i;
+	size_t		len;
+	int			sign;
 	long long	abs_val;
 
 	abs_val = 0;
@@ -87,13 +87,15 @@ int	my_exit(char **split_ln)
 	else if (cnt > 2)
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
-		ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
+		ft_putendl_fd("my_shell: exit: too many arguments", STDERR_FILENO);
 		return (1);
 	}
 	else if (check_arg_value(split_ln[1]) == false) // オーバーフローと文字を見る
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
-		printf("bash: exit: %s: numeric argument required\n", split_ln[1]);
+		ft_putstr_fd("my_shell: exit: ", STDERR_FILENO);
+		ft_putstr_fd(split_ln[1], STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		return (255);
 	}
 	arg_value = my_atol(split_ln[1]);

@@ -36,47 +36,49 @@ typedef struct s_envlist
 }	t_envlist;
 
 // envlist.c
-void	free_list(t_envlist *list);
+void		free_list(t_envlist *list);
 t_envlist	*ms_lstlast(t_envlist *lst);
-void	ms_lstadd_back(t_envlist **lst, t_envlist *new);
+void		ms_lstadd_back(t_envlist **lst, t_envlist *new);
 t_envlist	*create_envlist(char **envp);
 
 // cd.c
 char	*get_home_value(t_envlist *envlist);
-int	set_oldpwd(char *oldpwd, t_envlist **envlist);
-int	set_pwd(t_envlist **envlist);
-int	set_cd_env(char *oldpwd, t_envlist **envlist);
-int	my_cd(char **split_ln, t_envlist **envlist);
+int		set_oldpwd(char *oldpwd, t_envlist **envlist);
+int		set_pwd(t_envlist **envlist);
+int		set_cd_env(char *oldpwd, t_envlist **envlist);
+int		my_cd(char **split_ln, t_envlist **envlist);
 
 // echo.c
-int	my_echo(char **split_ln);
+int		my_echo(char **split_ln);
 
 // env.c
-int	my_env(t_envlist *envlist);
+int		my_env(t_envlist *envlist);
 
 // exit.c
 long	my_atol(const char *str);
-int	my_exit(char **split_ln);
+int		my_exit(char **split_ln);
 
 // export.c
 char	**list_to_array(t_envlist *envlist);
 void	free_darray(char **darray);
+int		my_strcmp(const char *s1, const char *s2);
 char	**bubble_sort(char **darray);
 void	print_export(t_envlist *envlist);
 void	remove_duplicate(char *str, t_envlist **envlist);
-int	set_new_node(char *str, t_envlist **envlist);
+int		set_new_node(char *str, t_envlist **envlist);
 bool	can_export(char *str);
 bool	is_equal(char *str);
 bool	is_env_key(char *str, t_envlist *envlist);
-int	no_equal(char *str, t_envlist **envlist);
-int	set_env(char **split_ln, t_envlist **envlist);
-int	my_export(char **split_ln, t_envlist **envlist);
+int		no_equal(char *str, t_envlist **envlist);
+void	not_a_valid_identifier(char *str);
+int		set_env(char **split_ln, t_envlist **envlist);
+int		my_export(char **split_ln, t_envlist **envlist);
 
 // pwd.c
-int	my_pwd(void);
+int		my_pwd(void);
 
 // unset.c
-int	my_unset(char **split_ln, t_envlist **envlist);
+int		my_unset(char **split_ln, t_envlist **envlist);
 
 // utils.c
 void	print_error(char *cmd, char *cmd_arg, int error_number);

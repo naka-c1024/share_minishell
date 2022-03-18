@@ -39,7 +39,7 @@ t_envlist	*create_envlist(char **envp)
 {
 	t_envlist	*head;
 	t_envlist	*newlist;
-	char	*str;
+	char		*str;
 
 	head = NULL;
 	while (*envp)
@@ -47,7 +47,7 @@ t_envlist	*create_envlist(char **envp)
 		newlist = (t_envlist *)malloc(sizeof(t_envlist));
 		if (!newlist)
 		{
-			perror("malloc");
+			print_error("malloc", NULL, errno);
 			free_list(head);
 			return (NULL);
 		}

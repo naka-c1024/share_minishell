@@ -21,7 +21,7 @@ int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
 	{
-		perror("malloc");
+		print_error("cd: malloc", NULL, errno);
 		return (1);
 	}
 	remove_duplicate("OLDPWD", envlist); // 重複している環境変数をあらかじめ削除
@@ -34,19 +34,19 @@ int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 
 int	set_pwd(t_envlist **envlist)
 {
-	char	*pwd;
+	char		*pwd;
 	t_envlist	*newlist;
 
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		perror("cd");
+		print_error("cd: getcwd", NULL, errno);
 		return (EXIT_FAILURE);
 	}
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
 	{
-		perror("malloc");
+		print_error("cd: malloc", NULL, errno);
 		free(pwd);
 		return (1);
 	}
@@ -79,7 +79,7 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 	oldpwd = getcwd(NULL, 0);
 	if (oldpwd == NULL)
 	{
-		perror("cd");
+		print_error("cd: getcwd", NULL, errno);
 		return (EXIT_FAILURE);
 	}
 	if (split_ln[1] == NULL)
@@ -94,7 +94,6 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 	}
 	if (chdir(split_ln[1]) == -1)
 	{
-		// perror("cd"); // ここのerror文をbashに合わせる
 		print_error("cd", split_ln[1], errno);
 		free(oldpwd);
 		return (EXIT_FAILURE);
