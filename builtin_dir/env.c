@@ -114,6 +114,11 @@ int	my_env(t_envlist *envlist) // 引数をexecve関数の第3引数と同じも
 {
 	while (envlist)
 	{
+		if (envlist->value == NULL)
+		{
+			envlist = envlist->next;
+			continue ;
+		}
 		printf("%s=%s\n", envlist->key, envlist->value);
 		envlist = envlist->next;
 	}

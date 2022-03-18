@@ -157,6 +157,9 @@ int	my_unset(char **split_ln, t_envlist **envlist) // このenvlistを渡すと�
 	}
 	return (0);
 }
+// ここまではtestに必要な関数
+/* -------------------------------------------- */
+// ここからexport
 
 static size_t	list_cnt(t_envlist *envlist)
 {
@@ -443,109 +446,6 @@ int	my_export(char **split_ln, t_envlist **envlist)
 	}
 	return (exit_status);
 }
-// ここまではtestに必要な関数
-/* -------------------------------------------- */
-// ここからcd
-char	*get_home_value(t_envlist *envlist)
-{
-	size_t	len;
-
-	len = ft_strlen("HOME");
-	while (envlist)
-	{
-		if (ft_strncmp("HOME", envlist->key, len + 1) == 0) // +1するのはnull文字まで見るため
-			return (envlist->value);
-		envlist = envlist->next;
-	}
-	return (NULL);
-}
-
-int	set_oldpwd(char *oldpwd, t_envlist **envlist)
-{
-	t_envlist	*newlist;
-
-	newlist = (t_envlist *)malloc(sizeof(t_envlist));
-	if (!newlist)
-	{
-		perror("malloc");
-		return (1);
-	}
-	remove_duplicate("OLDPWD", envlist); // 重複している環境変数をあらかじめ削除
-	newlist->key = ft_strdup("OLDPWD");
-	newlist->value = ft_strdup(oldpwd);
-	newlist->next = NULL;
-	ms_lstadd_back(envlist, newlist);
-	return (0);
-}
-
-int	set_pwd(t_envlist **envlist)
-{
-	char	*pwd;
-	t_envlist	*newlist;
-
-	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
-	{
-		perror("cd");
-		return (EXIT_FAILURE);
-	}
-	newlist = (t_envlist *)malloc(sizeof(t_envlist));
-	if (!newlist)
-	{
-		perror("malloc");
-		free(pwd);
-		return (1);
-	}
-	remove_duplicate("PWD", envlist); // 重複している環境変数をあらかじめ削除
-	newlist->key = ft_strdup("PWD");
-	newlist->value = ft_strdup(pwd);
-	newlist->next = NULL;
-	ms_lstadd_back(envlist, newlist);
-	free(pwd);
-	return (0);
-}
-
-int	set_cd_env(char *oldpwd, t_envlist **envlist)
-{
-	int	exit_status;
-
-	exit_status = set_oldpwd(oldpwd, envlist);
-	if (exit_status == 1)
-		set_pwd(envlist);
-	else
-		exit_status = set_pwd(envlist);
-	free(oldpwd);
-	return (exit_status);
-}
-
-int	my_cd(char **split_ln, t_envlist **envlist)
-{
-	char	*oldpwd;
-
-	oldpwd = getcwd(NULL, 0);
-	if (oldpwd == NULL)
-	{
-		perror("cd");
-		return (EXIT_FAILURE);
-	}
-	if (split_ln[1] == NULL)
-	{
-		if (chdir(get_home_value(*envlist)) == -1)
-		{
-			ft_putstr_fd("my_shell: cd: HOME not set\n", STDERR_FILENO);
-			free(oldpwd);
-			return (1);
-		}
-		return (set_cd_env(oldpwd, envlist));
-	}
-	if (chdir(split_ln[1]) == -1)
-	{
-		perror("cd"); // ここのerror文をbashに合わせる
-		free(oldpwd);
-		return (EXIT_FAILURE);
-	}
-	return (set_cd_env(oldpwd, envlist));
-}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -562,7 +462,7 @@ int	main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
-		line = readline("\033[33m""cd test(exit,pwd,ls,export,unset,envも使える): ""\033[m"); // 入力受付
+		line = readline("\033[33m""export test(exit,unset,envも使える): ""\033[m"); // 入力受付
 		if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			write(STDERR_FILENO, "exit\n", 5);
@@ -579,81 +479,19 @@ int	main(int argc, char **argv, char **envp)
 		if (!split_ln)
 		{
 			safe_free(&line);
-			free_list(envlist);
 			return (EXIT_FAILURE);
 		}
-		if (ft_strncmp(split_ln[0], "cd", 3) == 0)
-		{
-			exit_status = my_cd(split_ln, &envlist);
-		}
-		else if (ft_strncmp(split_ln[0], "pwd", 4) == 0)
-		{
-			pid = fork();
-			if (pid < 0)
-			{
-				perror("fork");
-				safe_free(&line);
-				free_list(envlist);
-				return (EXIT_FAILURE);
-			}
-			else if (pid == 0) // 子プロセスは親プロセスのデータをコピーしただけで書き換えることはできない
-			{
-				if (execve("/bin/pwd", split_ln, envp) == -1)
-				{
-					perror("execve");
-					return (EXIT_FAILURE);
-				}
-			}
-			else
-			{
-				if (wait(&status) < 0)
-				{
-					write(STDERR_FILENO, "\n", 1);
-					split_free(split_ln);
-					safe_free(&line);
-					free_list(envlist);
-					return (EXIT_FAILURE);
-				}
-			}
-		}
-		else if (ft_strncmp(split_ln[0], "ls", 3) == 0)
-		{
-			pid = fork();
-			if (pid < 0)
-			{
-				perror("fork");
-				safe_free(&line);
-				return (EXIT_FAILURE);
-			}
-			else if (pid == 0) // 子プロセスは親プロセスのデータをコピーしただけで書き換えることはできない
-			{
-				if (execve("/bin/ls", split_ln, envp) == -1)
-				{
-					perror("execve");
-					return (EXIT_FAILURE);
-				}
-			}
-			else
-			{
-				if (wait(&status) < 0)
-				{
-					write(STDERR_FILENO, "\n", 1);
-					split_free(split_ln);
-					safe_free(&line);
-					free_list(envlist);
-					return (EXIT_FAILURE);
-				}
-			}
-		}
-		else if (ft_strncmp(split_ln[0], "unset", 6) == 0)
+		if (ft_strncmp(split_ln[0], "unset", 6) == 0)
 			exit_status = my_unset(split_ln, &envlist);
 		else if (ft_strncmp(split_ln[0], "env", 4) == 0)
 			exit_status = my_env(envlist);
 		else if (ft_strncmp(split_ln[0], "export", 7) == 0)
-			exit_status = my_export(split_ln, &envlist);
+		{
+			exit_status = my_export(split_ln, &envlist); // ここを実装
+		}
 		else
 			printf("Bad argument\n");
-		add_history(line); // 履歴の付け足し
+		add_history(line);
 		safe_free(&line);
 		split_free(split_ln);
 	}

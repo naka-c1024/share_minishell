@@ -1,17 +1,26 @@
-SRCS	:=	cd.c
-
 NAME	:=	minishell_test
 CC		:=	gcc
 RM		:=	rm -f
 # CFLAGS	:=	-Wall -Wextra -Werror
 
-DEBUG_FLAGS	:=	-g # -fsanitize=address -fsanitize=undefined
+DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
 # For M1MacBook, run the command below.
 # export MallocNanoZone=0
 # make debug
 # unset MallocNanoZone
 # env | grep Malloc
 NO_BUILTIN_FLAGS	:=	-fno-builtin
+
+SRCS	:=	main.c\
+			envlist.c\
+			cd.c\
+			echo.c\
+			env.c\
+			exit.c\
+			export.c\
+			pwd.c\
+			unset.c\
+			utils.c
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
