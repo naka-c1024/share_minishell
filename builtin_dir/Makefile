@@ -1,4 +1,4 @@
-SRCS	:=	export.c
+SRCS	:=	cd.c
 
 NAME	:=	minishell_test
 CC		:=	gcc
