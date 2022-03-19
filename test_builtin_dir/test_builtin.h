@@ -49,6 +49,7 @@ int		set_cd_env(char *oldpwd, t_envlist **envlist);
 int		my_cd(char **split_ln, t_envlist **envlist);
 
 // echo.c
+int		safe_putstr_fd(char *s, int fd);
 int		my_echo(char **split_ln);
 
 // env.c
