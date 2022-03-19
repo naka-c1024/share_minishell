@@ -40,7 +40,8 @@ static int	set_pwd(t_envlist **envlist)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		print_error("cd: getcwd", NULL, errno);
+		// print_error("cd: getcwd", NULL, errno);
+		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
@@ -63,7 +64,9 @@ static int	set_cd_env(char *oldpwd, t_envlist **envlist)
 {
 	int	exit_status;
 
-	exit_status = set_oldpwd(oldpwd, envlist);
+	exit_status = 0;
+	if (oldpwd)
+		exit_status = set_oldpwd(oldpwd, envlist);
 	if (exit_status == 1)
 		set_pwd(envlist);
 	else
@@ -76,12 +79,7 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 {
 	char	*oldpwd;
 
-	oldpwd = getcwd(NULL, 0);
-	if (oldpwd == NULL)
-	{
-		print_error("cd: getcwd", NULL, errno);
-		return (EXIT_FAILURE);
-	}
+	oldpwd = getcwd(NULL, 0); // nullの場合も無視
 	if (split_ln[1] == NULL)
 	{
 		if (chdir(get_home_value(*envlist)) == -1)
@@ -95,8 +93,10 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 	if (chdir(split_ln[1]) == -1)
 	{
 		print_error("cd", split_ln[1], errno);
+		write(1, "ok\n", 3); // debug
 		free(oldpwd);
 		return (EXIT_FAILURE);
 	}
+	write(1, "ko\n", 3); // debug
 	return (set_cd_env(oldpwd, envlist));
 }

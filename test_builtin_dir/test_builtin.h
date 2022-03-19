@@ -26,7 +26,7 @@
 // rl_clear_history, rl_replace_line が見つからない
 // ↑discordで検索, rl_clear_historyは使わないがrl_replace_line関数はsignalで^Cの時に使うから注意
 
-# define RL_MSG	"\033[33m""builtin test(lsも使える): ""\033[m"
+# define RL_MSG	"\033[33m""test my_shell: ""\033[m"
 
 typedef struct s_envlist
 {
