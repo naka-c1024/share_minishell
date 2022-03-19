@@ -1,6 +1,6 @@
 #include "test_builtin.h"
 
-int	safe_putstr_fd(char *s, int fd)
+static int	safe_putstr_fd(char *s, int fd)
 {
 	size_t	len;
 	size_t	i;

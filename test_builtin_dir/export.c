@@ -13,7 +13,7 @@ static size_t	list_cnt(t_envlist *envlist)
 	return (i);
 }
 
-char	**list_to_array(t_envlist *envlist)
+static char	**list_to_array(t_envlist *envlist)
 {
 	char			**rtn;
 	size_t			i;
@@ -67,7 +67,7 @@ char	**list_to_array(t_envlist *envlist)
 	return (rtn);
 }
 
-void	free_darray(char **darray)
+static void	free_darray(char **darray)
 {
 	size_t	i;
 
@@ -80,7 +80,7 @@ void	free_darray(char **darray)
 	free(darray);
 }
 
-int	my_strcmp(const char *s1, const char *s2)
+static int	my_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;
 
@@ -94,7 +94,7 @@ int	my_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-char	**bubble_sort(char **darray)
+static char	**bubble_sort(char **darray)
 {
 	int		i;
 	int		j;
@@ -119,7 +119,7 @@ char	**bubble_sort(char **darray)
 	return (darray);
 }
 
-void	print_export(t_envlist *envlist)
+static void	print_export(t_envlist *envlist)
 {
 	char	**darray;
 	size_t	i;
@@ -160,7 +160,7 @@ void	remove_duplicate(char *str, t_envlist **envlist)
 	}
 }
 
-int	set_new_node(char *str, t_envlist **envlist)
+static int	set_new_node(char *str, t_envlist **envlist)
 {
 	t_envlist	*newlist;
 	char		*eq_location;
@@ -183,7 +183,7 @@ int	set_new_node(char *str, t_envlist **envlist)
 	return (0);
 }
 
-bool	can_export(char *str)
+static bool	can_export(char *str)
 {
 	size_t	i;
 
@@ -203,7 +203,7 @@ bool	can_export(char *str)
 	return (true);
 }
 
-bool	is_equal(char *str)
+static bool	is_equal(char *str)
 {
 	size_t	i;
 
@@ -219,7 +219,7 @@ bool	is_equal(char *str)
 	return (false);
 }
 
-bool	is_env_key(char *str, t_envlist *envlist)
+static bool	is_env_key(char *str, t_envlist *envlist)
 {
 	size_t	len;
 
@@ -233,7 +233,7 @@ bool	is_env_key(char *str, t_envlist *envlist)
 	return (false);
 }
 
-int	no_equal(char *str, t_envlist **envlist)
+static int	no_equal(char *str, t_envlist **envlist)
 {
 	t_envlist	*newlist;
 
@@ -254,14 +254,14 @@ int	no_equal(char *str, t_envlist **envlist)
 	return (0);
 }
 
-void	not_a_valid_identifier(char *str)
+static void	not_a_valid_identifier(char *str)
 {
 	ft_putstr_fd("my_shell: export: `", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 }
 
-int	set_env(char **split_ln, t_envlist **envlist)
+static int	set_env(char **split_ln, t_envlist **envlist)
 {
 	size_t	i;
 	int		exit_status;

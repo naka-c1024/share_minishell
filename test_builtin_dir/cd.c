@@ -1,6 +1,6 @@
 #include "test_builtin.h"
 
-char	*get_home_value(t_envlist *envlist)
+static char	*get_home_value(t_envlist *envlist)
 {
 	size_t	len;
 
@@ -14,7 +14,7 @@ char	*get_home_value(t_envlist *envlist)
 	return (NULL);
 }
 
-int	set_oldpwd(char *oldpwd, t_envlist **envlist)
+static int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 {
 	t_envlist	*newlist;
 
@@ -32,7 +32,7 @@ int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 	return (0);
 }
 
-int	set_pwd(t_envlist **envlist)
+static int	set_pwd(t_envlist **envlist)
 {
 	char		*pwd;
 	t_envlist	*newlist;
@@ -59,7 +59,7 @@ int	set_pwd(t_envlist **envlist)
 	return (0);
 }
 
-int	set_cd_env(char *oldpwd, t_envlist **envlist)
+static int	set_cd_env(char *oldpwd, t_envlist **envlist)
 {
 	int	exit_status;
 

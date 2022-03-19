@@ -14,7 +14,7 @@ void	free_list(t_envlist *list)
 	}
 }
 
-t_envlist	*ms_lstlast(t_envlist *lst)
+static t_envlist	*ms_lstlast(t_envlist *lst)
 {
 	if (!lst)
 		return (NULL);

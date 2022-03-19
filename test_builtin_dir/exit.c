@@ -45,7 +45,7 @@ static bool	is_space(char c)
 		return (false);
 }
 
-long	my_atol(const char *str)
+static long	my_atol(const char *str)
 {
 	size_t		i;
 	int			sign;
