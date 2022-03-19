@@ -30,6 +30,9 @@ int	main(int argc, char **argv, char **envp)
 	t_envlist	*envlist;
 	exit_status = EXIT_SUCCESS;
 
+	(void)argc;
+	(void)argv;
+
 	envlist = create_envlist(envp); // freeするときはfree_list(envlist)する
 
 	while (1)

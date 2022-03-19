@@ -164,9 +164,6 @@ int	set_new_node(char *str, t_envlist **envlist)
 {
 	t_envlist	*newlist;
 	char		*eq_location;
-	t_envlist	**cp_elist;
-	t_envlist	*tmp;
-	size_t		len;
 
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
@@ -239,9 +236,6 @@ bool	is_env_key(char *str, t_envlist *envlist)
 int	no_equal(char *str, t_envlist **envlist)
 {
 	t_envlist	*newlist;
-	t_envlist	**cp_elist;
-	t_envlist	*tmp;
-	size_t		len;
 
 	if (is_env_key(str, *envlist) == true) // すでにkeyがある場合は何もしない
 	{
