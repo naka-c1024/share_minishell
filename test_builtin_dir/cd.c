@@ -7,7 +7,7 @@ static char	*get_home_value(t_envlist *envlist)
 	len = ft_strlen("HOME");
 	while (envlist)
 	{
-		if (ft_strncmp("HOME", envlist->key, len + 1) == 0) // +1するのはnull文字まで見るため
+		if (ft_strncmp("HOME", envlist->key, len + 1) == 0)
 			return (envlist->value);
 		envlist = envlist->next;
 	}
@@ -40,8 +40,9 @@ static int	set_pwd(t_envlist **envlist)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		// print_error("cd: getcwd", NULL, errno);
-		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", STDERR_FILENO);
+		ft_putstr_fd("cd: error retrieving current directory:", STDERR_FILENO);
+		ft_putstr_fd(" getcwd: cannot access parent director:", STDERR_FILENO);
+		ft_putstr_fd("ies: No such file or directory\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
@@ -93,10 +94,8 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 	if (chdir(split_ln[1]) == -1)
 	{
 		print_error("cd", split_ln[1], errno);
-		write(1, "ok\n", 3); // debug
 		free(oldpwd);
 		return (EXIT_FAILURE);
 	}
-	write(1, "ko\n", 3); // debug
 	return (set_cd_env(oldpwd, envlist));
 }

@@ -26,7 +26,7 @@
 // rl_clear_history, rl_replace_line が見つからない
 // ↑discordで検索, rl_clear_historyは使わないがrl_replace_line関数はsignalで^Cの時に使うから注意
 
-# define RL_MSG	"\033[33m""test my_shell: ""\033[m"
+# define RL_MSG	"\033[33m""cmd単体test: ""\033[m"
 
 typedef struct s_envlist
 {
@@ -51,6 +51,9 @@ int		my_env(t_envlist *envlist);
 
 // exit.c
 int		my_exit(char **split_ln);
+
+// exit_utils.c
+void	numeric_argument_required(char *str);
 
 // export.c
 void	remove_duplicate(char *str, t_envlist **envlist);

@@ -13,13 +13,67 @@ static size_t	list_cnt(t_envlist *envlist)
 	return (i);
 }
 
-static char	**list_to_array(t_envlist *envlist)
+static int	lst_to_arr3(t_envlist **envlist, size_t *key_len, size_t *value_len)
 {
-	char			**rtn;
+	if (ft_strncmp((*envlist)->key, "_", 2) == 0)
+	{
+		(*envlist) = (*envlist)->next;
+		return (1); // continue
+	}
+	*key_len = ft_strlen((*envlist)->key);
+	if ((*envlist)->value == NULL)
+		*value_len = 0;
+	else
+		*value_len = ft_strlen((*envlist)->value);
+	return (0);
+}
+
+static int	lst_to_arr4(size_t *i, char **rtn,
+	t_envlist **envlist, size_t key_len)
+{
+	ft_strlcpy(rtn[*i], "declare -x ", 11 + 1);
+	ft_strlcat(rtn[*i], (*envlist)->key, 11 + key_len + 1);
+	if ((*envlist)->value == NULL)
+	{
+		(*envlist) = (*envlist)->next;
+		(*i)++;
+		return (1); // continue
+	}
+	return (0);
+}
+
+static char	**lst_to_arr2(char **rtn, t_envlist *envlist)
+{
 	size_t			i;
 	size_t			key_len;
 	size_t			value_len;
-	const size_t	else_len = 14; // null文字含めず(declare -x )+(=")+("),normで消すかも
+
+	i = 0;
+	while (envlist)
+	{
+		if (lst_to_arr3(&envlist, &key_len, &value_len) == 1)
+			continue ;
+		rtn[i] = (char *)malloc(key_len + value_len + 14 + 1);
+		if (!rtn[i])
+		{
+			print_error("export: malloc", NULL, errno);
+			return (NULL);
+		}
+		if (lst_to_arr4(&i, rtn, &envlist, key_len) == 1)
+			continue ;
+		ft_strlcat(rtn[i], "=\"", 11 + key_len + 2 + 1);
+		ft_strlcat(rtn[i], envlist->value, 11 + key_len + 2 + value_len + 1);
+		ft_strlcat(rtn[i], "\"", 11 + key_len + 2 + value_len + 1 + 1);
+		envlist = envlist->next;
+		i++;
+	}
+	rtn[i] = NULL;
+	return (rtn);
+}
+
+static char	**list_to_darray(t_envlist *envlist)
+{
+	char			**rtn;
 	size_t			list_size;
 
 	list_size = list_cnt(envlist);
@@ -30,41 +84,7 @@ static char	**list_to_array(t_envlist *envlist)
 		print_error("export: malloc", NULL, errno);
 		return (NULL);
 	}
-	i = 0;
-	while (envlist)
-	{
-		if (ft_strncmp(envlist->key, "_", 2) == 0)
-		{
-			envlist = envlist->next;
-			continue ;
-		}
-		key_len = ft_strlen(envlist->key);
-		if (envlist->value == NULL)
-			value_len = 0;
-		else
-			value_len = ft_strlen(envlist->value);
-		rtn[i] = (char *)malloc(key_len + value_len + else_len + 1);
-		if (!rtn[i])
-		{
-			print_error("export: malloc", NULL, errno);
-			return (NULL);
-		}
-		ft_strlcpy(rtn[i], "declare -x ", 11 + 1);
-		ft_strlcat(rtn[i], envlist->key, 11 + key_len + 1);
-		if (envlist->value == NULL)
-		{
-			envlist = envlist->next;
-			i++;
-			continue ;
-		}
-		ft_strlcat(rtn[i], "=\"", 11 + key_len + 2 + 1);
-		ft_strlcat(rtn[i], envlist->value, 11 + key_len + 2 + value_len + 1);
-		ft_strlcat(rtn[i], "\"", 11 + key_len + 2 + value_len + 1 + 1);
-		envlist = envlist->next;
-		i++;
-	}
-	rtn[i] = NULL;
-	return (rtn);
+	return (lst_to_arr2(rtn, envlist));
 }
 
 static void	free_darray(char **darray)
@@ -124,7 +144,7 @@ static void	print_export(t_envlist *envlist)
 	char	**darray;
 	size_t	i;
 
-	darray = list_to_array(envlist);
+	darray = list_to_darray(envlist);
 	if (!darray)
 		return ;
 	darray = bubble_sort(darray);
@@ -267,8 +287,8 @@ static int	set_env(char **split_ln, t_envlist **envlist)
 	int		exit_status;
 
 	exit_status = 0;
-	i = 1;
-	while (split_ln[i])
+	i = 0;
+	while (split_ln[++i])
 	{
 		if (can_export(split_ln[i]) == false)
 		{
@@ -286,7 +306,6 @@ static int	set_env(char **split_ln, t_envlist **envlist)
 			set_new_node(split_ln[i], envlist);
 		else if (exit_status == 0)
 			exit_status = set_new_node(split_ln[i], envlist);
-		i++; // norm対応でここを消す
 	}
 	return (exit_status);
 }
@@ -303,7 +322,7 @@ int	my_export(char **split_ln, t_envlist **envlist)
 	}
 	else
 	{
-		exit_status = set_env(split_ln,envlist);
+		exit_status = set_env(split_ln, envlist);
 	}
 	return (exit_status);
 }

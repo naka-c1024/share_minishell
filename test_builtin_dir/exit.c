@@ -92,10 +92,7 @@ int	my_exit(char **split_ln)
 	}
 	else if (check_arg_value(split_ln[1]) == false) // オーバーフローと文字を見る
 	{
-		ft_putendl_fd("exit", STDERR_FILENO);
-		ft_putstr_fd("my_shell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(split_ln[1], STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		numeric_argument_required(split_ln[1]);
 		return (255);
 	}
 	arg_value = my_atol(split_ln[1]);

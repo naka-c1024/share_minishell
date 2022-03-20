@@ -17,6 +17,7 @@ SRCS	:=	main.c\
 			echo.c\
 			env.c\
 			exit.c\
+			exit_utils.c\
 			export.c\
 			pwd.c\
 			unset.c\
