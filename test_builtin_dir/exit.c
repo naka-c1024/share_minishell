@@ -84,16 +84,16 @@ int	my_exit(char **split_ln)
 		ft_putendl_fd("exit", STDERR_FILENO);
 		return (EXIT_SUCCESS);
 	}
-	else if (cnt > 2)
-	{
-		ft_putendl_fd("exit", STDERR_FILENO);
-		ft_putendl_fd("my_shell: exit: too many arguments", STDERR_FILENO);
-		return (1);
-	}
 	else if (check_arg_value(split_ln[1]) == false) // オーバーフローと文字を見る
 	{
 		numeric_argument_required(split_ln[1]);
 		return (255);
+	}
+	if (cnt > 2)
+	{
+		ft_putendl_fd("exit", STDERR_FILENO);
+		ft_putendl_fd("my_shell: exit: too many arguments", STDERR_FILENO);
+		return (1);
 	}
 	arg_value = my_atol(split_ln[1]);
 	ft_putendl_fd("exit", STDERR_FILENO);
