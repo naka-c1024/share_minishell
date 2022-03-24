@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/13 09:57:10 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/24 16:35:32 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,45 @@
 
 # define RL_MSG	"\033[33m""my_shell ""\033[m"
 
+//以下の数値をshell_astのtypeに入れノードの実態を判断
+# define COMMAND 0
+# define PIPE 1
+# define LEFT 0
+# define RIGHT 1
+
+typedef	struct s_cmd_info
+{
+	// execve(info->cmd_full_path[cmd_index], info->cmd[cmd_index], info->envp);
+	//上のexecveの引数用に以下のデータ構造を取る
+	char	*cmd_full_path; // ex) "/bin/cat" 要らなそう
+	char	**cmd_line; //  ex) "cat -e" ここをリストにする
+	int		redirect; // redirect_listにしても良さそう（sudoさんの参考に)
+}	t_cmd_info;
+
+typedef	struct s_ms_ast
+{
+	int				type;
+	t_list		*cmd_info_list;
+	struct s_ms_ast		*left_node;
+	struct s_ms_ast		*right_node;
+}	t_ms_ast;
+
+//以下の数値をcmd_infoのredirect変数に入れディスクリプタを管理
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
 // signal
 void	sigint_before_rl(int not_use);
 void	sigint_after_rl(int not_use);
 void	sigquit_after_rl(int not_use);
 void	init_signal(int sig_num, void (*func)(int not_use));
+
+//lexer_and_parser
+char		***dp_to_tp(char **cmd_line);
+t_ms_ast	*pipe_branch(char ***all_cmd_line);
+t_ms_ast	*cmd_branch(char ****all_cmd_line_addr);
+t_ms_ast	*new_cmd_node(char ****all_cmd_line_addr);
+t_ms_ast	*new_pipe_node(t_ms_ast *left, t_ms_ast *right);
 
 #endif
