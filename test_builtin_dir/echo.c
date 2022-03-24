@@ -1,32 +1,59 @@
 #include "test_builtin.h"
 
+static int	safe_putstr_fd(char *s, int fd)
+{
+	size_t	len;
+
+	if (!s)
+		return (0);
+	len = ft_strlen(s);
+	if (write(fd, s, len) == -1)
+	{
+		print_error("echo: write", s, errno);
+		return (1);
+	}
+	return (0);
+}
+
+static int	echo_main(char **str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (safe_putstr_fd(str[i], STDOUT_FILENO))
+			return (1);
+		if (str[i + 1])
+			if (safe_putstr_fd(" ", STDOUT_FILENO))
+				return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	my_echo(char **split_ln)
 {
-	int	exit_value; // 本家コード見た感じ0以外は無さそう? 強いて言うならwriteが失敗した時くらい?
-	int	display_return;
+	int		display_return;
 	size_t	i;
 
 	display_return = 1;
-	exit_value = 0;
 	i = 0;
 	if (split_ln[++i] == NULL) // listの最後がnull埋めされている前提
 	{
-		write(1, "\n", 1);
-		return (exit_value);
+		if (safe_putstr_fd("\n", STDOUT_FILENO))
+			return (1);
+		return (0);
 	}
-	if (strncmp(split_ln[i], "-n", 3) == 0)
+	if (ft_strncmp(split_ln[i], "-n", 3) == 0)
 	{
 		display_return = 0;
 		i++;
 	}
-	while (split_ln[i])
-	{
-		printf("%s", split_ln[i]);
-		if (split_ln[i + 1])
-			putchar(' ');
-		i++;
-	}
+	if (echo_main(&split_ln[i]) == 1)
+		return (1);
 	if (display_return)
-		putchar('\n');
-	return (exit_value);
+		if (safe_putstr_fd("\n", STDOUT_FILENO))
+			return (1);
+	return (0);
 }

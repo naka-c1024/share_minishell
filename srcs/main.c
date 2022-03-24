@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/11 15:04:31 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/19 13:41:05 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	safe_free(char **ptr)
 	*ptr = NULL;
 }
 
-void	split_free(char **ptr)
+void	free_split(char **ptr)
 {
 	size_t	i;
 
@@ -125,7 +125,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);
-		split_free(split_ln);
+		free_split(split_ln);
 		safe_free(&path);
 	}
 	return (EXIT_SUCCESS);

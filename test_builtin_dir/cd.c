@@ -1,27 +1,27 @@
 #include "test_builtin.h"
 
-char	*get_home_value(t_envlist *envlist)
+static char	*get_home_value(t_envlist *envlist)
 {
 	size_t	len;
 
 	len = ft_strlen("HOME");
 	while (envlist)
 	{
-		if (ft_strncmp("HOME", envlist->key, len + 1) == 0) // +1するのはnull文字まで見るため
+		if (ft_strncmp("HOME", envlist->key, len + 1) == 0)
 			return (envlist->value);
 		envlist = envlist->next;
 	}
 	return (NULL);
 }
 
-int	set_oldpwd(char *oldpwd, t_envlist **envlist)
+static int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 {
 	t_envlist	*newlist;
 
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
 	{
-		perror("malloc");
+		print_error("cd: malloc", NULL, errno);
 		return (1);
 	}
 	remove_duplicate("OLDPWD", envlist); // 重複している環境変数をあらかじめ削除
@@ -32,21 +32,23 @@ int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 	return (0);
 }
 
-int	set_pwd(t_envlist **envlist)
+static int	set_pwd(t_envlist **envlist)
 {
-	char	*pwd;
+	char		*pwd;
 	t_envlist	*newlist;
 
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		perror("cd");
+		ft_putstr_fd("cd: error retrieving current directory:", STDERR_FILENO);
+		ft_putstr_fd(" getcwd: cannot access parent director:", STDERR_FILENO);
+		ft_putstr_fd("ies: No such file or directory\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	newlist = (t_envlist *)malloc(sizeof(t_envlist));
 	if (!newlist)
 	{
-		perror("malloc");
+		print_error("cd: malloc", NULL, errno);
 		free(pwd);
 		return (1);
 	}
@@ -59,11 +61,13 @@ int	set_pwd(t_envlist **envlist)
 	return (0);
 }
 
-int	set_cd_env(char *oldpwd, t_envlist **envlist)
+static int	set_cd_env(char *oldpwd, t_envlist **envlist)
 {
 	int	exit_status;
 
-	exit_status = set_oldpwd(oldpwd, envlist);
+	exit_status = 0;
+	if (oldpwd)
+		exit_status = set_oldpwd(oldpwd, envlist);
 	if (exit_status == 1)
 		set_pwd(envlist);
 	else
@@ -76,12 +80,7 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 {
 	char	*oldpwd;
 
-	oldpwd = getcwd(NULL, 0);
-	if (oldpwd == NULL)
-	{
-		perror("cd");
-		return (EXIT_FAILURE);
-	}
+	oldpwd = getcwd(NULL, 0); // nullの場合も無視
 	if (split_ln[1] == NULL)
 	{
 		if (chdir(get_home_value(*envlist)) == -1)
@@ -94,7 +93,6 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 	}
 	if (chdir(split_ln[1]) == -1)
 	{
-		// perror("cd"); // ここのerror文をbashに合わせる
 		print_error("cd", split_ln[1], errno);
 		free(oldpwd);
 		return (EXIT_FAILURE);

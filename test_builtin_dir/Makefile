@@ -1,7 +1,7 @@
 NAME	:=	minishell_test
 CC		:=	gcc
 RM		:=	rm -f
-# CFLAGS	:=	-Wall -Wextra -Werror
+CFLAGS	:=	-Wall -Wextra -Werror
 
 DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
 # For M1MacBook, run the command below.
@@ -17,10 +17,12 @@ SRCS	:=	main.c\
 			echo.c\
 			env.c\
 			exit.c\
+			exit_utils.c\
 			export.c\
 			pwd.c\
 			unset.c\
-			utils.c
+			utils.c\
+			cmd_exe.c
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include

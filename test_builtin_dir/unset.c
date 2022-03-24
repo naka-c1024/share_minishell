@@ -4,7 +4,6 @@ int	my_unset(char **split_ln, t_envlist **envlist) // このenvlistを渡すと�
 {
 	size_t		i;
 	t_envlist	*tmp;
-	t_envlist	*eq_envptr;
 	size_t		len;
 	t_envlist	**cp_elist;
 

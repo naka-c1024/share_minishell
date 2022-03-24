@@ -7,10 +7,10 @@ int	my_pwd(void)
 	pwd_buf = getcwd(NULL, 0);
 	if (pwd_buf == NULL)
 	{
-		perror("pwd");
+		print_error("pwd", NULL, errno);
 		return (EXIT_FAILURE);
 	}
-	printf("%s\n", pwd_buf);
+	ft_putendl_fd(pwd_buf, STDOUT_FILENO);
 	free(pwd_buf);
 	return (EXIT_SUCCESS);
 }
