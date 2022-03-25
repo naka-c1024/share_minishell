@@ -147,7 +147,7 @@ int	cmd_exe(char **str, t_envlist *envlist) // strは2重配列で受け取る, 
 {
 	int	exit_status;
 
-	if (str[0][0] == '/' || ft_strncmp(str[0], "./", 2) == 0)
+	if (ft_strchr(str[0], '/'))
 		exit_status = abs_rel_exe(str);
 	else
 		exit_status = path_exe(str, envlist);
