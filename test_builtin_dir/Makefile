@@ -22,7 +22,8 @@ SRCS	:=	main.c\
 			pwd.c\
 			unset.c\
 			utils.c\
-			cmd_exe.c
+			no_builtin.c\
+			only_one_cmd.c
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
