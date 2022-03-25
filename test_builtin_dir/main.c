@@ -1,6 +1,6 @@
 # include "test_builtin.h"
 
-int	only_one_cmd(char **dbl_arr, t_envlist **envlist, char **line)
+int	only_one_cmd(char **dbl_arr, t_envlist **envlist)
 {
 	int	exit_status;
 
@@ -9,12 +9,7 @@ int	only_one_cmd(char **dbl_arr, t_envlist **envlist, char **line)
 	{
 		exit_status = my_exit(dbl_arr);
 		if (exit_status != 1) // これ大事, 1の時はexitしない、しかしexit 1や前のexit_statusが1の時はexitする, ここでmallocしてるもの全てfreeする
-		{
-			free_split(dbl_arr);
-			safe_free(line); // これのためにlineを引数にとるのは汚い -> 後回し
-			free_list(*envlist);
 			exit(exit_status);
-		}
 	}
 	else if (ft_strncmp(dbl_arr[0], "echo", 5) == 0)
 		exit_status = my_echo(dbl_arr);
@@ -63,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 			return (EXIT_FAILURE);
 		}
 		// パイプやリダイレクトの処理
-		exit_status = only_one_cmd(dbl_arr, &envlist, &line);
+		exit_status = only_one_cmd(dbl_arr, &envlist);
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);
 		free_split(dbl_arr);
