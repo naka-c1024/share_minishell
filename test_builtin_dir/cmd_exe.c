@@ -16,7 +16,7 @@ static int	abs_exe(char **str)
 		if (execve(str[0], str, NULL) == -1)
 		{
 			print_error(NULL, str[0], errno);
-			return (EXIT_FAILURE);
+			return (127); // 決めうちしてるけどこれは要検討
 		}
 	}
 	else
@@ -71,6 +71,7 @@ static char	*get_absolute_path(char *str, char **split_path)
 		free(join_path);
 		i++;
 	}
+	free(join_slash);
 	return (NULL);
 }
 
@@ -97,7 +98,7 @@ static int	rel_exe_main(char *absolute_path, char **str)
 		if (execve(absolute_path, str, NULL) == -1)
 		{
 			print_error(NULL, str[0], errno);
-			return (EXIT_FAILURE);
+			return (127); // 決め打ちしてるけどこれは要検討
 		}
 	}
 	else
