@@ -65,12 +65,15 @@ int		my_pwd(void);
 // unset.c
 int		my_unset(char **split_ln, t_envlist **envlist);
 
-// cmd_exe.c
+// no_builtin.c
 int		cmd_exe(char **str, t_envlist *envlist);
 
 // utils.c
 void	safe_free(char **ptr);
 void	free_split(char **ptr);
 void	print_error(char *cmd, char *cmd_arg, int error_number);
+
+// only_one_cmd.c
+int	only_one_cmd(char **dbl_arr, t_envlist **envlist);
 
 #endif

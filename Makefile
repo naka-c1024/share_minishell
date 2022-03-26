@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/11 15:52:08 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/25 20:20:49 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,22 @@ DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
 # env | grep Malloc
 NO_BUILTIN_FLAGS	:=	-fno-builtin
 
-VPATH	:=	srcs:srcs/signal # これでSRCSに<./srcs/>を書かなくて済む
-SRCS	:=	main.c signal.c
+VPATH	:=	srcs:srcs/signal:srcs/expander:srcs/executor # これでSRCSに<./srcs/>を書かなくて済む
+SRCS	:=	main.c\
+			signal.c\
+			cd.c\
+			no_builtin.c\
+			echo.c\
+			env.c\
+			envlist.c\
+			exit_utils.c\
+			exit.c\
+			export.c\
+			pwd.c\
+			unset.c\
+			utils.c\
+			only_one_cmd.c
+
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include

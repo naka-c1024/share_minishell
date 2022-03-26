@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/24 16:35:32 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:26:44 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@
 # include <stdbool.h> // bool
 # include <errno.h> // errno
 
-// rl_clear_history, rl_replace_line が見つからない
-// ↑discordで検索, rl_clear_historyは使わないがrl_replace_line関数はsignalで^Cの時に使うから注意
-
-# define RL_MSG	"\033[33m""my_shell ""\033[m"
+# define RL_MSG	"\033[33m""my_shell: ""\033[m"
 
 //以下の数値をshell_astのtypeに入れノードの実態を判断
 # define COMMAND 0
@@ -63,6 +60,13 @@ typedef	struct s_ms_ast
 	struct s_ms_ast		*right_node;
 }	t_ms_ast;
 
+typedef struct s_envlist
+{
+	char				*key;
+	char				*value;
+	struct s_envlist	*next;
+}	t_envlist;
+
 //以下の数値をcmd_infoのredirect変数に入れディスクリプタを管理
 # define STDIN 0
 # define STDOUT 1
@@ -80,5 +84,47 @@ t_ms_ast	*pipe_branch(char ***all_cmd_line);
 t_ms_ast	*cmd_branch(char ****all_cmd_line_addr);
 t_ms_ast	*new_cmd_node(char ****all_cmd_line_addr);
 t_ms_ast	*new_pipe_node(t_ms_ast *left, t_ms_ast *right);
+
+
+// envlist.c
+void		free_list(t_envlist *list);
+void		ms_lstadd_back(t_envlist **lst, t_envlist *new);
+t_envlist	*create_envlist(char **envp);
+
+// cd.c
+int		my_cd(char **split_ln, t_envlist **envlist);
+
+// echo.c
+int		my_echo(char **split_ln);
+
+// env.c
+int		my_env(t_envlist *envlist);
+
+// exit.c
+int		my_exit(char **split_ln);
+
+// exit_utils.c
+void	numeric_argument_required(char *str);
+
+// export.c
+void	remove_duplicate(char *str, t_envlist **envlist);
+int		my_export(char **split_ln, t_envlist **envlist);
+
+// pwd.c
+int		my_pwd(void);
+
+// unset.c
+int		my_unset(char **split_ln, t_envlist **envlist);
+
+// no_builtin.c
+int	exe_no_builtin_cmd(char **str, t_envlist *envlist);
+
+// utils.c
+void	safe_free(char **ptr);
+void	free_split(char **ptr);
+void	print_error(char *cmd, char *cmd_arg, int error_number);
+
+// only_one_cmd
+int	only_one_cmd(char **dbl_arr, t_envlist **envlist);
 
 #endif
