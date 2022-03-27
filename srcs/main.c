@@ -6,22 +6,21 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 20:38:40 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/27 21:19:18 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	g_exit_status = EXIT_SUCCESS;
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
-	char	**two_dim_arr;
-	int		exit_status;
 	t_envlist	*envlist;
 
 	(void)argc;
 	(void)argv;
-	exit_status = EXIT_SUCCESS;
 	envlist = create_envlist(envp); // freeするときはfree_list(envlist)する
 
 	while (1)
@@ -42,22 +41,16 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 
-		// ここをms_ast = lexer_and_parser()に変えてください！
-		two_dim_arr = ft_split(line, ' ');
-		if (!two_dim_arr)
-		{
-			safe_free(&line);
-			free_list(envlist);
-			return (EXIT_FAILURE);
-		}
+		// ここにms_ast = lexer_and_parser(line)をお願いします。
 
-		// expander関数でクオートと環境変数展開
-		// executor関数の中でlst_to_arrしてパイプやリダイレクトの処理してonly_one_cmd実行
-		exit_status = only_one_cmd(two_dim_arr, &envlist);
+		// expander関数でクオートと環境変数展開したlistを返し、それをexecutor関数の第一引数に渡す
+		// expanded_list = expander(ms_ast);
+		executor(ms_ast->cmd_info_list, &envlist);
+
 
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);
 		free_split(two_dim_arr);
 	}
-	return (exit_status);
+	return (g_exit_status);
 }

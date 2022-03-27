@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 20:26:44 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/27 21:12:42 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 # define PIPE 1
 # define LEFT 0
 # define RIGHT 1
+
+extern int	g_exit_status;
 
 typedef	struct s_cmd_info
 {
@@ -124,7 +126,10 @@ void	safe_free(char **ptr);
 void	free_split(char **ptr);
 void	print_error(char *cmd, char *cmd_arg, int error_number);
 
-// only_one_cmd
+// only_one_cmd.c
 int	only_one_cmd(char **dbl_arr, t_envlist **envlist);
+
+// executor_main.c
+void	executor(t_list *cmd_list, t_envlist **envlist);
 
 #endif
