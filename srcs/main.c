@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/27 21:19:18 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/28 10:47:43 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	g_exit_status = EXIT_SUCCESS;
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*line;
+	char		*line;
+	t_ms_ast	*ms_ast;
 	t_envlist	*envlist;
 
 	(void)argc;
@@ -33,6 +34,11 @@ int	main(int argc, char **argv, char **envp)
 			write(STDERR_FILENO, "exit\n", 5);
 			return (EXIT_SUCCESS);
 		}
+		if (!line)
+		{
+			write(STDERR_FILENO, "exit\n", 5);
+			return (EXIT_SUCCESS);
+		}
 		init_signal(SIGINT, sigint_after_rl);
 		init_signal(SIGQUIT, sigquit_after_rl); // プロセス実行時は無視できないのでこれを使う
 		if (ft_strlen(line) == 0) // 改行だけの場合,空文字列がくる
@@ -42,6 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 
 		// ここにms_ast = lexer_and_parser(line)をお願いします。
+		ms_ast = lexer_and_parser(line);
 
 		// expander関数でクオートと環境変数展開したlistを返し、それをexecutor関数の第一引数に渡す
 		// expanded_list = expander(ms_ast);
@@ -50,7 +57,6 @@ int	main(int argc, char **argv, char **envp)
 
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);
-		free_split(two_dim_arr);
 	}
 	return (g_exit_status);
 }

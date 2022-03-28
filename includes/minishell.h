@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/27 21:12:42 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/28 10:43:41 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@
 
 extern int	g_exit_status;
 
-typedef	struct s_cmd_info
-{
-	// execve(info->cmd_full_path[cmd_index], info->cmd[cmd_index], info->envp);
-	//上のexecveの引数用に以下のデータ構造を取る
-	char	*cmd_full_path; // ex) "/bin/cat" 要らなそう
-	char	**cmd_line; //  ex) "cat -e" ここをリストにする
-	int		redirect; // redirect_listにしても良さそう（sudoさんの参考に)
-}	t_cmd_info;
+// typedef	struct s_cmd_info
+// {
+// 	// execve(info->cmd_full_path[cmd_index], info->cmd[cmd_index], info->envp);
+// 	//上のexecveの引数用に以下のデータ構造を取る
+// 	char	*cmd_full_path; // ex) "/bin/cat" 要らなそう
+// 	char	**cmd_line; //  ex) "cat -e" ここをリストにする
+// 	int		redirect; // redirect_listにしても良さそう（sudoさんの参考に)
+// }	t_cmd_info;
 
 typedef	struct s_ms_ast
 {
@@ -81,7 +81,8 @@ void	sigquit_after_rl(int not_use);
 void	init_signal(int sig_num, void (*func)(int not_use));
 
 //lexer_and_parser
-char		***dp_to_tp(char **cmd_line);
+t_ms_ast	*lexer_and_parser(char *line);
+char		***split_by_pipe(char **cmd_line);
 t_ms_ast	*pipe_branch(char ***all_cmd_line);
 t_ms_ast	*cmd_branch(char ****all_cmd_line_addr);
 t_ms_ast	*new_cmd_node(char ****all_cmd_line_addr);

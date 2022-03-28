@@ -10,7 +10,7 @@ static int	token_counter(char **cmd_line_start)
 	return (count);
 }
 
-char	***dp_to_tp(char **cmd_line)
+char	***split_by_pipe(char **cmd_line)
 {
 	char	***result;
 	int		idx;
