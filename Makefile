@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/25 20:20:49 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/28 10:33:56 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
 # env | grep Malloc
 NO_BUILTIN_FLAGS	:=	-fno-builtin
 
-VPATH	:=	srcs:srcs/signal:srcs/expander:srcs/executor # これでSRCSに<./srcs/>を書かなくて済む
+VPATH	:=	srcs:srcs/signal:srcs/expander:srcs/executor:srcs/lexer_and_parser # これでSRCSに<./srcs/>を書かなくて済む
 SRCS	:=	main.c\
 			signal.c\
 			cd.c\
@@ -37,7 +37,12 @@ SRCS	:=	main.c\
 			pwd.c\
 			unset.c\
 			utils.c\
-			only_one_cmd.c
+			only_one_cmd.c\
+			tokenize.c\
+			parser.c\
+			make_ast.c\
+			make_ast_utils.c\
+			executor_main.c
 
 
 RL_PATH	:=/usr/local/opt/readline
@@ -52,7 +57,7 @@ LIBFT_PATH	=	./libft/
 LIBFT_ARC	=	-Llibft -lft
 
 $(NAME)	: $(OBJS)
-	make -C $(LIBFT_PATH)
+	make bonus -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) -o $(NAME)
 
 # suffix rule
@@ -81,12 +86,12 @@ rloff	:
 	echo 'set echo-control-characters off' >> ~/.inputrc
 
 nm		: fclean $(OBJS)
-	make -C $(LIBFT_PATH)
+	make bonus -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) -o $(NAME)
 	nm -u $(NAME)
 
 debug	: fclean $(OBJS)
-	make -C $(LIBFT_PATH)
+	make bonus -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) -o $(NAME)
 
 leak	:
