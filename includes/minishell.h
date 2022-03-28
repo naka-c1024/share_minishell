@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/28 10:43:41 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/03/28 14:47:03 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include "../srcs/signal/signal.h"
 
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h> // rl_clear_history, add_history
@@ -73,12 +74,6 @@ typedef struct s_envlist
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
-// signal
-void	sigint_before_rl(int not_use);
-void	sigint_after_rl(int not_use);
-void	sigquit_after_rl(int not_use);
-void	init_signal(int sig_num, void (*func)(int not_use));
 
 //lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *line);

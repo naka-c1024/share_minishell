@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:01:56 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/11 15:06:00 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/28 14:33:09 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "signal.h"
 
 // ctrl+C
 void	sigint_before_rl(int not_use)
