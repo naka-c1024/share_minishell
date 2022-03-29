@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:08:10 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:13:17 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,12 @@ typedef struct s_envlist
 # define STDOUT 1
 # define STDERR 2
 
-
-// signal
-void	sigint_before_rl(int not_use);
-void	sigint_after_rl(int not_use);
-void	sigquit_after_rl(int not_use);
-void	init_signal(int sig_num, void (*func)(int not_use));
-
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *line);
 
 // envlist.c
 void		free_list(t_envlist *list);
-void		ms_lstadd_back(t_envlist **lst, t_envlist *new);
+void		ms_lstadd_back(t_envlist **lst, t_envlist *element);
 t_envlist	*create_envlist(char **envp);
 
 // cd.c

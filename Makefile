@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/29 15:09:51 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/29 15:17:20 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,14 +51,14 @@ LIBFT_PATH	=	./libft/
 LIBFT_ARC	=	-Llibft -lft
 LE_PA_PATH	=	./srcs/lexer_and_parser/
 LE_PA_ARC	=	./srcs/lexer_and_parser/lexer_and_parser
-
 SIGNAL_PATH	=	./srcs/signal/
 SIGNAL_ARC	=	-L./srcs/signal -lsignal
 
 $(NAME)	: $(OBJS)
 	make bonus -C $(LIBFT_PATH)
 	make -C $(LE_PA_PATH)
-	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LE_PA_ARC) -o $(NAME)
+	make -C $(SIGNAL_PATH)
+	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LE_PA_ARC) $(SIGNAL_ARC) -o $(NAME)
 
 # suffix rule
 $(OBJDIR)/%.o:	%.c
@@ -70,6 +70,7 @@ all		: $(NAME)
 clean	:
 	make clean -C $(LIBFT_PATH)
 	make clean -C $(LE_PA_PATH)
+	make clean -C $(SIGNAL_PATH)
 	if [ -e $(OBJDIR) ]; then \
 		rm -rf $(OBJDIR);\
 	fi
@@ -77,6 +78,7 @@ clean	:
 fclean	: clean
 	make fclean -C $(LIBFT_PATH)
 	make fclean -C $(LE_PA_PATH)
+	make fclean -C $(SIGNAL_PATH)
 	$(RM) $(NAME)
 
 re		: fclean all
@@ -89,14 +91,16 @@ rloff	:
 
 nm		: fclean $(OBJS)
 	make bonus -C $(LIBFT_PATH)
-	make -C $(LA_PA_ARC)
-	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LA_PA_ARC) -o $(NAME)
+	make -C $(LE_PA_PATH)
+	make -C $(SIGNAL_PATH)
+	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) -o $(NAME)
 	nm -u $(NAME)
 
 debug	: fclean $(OBJS)
 	make bonus -C $(LIBFT_PATH)
-	make -C $(LA_PA_ARC)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LA_PA_ARC) -o $(NAME)
+	make -C $(LE_PA_PATH)
+	make -C $(SIGNAL_PATH)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) -o $(NAME)
 
 leak	:
 	leaks -quiet -atExit -- ./$(NAME)

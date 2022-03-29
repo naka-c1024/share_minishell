@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:16 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 20:01:23 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:12:51 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ static t_envlist	*ms_lstlast(t_envlist *lst)
 	return (lst);
 }
 
-void	ms_lstadd_back(t_envlist **lst, t_envlist *new)
+void	ms_lstadd_back(t_envlist **lst, t_envlist *element)
 {
-	if (!lst || !new)
+	if (!lst || !element)
 		return ;
 	if (!*lst)
-		*lst = new;
+		*lst = element;
 	else
-		(ms_lstlast(*lst))->next = new;
+		(ms_lstlast(*lst))->next = element;
 }
 
 t_envlist	*create_envlist(char **envp)
