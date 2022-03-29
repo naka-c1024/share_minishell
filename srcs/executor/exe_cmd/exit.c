@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:41 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:41:16 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 20:20:11 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,20 +94,20 @@ int	my_exit(char **split_ln)
 	if (cnt == 1)
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
-		return (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 	else if (check_arg_value(split_ln[1]) == false) // オーバーフローと文字を見る
 	{
 		numeric_argument_required(split_ln[1]);
-		return (255);
+		exit(255);
 	}
 	if (cnt > 2)
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
 		ft_putendl_fd("my_shell: exit: too many arguments", STDERR_FILENO);
-		return (1);
+		return (1); // ここだけexitしない
 	}
 	arg_value = my_atol(split_ln[1]);
 	ft_putendl_fd("exit", STDERR_FILENO);
-	return (arg_value);
+	exit(arg_value);
 }
