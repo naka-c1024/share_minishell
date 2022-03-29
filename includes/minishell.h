@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:39:28 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:07:53 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ typedef	struct s_ms_ast
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *line);
 
-// executor_main.c
-void	executor(t_list *cmd_list, t_envlist **envlist);
+// expnader
+void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
+
+// executor
+void	executor(t_ms_ast *ms_ast, t_envlist **envlist);
 
 #endif

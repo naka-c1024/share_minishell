@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/28 14:05:43 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:05:20 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		ms_ast = lexer_and_parser(line);
-		// expanded_list = expander(ms_ast); expander関数でクオートと環境変数展開したlistを返し、それをexecutor関数の第一引数に渡す
-		executor(ms_ast->cmd_info_list, &envlist);
+		expander(&ms_ast, envlist); // expander関数でms_astを書き換える
+		executor(ms_ast, &envlist);
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);
 	}

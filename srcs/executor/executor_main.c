@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:57:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:33:55 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:01:58 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ static char	**lst_to_arr(t_list *arglst)
 	return (rtn);
 }
 
-void	executor(t_list *cmd_list, t_envlist **envlist)
+void	executor(t_ms_ast *ms_ast, t_envlist **envlist)
 {
 	char	**two_dim_arr;
 
-	two_dim_arr = lst_to_arr(cmd_list);
+	two_dim_arr = lst_to_arr(ms_ast->cmd_info_list);
 	if (!two_dim_arr)
 	{
 		;

@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/29 15:58:27 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/03/29 16:08:22 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ NO_BUILTIN_FLAGS	:=	-fno-builtin
 
 VPATH	:=	srcs:srcs/expander:srcs/executor
 SRCS	:=	main.c\
-			executor_main.c
+			executor_main.c\
+			expander_main.c
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
