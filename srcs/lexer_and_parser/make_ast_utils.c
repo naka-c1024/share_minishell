@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "lexer_and_parser.h"
 
 t_ms_ast	*new_pipe_node(t_ms_ast *left, t_ms_ast *right)
 {

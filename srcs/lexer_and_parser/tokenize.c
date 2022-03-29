@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "lexer_and_parser.h"
 
 // char	**tokenize2(char *line)
 // {
@@ -123,6 +123,12 @@ t_ms_ast	*lexer_and_parser(char *str)
 	t_ms_ast	*ms_ast;
 
 	tokenized_line = tokenize(str);
+
+	int i = 0;
+	// while (tokenized_line[i])
+	// {
+	// 	printf("%s\n", tokenized_line[i++]);
+	// }
 	if (!tokenized_line)
 	{
 		//フリー処理
@@ -137,6 +143,14 @@ t_ms_ast	*lexer_and_parser(char *str)
 	return (pipe_branch(splited_pipe));
 }
 
+// int	main(void)
+// {
+// 	char 		str[] = "cat file | grep \"hel'42'lo\"     ||||  wc -l";
+// 	t_ms_ast	*ms_ast;
+
+// 	ms_ast = lexer_and_parser(str);
+// 	return (0);
+// }
 // int main(void)
 // {
 // 	char	str[100] = "cat>filea|grep\"aa'hello'a\">file2'aaa'hello";
