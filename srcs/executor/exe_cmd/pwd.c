@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander_main.c                                    :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 16:06:59 by ynakashi         ###   ########.fr       */
+/*   Created: 2022/03/25 20:02:03 by ynakashi          #+#    #+#             */
+/*   Updated: 2022/03/29 15:41:37 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
-void	expander(t_ms_ast **ms_ast, t_envlist *envlist)
+int	my_pwd(void)
 {
-	(void)ms_ast; // フラッグ用,削除してください
-	(void)envlist; // フラッグ用,削除してください
-	// クオートと環境変数展開の処理
+	char	*pwd_buf;
 
+	pwd_buf = getcwd(NULL, 0);
+	if (pwd_buf == NULL)
+	{
+		print_error("pwd", NULL, errno);
+		return (EXIT_FAILURE);
+	}
+	ft_putendl_fd(pwd_buf, STDOUT_FILENO);
+	free(pwd_buf);
+	return (EXIT_SUCCESS);
 }

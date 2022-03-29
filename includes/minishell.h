@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/28 15:59:32 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:07:53 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include "../srcs/signal/signal.h"
+# include "../srcs/executor/exe_cmd/exe_cmd.h"
 
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h> // rl_clear_history, add_history
@@ -62,69 +64,18 @@ typedef	struct s_ms_ast
 	struct s_ms_ast		*right_node;
 }	t_ms_ast;
 
-typedef struct s_envlist
-{
-	char				*key;
-	char				*value;
-	struct s_envlist	*next;
-}	t_envlist;
-
 //以下の数値をcmd_infoのredirect変数に入れディスクリプタを管理
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
 
-// signal
-void	sigint_before_rl(int not_use);
-void	sigint_after_rl(int not_use);
-void	sigquit_after_rl(int not_use);
-void	init_signal(int sig_num, void (*func)(int not_use));
-
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *line);
 
-// envlist.c
-void		free_list(t_envlist *list);
-void		ms_lstadd_back(t_envlist **lst, t_envlist *new);
-t_envlist	*create_envlist(char **envp);
+// expnader
+void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
 
-// cd.c
-int		my_cd(char **split_ln, t_envlist **envlist);
-
-// echo.c
-int		my_echo(char **split_ln);
-
-// env.c
-int		my_env(t_envlist *envlist);
-
-// exit.c
-int		my_exit(char **split_ln);
-
-// exit_utils.c
-void	numeric_argument_required(char *str);
-
-// export.c
-void	remove_duplicate(char *str, t_envlist **envlist);
-int		my_export(char **split_ln, t_envlist **envlist);
-
-// pwd.c
-int		my_pwd(void);
-
-// unset.c
-int		my_unset(char **split_ln, t_envlist **envlist);
-
-// no_builtin.c
-int	exe_no_builtin_cmd(char **str, t_envlist *envlist);
-
-// utils.c
-void	safe_free(char **ptr);
-void	free_split(char **ptr);
-void	print_error(char *cmd, char *cmd_arg, int error_number);
-
-// only_one_cmd.c
-int	only_one_cmd(char **dbl_arr, t_envlist **envlist);
-
-// executor_main.c
-void	executor(t_list *cmd_list, t_envlist **envlist);
+// executor
+void	executor(t_ms_ast *ms_ast, t_envlist **envlist);
 
 #endif

@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander_main.c                                    :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 16:06:59 by ynakashi         ###   ########.fr       */
+/*   Created: 2022/03/25 20:01:02 by ynakashi          #+#    #+#             */
+/*   Updated: 2022/03/29 15:40:59 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
-void	expander(t_ms_ast **ms_ast, t_envlist *envlist)
+int	my_env(t_envlist *envlist)
 {
-	(void)ms_ast; // フラッグ用,削除してください
-	(void)envlist; // フラッグ用,削除してください
-	// クオートと環境変数展開の処理
-
+	while (envlist)
+	{
+		if (envlist->value == NULL)
+		{
+			envlist = envlist->next;
+			continue ;
+		}
+		printf("%s=%s\n", envlist->key, envlist->value);
+		envlist = envlist->next;
+	}
+	return (0);
 }
