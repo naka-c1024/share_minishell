@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:12:12 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/28 12:52:52 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:41:31 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
 int	only_one_cmd(char **two_dim_arr, t_envlist **envlist)
 {

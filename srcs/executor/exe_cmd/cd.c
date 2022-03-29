@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:56:29 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 19:56:32 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:40:43 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
 static char	*get_home_value(t_envlist *envlist)
 {

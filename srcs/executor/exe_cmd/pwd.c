@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_utils.c                                       :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 20:01:30 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 20:01:35 by ynakashi         ###   ########.fr       */
+/*   Created: 2022/03/25 20:02:03 by ynakashi          #+#    #+#             */
+/*   Updated: 2022/03/29 15:41:37 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
-void	numeric_argument_required(char *str)
+int	my_pwd(void)
 {
-	ft_putendl_fd("exit", STDERR_FILENO);
-	ft_putstr_fd("my_shell: exit: ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+	char	*pwd_buf;
+
+	pwd_buf = getcwd(NULL, 0);
+	if (pwd_buf == NULL)
+	{
+		print_error("pwd", NULL, errno);
+		return (EXIT_FAILURE);
+	}
+	ft_putendl_fd(pwd_buf, STDOUT_FILENO);
+	free(pwd_buf);
+	return (EXIT_SUCCESS);
 }

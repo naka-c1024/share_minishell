@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:16 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:12:51 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:41:04 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
 void	free_list(t_envlist *list)
 {

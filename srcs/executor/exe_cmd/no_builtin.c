@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:21:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 20:26:35 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:41:26 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
 static int	abs_rel_exe(char **str)
 {

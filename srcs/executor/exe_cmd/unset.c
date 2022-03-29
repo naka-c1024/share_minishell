@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:02:13 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 20:02:17 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:41:42 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
 int	my_unset(char **split_ln, t_envlist **envlist) // このenvlistを渡すと元の値も変わる
 {

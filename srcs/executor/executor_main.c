@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   executor_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:57:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/28 10:50:10 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:33:55 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void    free_darray(char **darray)
+static void	free_darray(char **darray)
 {
-    size_t    i;
+	size_t	i;
 
-    i = 0;
-    while (darray[i])
-    {
-        free(darray[i]);
-        i++;
-    }
-    free(darray);
+	i = 0;
+	while (darray[i])
+	{
+		free(darray[i]);
+		i++;
+	}
+	free(darray);
 }
 
 static char	**lst_to_arr(t_list *arglst)

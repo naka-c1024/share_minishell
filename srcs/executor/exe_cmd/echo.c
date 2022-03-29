@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:57:12 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/25 19:57:18 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:40:53 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exe_cmd.h"
 
 static int	safe_putstr_fd(char *s, int fd)
 {
