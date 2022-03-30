@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/03/29 11:55:09 by kahirose         ###   ########.fr        #
+#    Updated: 2022/03/31 03:45:12 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,12 @@ CC		:=	gcc
 RM		:= rm -f
 #CFLAGS	:= -Wall -Werror -Wextra
 
-SRCS	:=	tokenize.c make_ast.c make_ast_utils.c parser.c
+SRCS	:=	lexer_and_parser.c \
+			tokenize.c \
+			make_ast.c \
+			make_ast_utils.c \
+			parser.c
+
 OBJDIR	:=	./objs
 OBJS	:= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 INCDIR	:= -I../../includes
@@ -23,9 +28,9 @@ LIBFT_PATH	=	../../libft/
 LIBFT	:=	../../libft/libft.a
 
 $(NAME)	: $(OBJS)
-	ar rc $(NAME) $(OBJS)
-#make bonus -C $(LIBFT_PATH)
-# $(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(LIBFT) -o $(NAME)
+	make bonus -C $(LIBFT_PATH)
+	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(LIBFT) -o $(NAME)
+# ar rc $(NAME) $(OBJS)
 
 $(OBJDIR)/%.o:	%.c
 	mkdir -p $(OBJDIR)
