@@ -56,3 +56,28 @@ t_ms_ast	*new_cmd_node(char ****all_cmd_line_addr)
 	(*all_cmd_line_addr)++;
 	return (ms_cmd_node);
 }
+
+static void print_list(t_list *list)
+{
+	while (list)
+	{
+		if (!((char *)list->content)[0])
+			printf("\x1b[35m[null]\x1b[39m");
+		else
+			printf("[%s]", (char *)list->content);
+		list = list->next;
+	}
+	printf("\n");
+	return ;
+}
+
+static void free_ast(t_ms_ast *ms_ast)
+{
+	if (ms_ast->left_node)
+		free_ast(ms_ast->left_node);
+	if (ms_ast->left_node && ms_ast->left_node->cmd_info_list)
+		ft_lstclear(ms_ast->left_node->cmd_info_list);
+	if (ms_ast->right_node && ms_ast->right_node->cmd_info_list)
+		ft_lstclear(ms_ast->right_node->cmd_info_list);
+	return ;
+}

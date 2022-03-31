@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
+#    By: kahirose <kahirose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/03/31 03:45:12 by kahirose         ###   ########.fr        #
+#    Updated: 2022/04/01 01:15:43 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ RM		:= rm -f
 
 SRCS	:=	lexer_and_parser.c \
 			tokenize.c \
+			tokens_count.c \
 			make_ast.c \
 			make_ast_utils.c \
 			parser.c

@@ -26,7 +26,13 @@ t_ms_ast	*pipe_branch(char ***all_cmd_line)
 	{
 		if (is_pipe(&all_cmd_line))//今日ここから
 		{
-			ms_ast = new_pipe_node(ms_ast, cmd_branch((&all_cmd_line)));
+			if (!all_cmd_line[0])
+				ms_ast = new_pipe_node(ms_ast, cmd_branch((&all_cmd_line)));
+			else
+			{
+				printf("syntax_error\n");
+				exit (0);
+			}
 		}
 		else
 		{
