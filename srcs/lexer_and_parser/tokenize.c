@@ -1,14 +1,5 @@
 #include "lexer_and_parser.h"
 
-typedef	struct s_lexer_info
-{
-	char	**tokenized_line;
-	char	*line;
-	int		*line_index;
-	int		*line_start_index;
-	int		*tl_index;
-}	t_lexer_info;
-
 static int	tl_len_count(char *line)
 {
 	int	tl_len;
@@ -17,15 +8,38 @@ static int	tl_len_count(char *line)
 	return (tl_len);
 }
 
+void	free_lexer_info(t_lexer_info **l_info)
+{
+	int	index;
+
+	index = 0;
+	while ((*l_info)->tokenized_line[index])
+		free((*l_info)->tokenized_line[index++]);
+	free((*l_info)->line);
+	free(*l_info);
+	*l_info = NULL;
+}
+
+void	error_occuration(t_lexer_info **l_info, bool is_syntax)
+{
+	free_lexer_info(l_info);
+	if (is_syntax)
+	{
+		printf("syntax_error\n");
+		exit(258);
+	}
+	printf("error\n");
+	exit (1);
+}
+
 static bool	is_valid_pre_string(t_lexer_info *l_info)
 {
-	if (*(l_info->line_index) == 0 || \
-		l_info->line[(*(l_info->line_index)) - 1] == '|' || \
-			l_info->line[(*(l_info->line_index)) - 1] == ' ' || \
-				l_info->line[(*(l_info->line_index)) - 1] == '"' || \
-					l_info->line[(*(l_info->line_index)) - 1] == '\'' || \
-						l_info->line[(*(l_info->line_index)) - 1] == '>')
-		return (false);
+	char	target;
+
+	target = l_info->line[(*(l_info->line_index)) - 1];
+	if (*(l_info->line_index) == 0 || target == '|' || target == ' ' || \
+		target == '"' || target == '\'' || target == '>' || target == '<')
+			return (false);
 	return (true);
 }
 
@@ -37,10 +51,7 @@ static void	last_word_taker(t_lexer_info *l_info)
 			ft_substr(l_info->line, *(l_info->line_start_index), \
 				*(l_info->line_index) - *(l_info->line_start_index));
 		if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		{
-			//free処理
-			;
-		}
+			error_occuration(&l_info, false);
 		return ;
 	}
 	printf("\n\n!!!!\n    last_word_is_separator\n\n");
@@ -56,16 +67,13 @@ static void	quote_separator(t_lexer_info *l_info)
 			l_info->line[*(l_info->line_index)] != target)
 		(*(l_info->line_index))++;
 	if (l_info->line[*(l_info->line_index)] != target)
-	{
-		printf("syntax error\n");
-		exit(0); //free処理
-	}
+		error_occuration(&l_info, true);
 	(*(l_info->line_index))++;
 	l_info->tokenized_line[(*(l_info->tl_index))++] = \
 		ft_substr(l_info->line, *(l_info->line_start_index), \
 			*(l_info->line_index) - *(l_info->line_start_index));
 	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		; //free処理
+		error_occuration(&l_info, false);
 	*(l_info->line_start_index) = *(l_info->line_index);
 }
 
@@ -77,14 +85,14 @@ static void	pipe_separator(t_lexer_info *l_info)
 			ft_substr(l_info->line, *(l_info->line_start_index), \
 				*(l_info->line_index) - *(l_info->line_start_index));
 		if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-			;//free処理
+			error_occuration(&l_info, false);
 	}
 	else if (*(l_info->line_index) == 0)
-		exit (printf("syntax error\n")); //free処理も
+		error_occuration(&l_info, true);
 	l_info->tokenized_line[(*(l_info->tl_index))++] = \
 		ft_substr(l_info->line, (*(l_info->line_index))++, 1);
 	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		; //free処理
+		error_occuration(&l_info, false);
 	*(l_info->line_start_index) = *(l_info->line_index);
 }
 
@@ -96,12 +104,30 @@ static void	single_redirect_separator(t_lexer_info *l_info)
 			ft_substr(l_info->line, *(l_info->line_start_index), \
 				*(l_info->line_index) - *(l_info->line_start_index));
 		if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-			;//free処理
+			error_occuration(&l_info, false);
 	}
 	l_info->tokenized_line[(*(l_info->tl_index))++] = \
 		ft_substr(l_info->line, (*(l_info->line_index))++, 1);
 	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		; //free処理
+		error_occuration(&l_info, false);
+	*(l_info->line_start_index) = *(l_info->line_index);
+}
+
+static	void	double_redirect_separator(t_lexer_info *l_info)
+{
+	if (is_valid_pre_string(l_info))
+	{
+		l_info->tokenized_line[(*(l_info->tl_index))++] = \
+			ft_substr(l_info->line, *(l_info->line_start_index), \
+				*(l_info->line_index) - *(l_info->line_start_index));
+		if (!(l_info->tokenized_line)[(*(l_info->tl_index)) - 1])
+			error_occuration(&l_info, false);
+	}
+	l_info->tokenized_line[(*(l_info->tl_index))++] = \
+		ft_substr(l_info->line, *(l_info->line_index), 2);
+	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
+		error_occuration(&l_info, false);
+	*(l_info->line_index) += 2;
 	*(l_info->line_start_index) = *(l_info->line_index);
 }
 
@@ -110,13 +136,10 @@ static void	space_separator(t_lexer_info *l_info)
 	if (is_valid_pre_string(l_info)) //初っ端からスペースだった場合に、空文字列が作られるのを防ぐ
 	{
 		l_info->tokenized_line[(*(l_info->tl_index))++] = \
-		ft_substr(l_info->line, *(l_info->line_start_index), \
-		*(l_info->line_index) - *(l_info->line_start_index));
+			ft_substr(l_info->line, *(l_info->line_start_index), \
+				*(l_info->line_index) - *(l_info->line_start_index));
 		if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		{
-			//free処理
-			;
-		}
+			error_occuration(&l_info, false);
 	}
 	while (l_info->line[*(l_info->line_index)] == ' ')
 		(*(l_info->line_index))++;
@@ -139,13 +162,21 @@ static	bool is_single_redirect(t_lexer_info *l_info)
 	return (false);
 }
 
+static	bool is_double_redirect(t_lexer_info *l_info)
+{
+	if (!ft_strncmp(&(l_info->line[*(l_info->line_index)]), ">>", 2) || \
+		!ft_strncmp(&(l_info->line[*(l_info->line_index)]), "<<", 2))
+			return (true);
+	return (false);
+}
+
 static char **tokenize(t_lexer_info *l_info)
 {
 	char	**tokenized_line;
 	int		tl_len;
 
 	tl_len = tl_len_count(l_info->line);
-	tokenized_line = (char **)malloc(sizeof(char *) * tl_len);
+	tokenized_line = (char **)ft_calloc(sizeof(char *), tl_len);
 	l_info->tokenized_line = tokenized_line;
 	while (l_info->line[*(l_info->line_index)])
 	{
@@ -155,6 +186,8 @@ static char **tokenize(t_lexer_info *l_info)
 			pipe_separator(l_info);
 		else if (is_quote(l_info))
 				quote_separator(l_info);
+		else if (is_double_redirect(l_info))
+			double_redirect_separator(l_info);
 		else if (is_single_redirect(l_info))
 			single_redirect_separator(l_info);
 		else
@@ -176,15 +209,14 @@ char	**tokenize_main(char *line)
 	line_index = 0;
 	line_start_index = 0;
 	tl_index = 0;
-	// tokenized_line = (char **)malloc(sizeof(char *) * 20);//wc関数
 	l_info = (t_lexer_info *)malloc(sizeof(t_lexer_info));
 	l_info->line = line;
 	l_info->line_index = &line_index;
 	l_info->line_start_index = &line_start_index;
 	l_info->tl_index = &tl_index;
-	// printf("%p\n", (l_info->line_index));
-	// printf("292:%s\n", l_info->line);
 	tokenized_line = tokenize(l_info);
+	// free(line);
+	free(l_info);
 	return (tokenized_line);
 }
 

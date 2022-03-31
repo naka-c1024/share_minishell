@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_and_parser.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:30:32 by kahirose          #+#    #+#             */
-/*   Updated: 2022/03/31 03:45:47 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/03/31 23:38:04 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 # define LEXER_AND_PARSER_H
 
 #include "minishell.h"
+
+typedef	struct s_lexer_info
+{
+	char	**tokenized_line;
+	char	*line;
+	int		*line_index;
+	int		*line_start_index;
+	int		*tl_index;
+}	t_lexer_info;
 
 char		**tokenize_main(char *line);
 char		***split_by_pipe(char **cmd_line);

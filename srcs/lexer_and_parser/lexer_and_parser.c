@@ -17,7 +17,13 @@ t_ms_ast	*lexer_and_parser(char *str)
 	printf("result_line:");
 	while (tokenized_line[i])
 	{
-		printf("[%s]", tokenized_line[i++]);
+		if (!tokenized_line[i][0])
+		{
+			printf("\x1b[35m[null]\x1b[39m");
+			i++;
+		}
+		else
+			printf("[%s]", tokenized_line[i++]);
 	}
 	printf("\ntooken_count:%d\n", i);
 
@@ -34,7 +40,10 @@ static void print_list(t_list *list)
 {
 	while (list)
 	{
-		printf("[%s]", (char *)list->content);
+		if (!((char *)list->content)[0])
+			printf("\x1b[35m[null]\x1b[39m");
+		else
+			printf("[%s]", (char *)list->content);
 		list = list->next;
 	}
 	printf("\n");
@@ -52,10 +61,15 @@ static void print_ast(t_ms_ast *ms_ast)
 	return ;
 }
 
+__attribute__((destructor))
+static void destructor() {
+    system("leaks -q a.out");
+}
+
 int	main(void)
 {
 	// char 		str[] = "<cat file2|grep \"he' ohayo-'llo\"||||wc -l  ><<< > file2 >";
-	char		str[] = "ls | cat file2| grep -i \"first\" | wc -l > outfile";
+	char		str[] = ">>ls |<<| cat file2 >> file3| grep -i \"first\" | wc -l >> outfile";
 	t_ms_ast	*ms_ast;
 	char 		**tokenized_line;
 
