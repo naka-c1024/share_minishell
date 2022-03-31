@@ -88,7 +88,7 @@ static void	pipe_separator(t_lexer_info *l_info)
 	*(l_info->line_start_index) = *(l_info->line_index);
 }
 
-static void	redirect_separator(t_lexer_info *l_info)
+static void	single_redirect_separator(t_lexer_info *l_info)
 {
 	if (is_valid_pre_string(l_info))
 	{
@@ -123,6 +123,22 @@ static void	space_separator(t_lexer_info *l_info)
 	*(l_info->line_start_index) = *(l_info->line_index);
 }
 
+static	bool is_quote(t_lexer_info *l_info)
+{
+	if (l_info->line[*(l_info->line_index)] == '\'' || \
+		l_info->line[*(l_info->line_index)] == '"' )
+			return (true);
+	return (false);
+}
+
+static	bool is_single_redirect(t_lexer_info *l_info)
+{
+	if (l_info->line[*(l_info->line_index)] == '>' || \
+		l_info->line[*(l_info->line_index)] == '<')
+				return (true);
+	return (false);
+}
+
 static char **tokenize(t_lexer_info *l_info)
 {
 	char	**tokenized_line;
@@ -137,11 +153,10 @@ static char **tokenize(t_lexer_info *l_info)
 			space_separator(l_info);
 		else if (l_info->line[*(l_info->line_index)] == '|')
 			pipe_separator(l_info);
-		else if (l_info->line[*(l_info->line_index)] == '\'' || \
-			l_info->line[*(l_info->line_index)] == '"' )
+		else if (is_quote(l_info))
 				quote_separator(l_info);
-		else if (l_info->line[*(l_info->line_index)] == '>')
-			redirect_separator(l_info);
+		else if (is_single_redirect(l_info))
+			single_redirect_separator(l_info);
 		else
 			(*(l_info->line_index))++;
 	}
