@@ -8,21 +8,23 @@ static int	tl_len_count(char *line)
 	return (tl_len);
 }
 
-void	free_lexer_info(t_lexer_info **l_info)
+void	free_tokenize_info(t_tokenize_info **t_info)
 {
 	int	index;
 
 	index = 0;
-	while ((*l_info)->tokenized_line[index])
-		free((*l_info)->tokenized_line[index++]);
-	// free((*l_info)->line);//ここは後ほどmainと繋がってから
-	free(*l_info);
-	*l_info = NULL;
+	if ((*t_info)->tokenized_line)
+		while ((*t_info)->tokenized_line[index])
+			free((*t_info)->tokenized_line[index++]);
+	// free((*t_info)->line);//ここは後ほどmainと繋がってから
+	free(*t_info);
+	*t_info = NULL;
 }
 
-void	error_occuration_at_tokenize(t_lexer_info **l_info, bool is_syntax)
+void	error_occuration_at_tokenize(t_tokenize_info **t_info, bool is_syntax)
 {
-	free_lexer_info(l_info);
+	if (t_info)
+		free_tokenize_info(t_info);
 	if (is_syntax)
 	{
 		printf("syntax_error\n");
@@ -40,168 +42,170 @@ static bool	is_valid_pre_string(int line_index, char target)
 	return (true);
 }
 
-static void	take_pre_string(t_lexer_info *l_info)
+static void	take_pre_string(t_tokenize_info *t_info)
 {
-	if (is_valid_pre_string(*(l_info->line_index), \
-		l_info->line[(*(l_info->line_index)) - 1]))
+	if (is_valid_pre_string(*(t_info->line_index), \
+		t_info->line[(*(t_info->line_index)) - 1]))
 	{
-		l_info->tokenized_line[(*(l_info->tl_index))++] = \
-			ft_substr(l_info->line, *(l_info->line_start_index), \
-				*(l_info->line_index) - *(l_info->line_start_index));
-		if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-			error_occuration_at_tokenize(&l_info, false);
+		t_info->tokenized_line[(*(t_info->tl_index))++] = \
+			ft_substr(t_info->line, *(t_info->line_start_index), \
+				*(t_info->line_index) - *(t_info->line_start_index));
+		if (!(t_info->tokenized_line[(*(t_info->tl_index)) - 1]))
+			error_occuration_at_tokenize(&t_info, false);
 	}
 }
 
-static void	take_last_string(t_lexer_info *l_info)
+static void	take_last_string(t_tokenize_info *t_info)
 {
 	char	last_token;
 
-	take_pre_string(l_info);
-	l_info->tokenized_line[*(l_info->tl_index)] = NULL;
-	last_token = l_info->tokenized_line[(*(l_info->tl_index)) - 1][0];
+	take_pre_string(t_info);
+	t_info->tokenized_line[*(t_info->tl_index)] = NULL;
+	last_token = t_info->tokenized_line[(*(t_info->tl_index)) - 1][0];
 	if (last_token == '|' || last_token == '>' || last_token == '<')
-		error_occuration_at_tokenize(&l_info, true);
+		error_occuration_at_tokenize(&t_info, true);
 	// free(line);//free_lexer_infoと同じくここも後ほど
-	free(l_info);
+	free(t_info);
 }
 
-static void	quote_separator(t_lexer_info *l_info)
+static void	quote_separator(t_tokenize_info *t_info)
 {
 	char	target;
 
-	target = l_info->line[*(l_info->line_index)];
-	(*(l_info->line_index))++;
-	while (l_info->line[*(l_info->line_index)] && \
-			l_info->line[*(l_info->line_index)] != target)
-		(*(l_info->line_index))++;
-	if (l_info->line[*(l_info->line_index)] != target)
-		error_occuration_at_tokenize(&l_info, true);
-	(*(l_info->line_index))++;
-	l_info->tokenized_line[(*(l_info->tl_index))++] = \
-		ft_substr(l_info->line, *(l_info->line_start_index), \
-			*(l_info->line_index) - *(l_info->line_start_index));
-	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		error_occuration_at_tokenize(&l_info, false);
-	*(l_info->line_start_index) = *(l_info->line_index);
+	target = t_info->line[*(t_info->line_index)];
+	(*(t_info->line_index))++;
+	while (t_info->line[*(t_info->line_index)] && \
+			t_info->line[*(t_info->line_index)] != target)
+		(*(t_info->line_index))++;
+	if (t_info->line[*(t_info->line_index)] != target)
+		error_occuration_at_tokenize(&t_info, true);
+	(*(t_info->line_index))++;
+	t_info->tokenized_line[(*(t_info->tl_index))++] = \
+		ft_substr(t_info->line, *(t_info->line_start_index), \
+			*(t_info->line_index) - *(t_info->line_start_index));
+	if (!(t_info->tokenized_line[(*(t_info->tl_index)) - 1]))
+		error_occuration_at_tokenize(&t_info, false);
+	*(t_info->line_start_index) = *(t_info->line_index);
 }
 
-static void	pipe_separator(t_lexer_info *l_info)
+static void	pipe_separator(t_tokenize_info *t_info)
 {
 	char	last_token;
 
-	take_pre_string(l_info);
-	if (*(l_info->tl_index) == 0)
-		error_occuration_at_tokenize(&l_info, true);
-	last_token = l_info->tokenized_line[(*(l_info->tl_index)) - 1][0];
+	take_pre_string(t_info);
+	if (*(t_info->tl_index) == 0)
+		error_occuration_at_tokenize(&t_info, true);
+	last_token = t_info->tokenized_line[(*(t_info->tl_index)) - 1][0];
 	if (last_token == '|' || last_token == '<')//リダイレクトでも'>'こっち向きは実行できるっぽい
-		error_occuration_at_tokenize(&l_info, true);
-	l_info->tokenized_line[(*(l_info->tl_index))++] = \
-		ft_substr(l_info->line, (*(l_info->line_index))++, 1);
-	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		error_occuration_at_tokenize(&l_info, false);
-	*(l_info->line_start_index) = *(l_info->line_index);
+		error_occuration_at_tokenize(&t_info, true);
+	t_info->tokenized_line[(*(t_info->tl_index))++] = \
+		ft_substr(t_info->line, (*(t_info->line_index))++, 1);
+	if (!(t_info->tokenized_line[(*(t_info->tl_index)) - 1]))
+		error_occuration_at_tokenize(&t_info, false);
+	*(t_info->line_start_index) = *(t_info->line_index);
 }
 
-static void	single_redirect_separator(t_lexer_info *l_info)
-{
-	char	last_token;
-	
-	take_pre_string(l_info);
-	if (*(l_info->tl_index) != 0)
-	{
-		last_token = l_info->tokenized_line[(*(l_info->tl_index)) - 1][0];
-		if (last_token == '>' || last_token == '<')
-			error_occuration_at_tokenize(&l_info, true);
-	}
-	l_info->tokenized_line[(*(l_info->tl_index))++] = \
-		ft_substr(l_info->line, (*(l_info->line_index))++, 1);
-	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		error_occuration_at_tokenize(&l_info, false);
-	*(l_info->line_start_index) = *(l_info->line_index);
-}
-
-static	void	double_redirect_separator(t_lexer_info *l_info)
+static void	single_redirect_separator(t_tokenize_info *t_info)
 {
 	char	last_token;
 
-	take_pre_string(l_info);
-	if (*(l_info->tl_index) != 0)
+	take_pre_string(t_info);
+	if (*(t_info->tl_index) != 0)
 	{
-		last_token = l_info->tokenized_line[(*(l_info->tl_index)) - 1][0];
+		last_token = t_info->tokenized_line[(*(t_info->tl_index)) - 1][0];
 		if (last_token == '>' || last_token == '<')
-			error_occuration_at_tokenize(&l_info, true);
+			error_occuration_at_tokenize(&t_info, true);
 	}
-	l_info->tokenized_line[(*(l_info->tl_index))++] = \
-		ft_substr(l_info->line, *(l_info->line_index), 2);
-	if (!(l_info->tokenized_line[(*(l_info->tl_index)) - 1]))
-		error_occuration_at_tokenize(&l_info, false);
-	*(l_info->line_index) += 2;
-	*(l_info->line_start_index) = *(l_info->line_index);
+	t_info->tokenized_line[(*(t_info->tl_index))++] = \
+		ft_substr(t_info->line, (*(t_info->line_index))++, 1);
+	if (!(t_info->tokenized_line[(*(t_info->tl_index)) - 1]))
+		error_occuration_at_tokenize(&t_info, false);
+	*(t_info->line_start_index) = *(t_info->line_index);
 }
 
-static void	space_separator(t_lexer_info *l_info)
+static	void	double_redirect_separator(t_tokenize_info *t_info)
 {
-	take_pre_string(l_info);
-	while (l_info->line[*(l_info->line_index)] == ' ')
-		(*(l_info->line_index))++;
-	*(l_info->line_start_index) = *(l_info->line_index);
+	char	last_token;
+
+	take_pre_string(t_info);
+	if (*(t_info->tl_index) != 0)
+	{
+		last_token = t_info->tokenized_line[(*(t_info->tl_index)) - 1][0];
+		if (last_token == '>' || last_token == '<')
+			error_occuration_at_tokenize(&t_info, true);
+	}
+	t_info->tokenized_line[(*(t_info->tl_index))++] = \
+		ft_substr(t_info->line, *(t_info->line_index), 2);
+	if (!(t_info->tokenized_line[(*(t_info->tl_index)) - 1]))
+		error_occuration_at_tokenize(&t_info, false);
+	*(t_info->line_index) += 2;
+	*(t_info->line_start_index) = *(t_info->line_index);
 }
 
-static	bool is_quote(t_lexer_info *l_info)
+static void	space_separator(t_tokenize_info *t_info)
 {
-	if (l_info->line[*(l_info->line_index)] == '\'' || \
-		l_info->line[*(l_info->line_index)] == '"' )
+	take_pre_string(t_info);
+	while (t_info->line[*(t_info->line_index)] == ' ')
+		(*(t_info->line_index))++;
+	*(t_info->line_start_index) = *(t_info->line_index);
+}
+
+static	bool is_quote(t_tokenize_info *t_info)
+{
+	if (t_info->line[*(t_info->line_index)] == '\'' || \
+		t_info->line[*(t_info->line_index)] == '"' )
 			return (true);
 	return (false);
 }
 
-static	bool is_single_redirect(t_lexer_info *l_info)
+static	bool is_single_redirect(t_tokenize_info *t_info)
 {
-	if (l_info->line[*(l_info->line_index)] == '>' || \
-		l_info->line[*(l_info->line_index)] == '<')
+	if (t_info->line[*(t_info->line_index)] == '>' || \
+		t_info->line[*(t_info->line_index)] == '<')
 				return (true);
 	return (false);
 }
 
-static	bool is_double_redirect(t_lexer_info *l_info)
+static	bool is_double_redirect(t_tokenize_info *t_info)
 {
-	if (!ft_strncmp(&(l_info->line[*(l_info->line_index)]), ">>", 2) || \
-		!ft_strncmp(&(l_info->line[*(l_info->line_index)]), "<<", 2))
+	if (!ft_strncmp(&(t_info->line[*(t_info->line_index)]), ">>", 2) || \
+		!ft_strncmp(&(t_info->line[*(t_info->line_index)]), "<<", 2))
 			return (true);
 	return (false);
 }
 
-static char **tokenize(t_lexer_info *l_info)
+static char **tokenize(t_tokenize_info *t_info)
 {
 	char	**tokenized_line;
 	int		tl_len;
 
-	tl_len = tl_len_count(l_info->line);
+	tl_len = tl_len_count(t_info->line);
 	tokenized_line = (char **)ft_calloc(sizeof(char *), tl_len);
-	l_info->tokenized_line = tokenized_line;
-	while (l_info->line[*(l_info->line_index)])
+	if (!tokenized_line)
+		error_occuration_at_tokenize(&t_info, false);
+	t_info->tokenized_line = tokenized_line;
+	while (t_info->line[*(t_info->line_index)])
 	{
-		if (l_info->line[*(l_info->line_index)] == ' ')
-			space_separator(l_info);
-		else if (l_info->line[*(l_info->line_index)] == '|')
-			pipe_separator(l_info);
-		else if (is_quote(l_info))
-				quote_separator(l_info);
-		else if (is_double_redirect(l_info))
-			double_redirect_separator(l_info);
-		else if (is_single_redirect(l_info))
-			single_redirect_separator(l_info);
+		if (t_info->line[*(t_info->line_index)] == ' ')
+			space_separator(t_info);
+		else if (t_info->line[*(t_info->line_index)] == '|')
+			pipe_separator(t_info);
+		else if (is_quote(t_info))
+				quote_separator(t_info);
+		else if (is_double_redirect(t_info))
+			double_redirect_separator(t_info);
+		else if (is_single_redirect(t_info))
+			single_redirect_separator(t_info);
 		else
-			(*(l_info->line_index))++;
+			(*(t_info->line_index))++;
 	}
-	take_last_string(l_info);
-	return (l_info->tokenized_line);
+	take_last_string(t_info);
+	return (t_info->tokenized_line);
 }
 
 char	**tokenize_main(char *line)
 {
-	t_lexer_info	*l_info;
+	t_tokenize_info	*t_info;
 	int				line_index;
 	int				line_start_index;
 	char			**tokenized_line;
@@ -210,12 +214,14 @@ char	**tokenize_main(char *line)
 	line_index = 0;
 	line_start_index = 0;
 	tl_index = 0;
-	l_info = (t_lexer_info *)malloc(sizeof(t_lexer_info));
-	l_info->line = line;
-	l_info->line_index = &line_index;
-	l_info->line_start_index = &line_start_index;
-	l_info->tl_index = &tl_index;
-	tokenized_line = tokenize(l_info);
+	t_info = (t_tokenize_info *)malloc(sizeof(t_tokenize_info));
+	if (!t_info)
+		error_occuration_at_tokenize(NULL, false);
+	t_info->line = line;
+	t_info->line_index = &line_index;
+	t_info->line_start_index = &line_start_index;
+	t_info->tl_index = &tl_index;
+	tokenized_line = tokenize(t_info);
 	return (tokenized_line);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_and_parser.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:30:32 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/01 01:17:29 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/04 06:05:55 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,23 @@
 
 #include "minishell.h"
 
-typedef	struct s_lexer_info
+typedef	struct s_tokenize_info
 {
 	char	**tokenized_line;
 	char	*line;
 	int		*line_index;
 	int		*line_start_index;
 	int		*tl_index;
-}	t_lexer_info;
+}	t_tokenize_info;
+
+typedef	struct s_sbp_info
+{
+	char	**result;
+	char	*cmd_line;
+	int		*line_index;
+	int		*line_start_index;
+	int		*tl_index;
+}	t_sbp_info;
 
 char		**tokenize_main(char *line);
 size_t		tokens_count(char *line);

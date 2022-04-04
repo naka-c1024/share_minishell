@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kahirose <kahirose@student.42.fr>          +#+  +:+       +#+         #
+#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/04/01 01:15:43 by kahirose         ###   ########.fr        #
+#    Updated: 2022/04/04 06:08:05 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRCS	:=	lexer_and_parser.c \
 			tokens_count.c \
 			make_ast.c \
 			make_ast_utils.c \
-			parser.c
+			split_by_pipe.c
 
 OBJDIR	:=	./objs
 OBJS	:= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))

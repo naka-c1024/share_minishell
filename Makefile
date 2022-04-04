@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/29 16:08:22 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/04/04 03:15:49 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

@@ -1,4 +1,5 @@
 #include "lexer_and_parser.h"
+#include "minishell.h"
 
 static char	**tokenize(char *line)
 {

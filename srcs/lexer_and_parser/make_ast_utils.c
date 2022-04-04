@@ -10,6 +10,7 @@ t_ms_ast	*new_pipe_node(t_ms_ast *left, t_ms_ast *right)
 		;
 	}
 	ms_pipe_node->type = PIPE;
+	ms_pipe_node->cmd_info_list = NULL;
 	ms_pipe_node->left_node = left;
 	ms_pipe_node->right_node = right;
 	return (ms_pipe_node);
@@ -57,27 +58,21 @@ t_ms_ast	*new_cmd_node(char ****all_cmd_line_addr)
 	return (ms_cmd_node);
 }
 
-static void print_list(t_list *list)
+static void	list_clear(t_list *list)
 {
-	while (list)
-	{
-		if (!((char *)list->content)[0])
-			printf("\x1b[35m[null]\x1b[39m");
-		else
-			printf("[%s]", (char *)list->content);
-		list = list->next;
-	}
-	printf("\n");
-	return ;
+	if (list)
+		list_clear(list->next);
+	free(list);
 }
+
 
 static void free_ast(t_ms_ast *ms_ast)
 {
 	if (ms_ast->left_node)
 		free_ast(ms_ast->left_node);
 	if (ms_ast->left_node && ms_ast->left_node->cmd_info_list)
-		ft_lstclear(ms_ast->left_node->cmd_info_list);
+		list_clear(ms_ast->left_node->cmd_info_list);
 	if (ms_ast->right_node && ms_ast->right_node->cmd_info_list)
-		ft_lstclear(ms_ast->right_node->cmd_info_list);
+		list_clear(ms_ast->right_node->cmd_info_list);
 	return ;
 }
