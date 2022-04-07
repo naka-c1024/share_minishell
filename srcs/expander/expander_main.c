@@ -6,11 +6,30 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/04 17:16:10 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:29:49 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// void	expand_exit_status(void **str)
+// {
+
+// }
+
+// void	expand_env(void **str)
+// {
+// 	while (**(char **)str != '$')
+// 	{
+// 		(**(char **)str)++;
+// 	}
+// 	if (ft_strncmp((char *)(*str), "$?", 2))
+// 	{
+// 		expand_exit_status(str);
+// 	}
+
+// 	*str = "hoge";
+// }
 
 static void send_single_token(t_list **list)
 {
@@ -34,7 +53,7 @@ static void send_single_token(t_list **list)
 		if (ft_strchr((char *)(*cp_list)->content, '$'))
 		{
 			printf("environment variables\n");
-			// 環境変数展開処理
+			// expand_env(&((*cp_list)->content));
 		}
 		cp_list = &((*cp_list)->next);
 	}

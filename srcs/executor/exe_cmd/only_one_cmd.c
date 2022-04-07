@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:12:12 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 20:19:34 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:19:11 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	only_one_cmd(char **two_dim_arr, t_envlist **envlist)
 	int	exit_status;
 
 	exit_status = EXIT_SUCCESS;
-	if (ft_strncmp(two_dim_arr[0], "exit", 5) == 0) // グローバル変数を使う
+	if (ft_strncmp(two_dim_arr[0], "exit", 5) == 0)
 		exit_status = my_exit(two_dim_arr);
 	else if (ft_strncmp(two_dim_arr[0], "echo", 5) == 0)
 		exit_status = my_echo(two_dim_arr);
