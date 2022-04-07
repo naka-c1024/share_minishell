@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 16:07:53 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:55:12 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 //以下の数値をshell_astのtypeに入れノードの実態を判断
 # define COMMAND 0
 # define PIPE 1
+// # define QUOTE 2
 # define LEFT 0
 # define RIGHT 1
 
@@ -64,13 +65,10 @@ typedef	struct s_ms_ast
 	struct s_ms_ast		*right_node;
 }	t_ms_ast;
 
-//以下の数値をcmd_infoのredirect変数に入れディスクリプタを管理
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
-
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *line);
+void		free_ast(t_ms_ast *ms_ast);
+void		free_node(t_ms_ast *ms_ast);
 
 // expnader
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist);

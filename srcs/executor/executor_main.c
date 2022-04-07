@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:57:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 16:14:05 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/07 12:04:53 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	executor(t_ms_ast *ms_ast, t_envlist **envlist)
 	char	**two_dim_arr;
 
 	two_dim_arr = lst_to_arr(ms_ast->cmd_info_list);
+	free_ast(ms_ast);
 	if (!two_dim_arr)
 	{
 		;
