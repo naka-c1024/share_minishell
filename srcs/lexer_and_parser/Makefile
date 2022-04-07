@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/04/07 11:23:54 by kahirose         ###   ########.fr        #
+#    Updated: 2022/04/07 11:56:40 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC		:=	gcc #-fsanitize=address -g3
 RM		:= rm -f
 #CFLAGS	:= -Wall -Werror -Wextra
 
-VPATH   :=  tokenize:split_by_pipe:make_ast:debug_utils:../../utils
+VPATH   :=  tokenize:split_by_pipe:make_ast:debug_utils:../utils
 SRCS	:=	lexer_and_parser_main.c \
 			tokenize.c \
 			tokens_count.c \
@@ -36,8 +36,8 @@ LIBFT	:=	../../libft/libft.a
 
 $(NAME)	: $(OBJS)
 	make bonus -C $(LIBFT_PATH)
-	$(CC) $(CFLAGS) $(MSINCDIR) $(OBJS) $(LIBFT) -o $(NAME)
-# ar rc $(NAME) $(OBJS)
+	ar rc $(NAME) $(OBJS)
+# $(CC) $(CFLAGS) $(MSINCDIR) $(OBJS) $(LIBFT) -o $(NAME)
 
 $(OBJDIR)/%.o:	%.c
 	mkdir -p $(OBJDIR)

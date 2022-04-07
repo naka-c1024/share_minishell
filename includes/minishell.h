@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/06 17:41:51 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:55:12 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef	struct s_ms_ast
 
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *line);
+void		free_ast(t_ms_ast *ms_ast);
+void		free_node(t_ms_ast *ms_ast);
 
 // expnader
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist);

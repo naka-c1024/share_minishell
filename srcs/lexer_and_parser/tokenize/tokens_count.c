@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 01:09:22 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/06 15:44:12 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/07 12:09:04 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ size_t  tokens_count(t_tokenize_info *t_info)
 	}
 	tl_count += last_section(t_info);
 	*(t_info->line_index) = 0;
-	printf("tl_count:%zu\n", tl_count);
+	// printf("tl_count:%zu\n", tl_count);
 	return (tl_count);
 }
 
