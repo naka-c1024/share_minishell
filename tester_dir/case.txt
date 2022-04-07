@@ -1,0 +1,6 @@
+cd ..\npwd
+echo hello
+echo hello world
+pwd
+cd .\nexport
+export
