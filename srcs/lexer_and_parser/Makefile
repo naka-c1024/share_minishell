@@ -6,36 +6,42 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/04/04 06:08:05 by kahirose         ###   ########.fr        #
+#    Updated: 2022/04/07 11:23:54 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:=	lexer_and_parser
-CC		:=	gcc
+CC		:=	gcc #-fsanitize=address -g3
 RM		:= rm -f
 #CFLAGS	:= -Wall -Werror -Wextra
 
-SRCS	:=	lexer_and_parser.c \
+VPATH   :=  tokenize:split_by_pipe:make_ast:debug_utils:../../utils
+SRCS	:=	lexer_and_parser_main.c \
 			tokenize.c \
 			tokens_count.c \
-			make_ast.c \
+			make_ast_main.c \
+			make_ast_exe.c \
 			make_ast_utils.c \
-			split_by_pipe.c
+			error_tokenize.c \
+			split_by_pipe.c \
+			free_ast.c \
+			print_data.c
 
 OBJDIR	:=	./objs
 OBJS	:= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
-INCDIR	:= -I../../includes
+MSINCDIR	:= -I../../includes
+LPINCDIR	:= -I./
 LIBFT_PATH	=	../../libft/
 LIBFT	:=	../../libft/libft.a
 
 $(NAME)	: $(OBJS)
 	make bonus -C $(LIBFT_PATH)
-	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(MSINCDIR) $(OBJS) $(LIBFT) -o $(NAME)
 # ar rc $(NAME) $(OBJS)
 
 $(OBJDIR)/%.o:	%.c
 	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(MSINCDIR) $(LPINCDIR) -c $< -o $@
 
 all		: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:02:46 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/04 14:06:14 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:59:09 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	token_counter(char **cmd_line_start)
 	count = 0;
 	while (cmd_line_start[count] && cmd_line_start[count][0] != '|')
 		count++;
-	printf("count:%d\n", count);
+	// printf("count:%d\n", count);
 	return (count);
 }
 
@@ -47,11 +47,8 @@ void	free_3d_line(char ***three_d_line)
 		while (three_d_line[fir])
 		{
 			sec = 0;
-			if (three_d_line[fir])
-			{
-				while (three_d_line[fir][sec])
-					free(three_d_line[fir][sec++]);
-			}
+			while (three_d_line[fir][sec])
+				free(three_d_line[fir][sec++]);
 			free(three_d_line[fir++]);
 		}
 	}

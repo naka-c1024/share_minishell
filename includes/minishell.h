@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/31 01:24:27 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:41:51 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,6 @@ typedef	struct s_ms_ast
 	struct s_ms_ast		*left_node;
 	struct s_ms_ast		*right_node;
 }	t_ms_ast;
-
-//以下の数値をcmd_infoのredirect変数に入れディスクリプタを管理
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
 
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *line);
