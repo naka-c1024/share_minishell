@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:41 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 11:27:23 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:49:14 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	my_exit(char **split_ln)
 	if (cnt == 1)
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
-		exit(EXIT_SUCCESS); // 後で修正
+		exit(g_exit_status); // 後で修正
 	}
 	else if (check_arg_value(split_ln[1]) == false) // オーバーフローと文字を見る
 	{

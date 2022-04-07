@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 11:55:12 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:48:20 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@
 // # define QUOTE 2
 # define LEFT 0
 # define RIGHT 1
-
-extern int	g_exit_status;
 
 // typedef	struct s_cmd_info
 // {

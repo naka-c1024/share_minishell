@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:57:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 12:04:53 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:27:14 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,12 @@ void	executor(t_ms_ast *ms_ast, t_envlist **envlist)
 {
 	char	**two_dim_arr;
 
+	// パイプやリダイレクトの処理の中でonly_one_cmd使う
+
 	two_dim_arr = lst_to_arr(ms_ast->cmd_info_list);
 	free_ast(ms_ast);
 	if (!two_dim_arr)
-	{
-		;
-	}
-
-	// パイプやリダイレクトの処理の中でonly_one_cmd使う
+		exit(EXIT_FAILURE);
 	g_exit_status = only_one_cmd(two_dim_arr, envlist);
+	free_darray(two_dim_arr);
 }
