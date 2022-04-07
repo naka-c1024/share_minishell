@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:12:12 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 11:20:21 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:52:05 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,8 @@ int	only_one_cmd(char **two_dim_arr, t_envlist **envlist)
 	int	exit_status;
 
 	exit_status = EXIT_SUCCESS;
-	if (ft_strncmp(two_dim_arr[0], "exit", 5) == 0) // グローバル変数を使う
-	{
+	if (ft_strncmp(two_dim_arr[0], "exit", 5) == 0)
 		exit_status = my_exit(two_dim_arr);
-		if (exit_status != 1) // これ大事, 1の時はexitしない、しかしexit 1や前のexit_statusが1の時はexitする, ここでmallocしてるもの全てfreeする
-			exit(exit_status);
-	}
 	else if (ft_strncmp(two_dim_arr[0], "echo", 5) == 0)
 		exit_status = my_echo(two_dim_arr);
 	else if (ft_strncmp(two_dim_arr[0], "cd", 3) == 0)
