@@ -6,19 +6,37 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/08 09:47:19 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/08 11:06:43 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_exit_status(char **str)
+void	expand_exit_status(char **dollar_str)
 {
-	free(*str);
-	*str = ft_itoa(g_exit_status);
+	char	*dollar_ptr;
+	// char	*pre_tmp;
+	// char	*post_tmp;
+
+	// dollar_ptr = ft_strnstr(*dollar_str, "$?", ft_strlen(*dollar_str));
+	free(*dollar_str);
+	*dollar_str = ft_itoa(g_exit_status);
 }
 
-void	expand_env(char **str, t_envlist *envlist)
+void	expand_env_var(char **dollar_str, t_envlist *envlist)
+{
+	while (envlist)
+	{
+		if (ft_strncmp(&((*dollar_str)[1]), envlist->key, ft_strlen(*dollar_str) + 1) == 0)
+		{
+			free(*dollar_str);
+			*dollar_str = ft_strdup(envlist->value);
+		}
+		envlist = envlist->next;
+	}
+}
+
+void	expand_main(char **str, t_envlist *envlist)
 {
 	size_t	i;
 	size_t	j;
@@ -37,7 +55,7 @@ void	expand_env(char **str, t_envlist *envlist)
 				}
 				else
 				{
-					printf("environment variables detected\n");
+					expand_env_var(&(str[i]), envlist);
 				}
 			}
 			j++;
@@ -67,7 +85,7 @@ static void send_single_token(t_list **list, t_envlist *envlist)
 		}
 		if (ft_strchr((*cp_list)->content, '$'))
 		{
-			expand_env(&((*cp_list)->content), envlist);
+			expand_main(&((*cp_list)->content), envlist);
 		}
 		cp_list = &((*cp_list)->next);
 	}
