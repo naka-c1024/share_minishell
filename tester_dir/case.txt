@@ -1,6 +1,10 @@
-cd ..\npwd
+cd .. \n pwd
+cd \n pwd
+cd .. \n export
 echo hello
 echo hello world
 pwd
-cd .\nexport
 export
+export aaa=hoge bbb=hoge \n export
+export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
+echo a$?
