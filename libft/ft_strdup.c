@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 17:32:46 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/08 11:11:11 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/08 11:12:25 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ char	*ft_strdup(const char *s1)
 	char	*ptr;
 	size_t	s1_len;
 
-	// if (!s1)
-	// {
-	// 	ptr = (char *)ft_calloc(1, sizeof(char));
-	// 	return (ptr);
-	// }
+	if (!s1)
+	{
+		ptr = (char *)ft_calloc(1, sizeof(char));
+		return (ptr);
+	}
 	s1_len = ft_strlen(s1);
 	ptr = (char *)malloc(s1_len + 1);
 	if (!ptr)
