@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/12 21:39:20 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/13 08:07:15 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,29 @@ static void	expand_dollar(char **str, t_envlist *envlist)
 	}
 }
 
+static size_t	count_single(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (*str)
+	{
+		if (*str == '\'')
+			i++;
+		str++;
+	}
+	return (i);
+}
+
 static void	expand_single(char **str)
 {
-	// printf("single quote\n");
 	char	*ptr;
 	size_t	i;
 	size_t	j;
+	size_t	single_cnt;
 
-	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - 2 + 1); // ここから
+	single_cnt = count_single(*str);
+	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - single_cnt + 1);
 	i = 0;
 	j = 0;
 	while ((*str)[i] != '\0')
