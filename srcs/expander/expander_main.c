@@ -6,13 +6,13 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/08 11:06:43 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/12 21:39:20 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_exit_status(char **dollar_str)
+static void	expand_exit_status(char **dollar_str)
 {
 	char	*dollar_ptr;
 	// char	*pre_tmp;
@@ -23,7 +23,7 @@ void	expand_exit_status(char **dollar_str)
 	*dollar_str = ft_itoa(g_exit_status);
 }
 
-void	expand_env_var(char **dollar_str, t_envlist *envlist)
+static void	expand_env_var(char **dollar_str, t_envlist *envlist)
 {
 	while (envlist)
 	{
@@ -36,56 +36,82 @@ void	expand_env_var(char **dollar_str, t_envlist *envlist)
 	}
 }
 
-void	expand_main(char **str, t_envlist *envlist)
+static void	expand_dollar(char **str, t_envlist *envlist)
 {
 	size_t	i;
-	size_t	j;
 
 	i = 0;
-	while (str[i])
+	while ((*str)[i])
 	{
-		j = 0;
-		while (str[i][j])
+		if ((*str)[i] == '$')
 		{
-			if (str[i][j] == '$')
+			if ((*str)[i + 1] == '?')
 			{
-				if (str[i][j + 1] == '?')
-				{
-					expand_exit_status(&(str[i]));
-				}
-				else
-				{
-					expand_env_var(&(str[i]), envlist);
-				}
+				expand_exit_status(str);
 			}
-			j++;
+			else
+			{
+				expand_env_var(str, envlist);
+			}
 		}
 		i++;
 	}
 }
 
-static void send_single_token(t_list **list, t_envlist *envlist)
+static void	expand_single(char **str)
+{
+	// printf("single quote\n");
+	char	*ptr;
+	size_t	i;
+	size_t	j;
+
+	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - 2 + 1); // ここから
+	i = 0;
+	j = 0;
+	while ((*str)[i] != '\0')
+	{
+		if ((*str)[i] != '\'')
+		{
+			ptr[j] = (*str)[i];
+			j++;
+		}
+		i++;
+	}
+	ptr[j] = '\0';
+	free(*str);
+	*str = ptr;
+}
+
+static void	expand_double(char **str)
+{
+	printf("double quote\n");
+}
+
+static void	send_single_token(t_list **list, t_envlist *envlist)
 {
 	t_list	**cp_list;
+	size_t	i;
 
 	cp_list = list;
 	while (*cp_list)
 	{
-		if (ft_strchr((*cp_list)->content, '\''))
+		i = 0;
+		while (((*cp_list)->content)[i])
 		{
-			printf("single quote\n");
-			// シングルクオート展開処理
-			cp_list = &((*cp_list)->next);
-			continue ; // シングルクオートの中では"と$は展開しない
-		}
-		if (ft_strchr((*cp_list)->content, '\"'))
-		{
-			printf("double quote\n");
-			// ダブルクオート展開処理
-		}
-		if (ft_strchr((*cp_list)->content, '$'))
-		{
-			expand_main(&((*cp_list)->content), envlist);
+			if (((*cp_list)->content)[i] == '\'')
+			{
+				expand_single(&((*cp_list)->content));
+				break ; // single内ではdouble quoteや環境変数展開はしない
+			}
+			if (((*cp_list)->content)[i] == '\"')
+			{
+				expand_double(&((*cp_list)->content));
+			}
+			if (((*cp_list)->content)[i] == '$')
+			{
+				expand_dollar(&((*cp_list)->content), envlist);
+			}
+			i++;
 		}
 		cp_list = &((*cp_list)->next);
 	}
