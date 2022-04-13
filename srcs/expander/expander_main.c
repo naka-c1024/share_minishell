@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/13 08:07:15 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/13 09:00:23 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ static void	expand_dollar(char **str, t_envlist *envlist)
 	}
 }
 
-static size_t	count_single(char *str)
+static size_t	count_quote(char *str, int c)
 {
 	size_t	i;
 
 	i = 0;
 	while (*str)
 	{
-		if (*str == '\'')
+		if (*str == c)
 			i++;
 		str++;
 	}
@@ -77,10 +77,10 @@ static void	expand_single(char **str)
 	char	*ptr;
 	size_t	i;
 	size_t	j;
-	size_t	single_cnt;
+	size_t	quote_cnt;
 
-	single_cnt = count_single(*str);
-	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - single_cnt + 1);
+	quote_cnt = count_quote(*str, '\'');
+	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
 	i = 0;
 	j = 0;
 	while ((*str)[i] != '\0')
@@ -99,7 +99,27 @@ static void	expand_single(char **str)
 
 static void	expand_double(char **str)
 {
-	printf("double quote\n");
+	char	*ptr;
+	size_t	i;
+	size_t	j;
+	size_t	quote_cnt;
+
+	quote_cnt = count_quote(*str, '\"');
+	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
+	i = 0;
+	j = 0;
+	while ((*str)[i] != '\0')
+	{
+		if ((*str)[i] != '\"')
+		{
+			ptr[j] = (*str)[i];
+			j++;
+		}
+		i++;
+	}
+	ptr[j] = '\0';
+	free(*str);
+	*str = ptr;
 }
 
 static void	send_single_token(t_list **list, t_envlist *envlist)

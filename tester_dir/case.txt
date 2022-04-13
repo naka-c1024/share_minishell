@@ -10,8 +10,11 @@ mkdir hoge \n cd hoge \n chmod 000 ../hoge \n cd . \n cd ..
 echo hello
 echo hello world
 pwd
+env
 export
 export +a
+export a \n export \n env
+export a= \n export \n env
 export aaa=hoge bbb=hoge \n export
 export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
 
