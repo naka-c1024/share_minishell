@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   valid_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 20:01:02 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:40:59 by ynakashi         ###   ########.fr       */
+/*   Created: 2022/02/18 13:54:39 by kahirose          #+#    #+#             */
+/*   Updated: 2022/02/23 20:19:00 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "pipex.h"
 
-int	my_env(t_envlist *envlist)
+bool	is_valid_start_file(t_info info)
 {
-	while (envlist)
-	{
-		if (envlist->value == NULL)
-		{
-			envlist = envlist->next;
-			continue ;
-		}
-		printf("%s=%s\n", envlist->key, envlist->value);
-		envlist = envlist->next;
-	}
-	return (0);
+	if (access(info.argv[1], R_OK) == 0)
+		return (true);
+	return (false);
 }

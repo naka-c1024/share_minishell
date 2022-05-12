@@ -6,13 +6,13 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/07 12:10:42 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/04/24 11:10:04 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer_and_parser.h"
 
-t_ms_ast	*lexer_and_parser(char *str)
+t_ms_ast	*lexer_and_parser(char *str, size_t *process_cnt)
 {
 	char		**tokenized_line;
 	char		***splited_pipe;
@@ -22,7 +22,7 @@ t_ms_ast	*lexer_and_parser(char *str)
 	if (!tokenized_line)
 		;
 	// print_tokenized_line(tokenized_line);
-	splited_pipe = split_by_pipe(tokenized_line);
+	splited_pipe = split_by_pipe(tokenized_line, process_cnt);
 	if (!splited_pipe)
 		;
 	// print_sbp(splited_pipe);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 17:34:42 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/05/10 05:12:35 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	main(int argc, char **argv, char **envp)
 	char		*line;
 	t_ms_ast	*ms_ast;
 	t_envlist	*envlist;
+	size_t		process_cnt;
 
 	(void)argc;
 	(void)argv;
-	envlist = create_envlist(envp); // freeするときはfree_list(envlist)する
 	while (1)
 	{
 		init_signal(SIGINT, sigint_before_rl);
@@ -40,9 +40,11 @@ int	main(int argc, char **argv, char **envp)
 			safe_free(&line);
 			continue ;
 		}
-		ms_ast = lexer_and_parser(line);
+		ms_ast = lexer_and_parser(line, &process_cnt);
+		here_doc_set(ms_ast);
+		envlist = create_envlist(envp); // freeするときはfree_list(envlist)する
 		expander(&ms_ast, envlist); // expander関数でms_astを書き換える
-		executor(ms_ast, &envlist);
+		executor(ms_ast, &envlist, envp, process_cnt);
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);
 	}

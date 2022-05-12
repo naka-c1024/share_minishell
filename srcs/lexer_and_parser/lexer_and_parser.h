@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:30:32 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/07 11:24:19 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/09 05:08:20 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	print_tokenized_line(char **tokenized_line);
 char		**tokenize_main(char *line);
 void		error_occuration_at_tokenize(t_tokenize_info **t_info, bool is_syntax);
 size_t		tokens_count(t_tokenize_info *t_info);
-char		***split_by_pipe(char **cmd_line);
+char		***split_by_pipe(char **cmd_line, size_t *process_cnt);
 void		free_2d_line(char **two_d_line);
 void		free_3d_line(char ***three_d_line);
 t_ms_ast	*make_ast(char ***all_cmd_line);

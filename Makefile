@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/04/07 11:07:56 by kahirose         ###   ########.fr        #
+#    Updated: 2022/05/09 05:46:11 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,9 @@ DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
 # env | grep Malloc
 NO_BUILTIN_FLAGS	:=	-fno-builtin
 
-VPATH	:=	srcs:srcs/expander:srcs/executor
+VPATH	:=	srcs:srcs/expander:srcs/executor:srcs/utils:srcs/here_doc_input
 SRCS	:=	main.c\
+			here_doc_input.c\
 			executor_main.c\
 			expander_main.c
 
@@ -40,17 +41,20 @@ LIBFT_PATH		=	./libft/
 LIBFT_ARC		=	-Llibft -lft
 LE_PA_PATH		=	./srcs/lexer_and_parser/
 LE_PA_ARC		=	./srcs/lexer_and_parser/lexer_and_parser
+HDI_PA_PATH		=	./srcs/here_doc_input/
+HDI_PA_ARC		=	./srcs/here_doc_input/here_doc_input
 SIGNAL_PATH		=	./srcs/signal/
 SIGNAL_ARC		=	-L./srcs/signal -lsignal
-EXE_CMD_PATH	=	./srcs/executor/exe_cmd/
-EXE_CMD_ARC		=	-L./srcs/executor/exe_cmd -lexe_cmd
+EXE_CMD_PATH	=	./srcs/executor/
+EXE_CMD_ARC		=	./srcs/executor/executor
 
 $(NAME)	: $(OBJS)
 	make bonus -C $(LIBFT_PATH)
 	make -C $(LE_PA_PATH)
+	make -C $(HDI_PA_PATH)
 	make -C $(SIGNAL_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LE_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
 
 # suffix rule
 $(OBJDIR)/%.o:	%.c
@@ -62,6 +66,7 @@ all		: $(NAME)
 clean	:
 	make clean -C $(LIBFT_PATH)
 	make clean -C $(LE_PA_PATH)
+	make clean -C $(HDI_PA_PATH)
 	make clean -C $(SIGNAL_PATH)
 	make clean -C $(EXE_CMD_PATH)
 	if [ -e $(OBJDIR) ]; then \
@@ -71,6 +76,7 @@ clean	:
 fclean	: clean
 	make fclean -C $(LIBFT_PATH)
 	make fclean -C $(LE_PA_PATH)
+	make fclean -C $(HDI_PA_PATH)
 	make fclean -C $(SIGNAL_PATH)
 	make fclean -C $(EXE_CMD_PATH)
 	$(RM) $(NAME)
@@ -86,17 +92,19 @@ rloff	:
 nm		: fclean $(OBJS)
 	make bonus -C $(LIBFT_PATH)
 	make -C $(LE_PA_PATH)
+	make -C $(HDI_PA_PATH)
 	make -C $(SIGNAL_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
 	nm -u $(NAME)
 
 debug	: fclean $(OBJS)
 	make bonus -C $(LIBFT_PATH)
 	make -C $(LE_PA_PATH)
+	make -C $(HDI_PA_PATH)
 	make -C $(SIGNAL_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
 
 leak	:
 	leaks -quiet -atExit -- ./$(NAME)

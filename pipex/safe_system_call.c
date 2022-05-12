@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   safe_system_call.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 20:02:03 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:41:37 by ynakashi         ###   ########.fr       */
+/*   Created: 2022/02/18 15:16:39 by kahirose          #+#    #+#             */
+/*   Updated: 2022/02/28 12:07:55 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "pipex.h"
 
-int	my_pwd(void)
+int	safe_func(int res, t_info *info)
 {
-	char	*pwd_buf;
-
-	pwd_buf = getcwd(NULL, 0);
-	if (pwd_buf == NULL)
+	if (res == -1)
 	{
-		print_error("pwd", NULL, errno);
-		return (EXIT_FAILURE);
+		free_all_info(info, true, 1);
+		exit(1);
 	}
-	ft_putendl_fd(pwd_buf, STDOUT_FILENO);
-	free(pwd_buf);
-	return (EXIT_SUCCESS);
+	return (res);
 }

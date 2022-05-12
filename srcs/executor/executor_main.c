@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executor_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:57:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 17:27:14 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/30 06:01:56 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "executor.h"
 
 static void	free_darray(char **darray)
 {
@@ -25,53 +25,44 @@ static void	free_darray(char **darray)
 	free(darray);
 }
 
-static char	**lst_to_arr(t_list *arglst)
-{
-	char	**rtn;
-	size_t	i;
-	t_list	*cp_arglst;
-	size_t	list_cnt;
-	size_t	content_len;
 
-	cp_arglst = arglst;
-	list_cnt = 0;
-	while (cp_arglst)
-	{
-		list_cnt++;
-		cp_arglst = cp_arglst->next;
-	}
-	rtn = malloc(sizeof(char *) * (list_cnt) + 1);
-	if (!rtn)
-		return (NULL);
-	i = 0;
-	while (arglst)
-	{
-		content_len = ft_strlen(arglst->content);
-		rtn[i] = (char *)malloc(content_len + 1);
-		if (!rtn[i])
-		{
-			perror("malloc");
-			free_darray(rtn);
-			return (NULL);
-		}
-		ft_strlcpy(rtn[i], arglst->content, content_len + 1);
-		arglst = arglst->next;
-		i++;
-	}
-	rtn[i] = NULL;
-	return (rtn);
-}
+// static void crawl_ast(t_ms_ast *ms_ast, t_info *info, int i)
+// {
+// 	if (ms_ast->left_node && ms_ast->type == PIPE)
+// 		crawl_ast(ms_ast->left_node, info, ++i);
+// 	if (ms_ast->right_node && ms_ast->right_node->cmd_info_list)
+// 	{
+// 		small_ipc_table(info, ms_ast->right_node->cmd_info_list, i);
+// 	}
+// 	if (ms_ast->cmd_info_list)
+// 		small_ipc_table(info, ms_ast->cmd_info_list, info->process_cnt);
+// 	return ;
+// }
 
-void	executor(t_ms_ast *ms_ast, t_envlist **envlist)
+void	executor(t_ms_ast *ms_ast, t_envlist **envlist, char **envp, size_t process_cnt)
 {
 	char	**two_dim_arr;
 
 	// パイプやリダイレクトの処理の中でonly_one_cmd使う
 
-	two_dim_arr = lst_to_arr(ms_ast->cmd_info_list);
-	free_ast(ms_ast);
-	if (!two_dim_arr)
-		exit(EXIT_FAILURE);
-	g_exit_status = only_one_cmd(two_dim_arr, envlist);
-	free_darray(two_dim_arr);
+	// printf("executor-main/34:%zu\n", process_cnt);
+	// sort_heredoc_priority(ms_ast);
+	g_exit_status = ipc_table(ms_ast, *envlist , envp, process_cnt);
+	// printf("%d\n", g_exit_status);
 }
+
+
+//↓↓↓元のexecutor
+// void	executor(t_ms_ast *ms_ast, t_envlist **envlist)
+// {
+// 	char	**two_dim_arr;
+
+// 	// パイプやリダイレクトの処理の中でonly_one_cmd使う
+
+// 	two_dim_arr = lst_to_arr(ms_ast->cmd_info_list);
+// 	free_ast(ms_ast);
+// 	if (!two_dim_arr)
+// 		exit(EXIT_FAILURE);
+// 	g_exit_status = only_one_cmd(two_dim_arr, envlist);
+// 	free_darray(two_dim_arr);
+// }
