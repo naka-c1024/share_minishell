@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/12 04:26:41 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/13 18:44:58 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@
 # define NOFILE -2
 # define FD_MAX 256
 # define PATH_PREFIX 4
+
+//builtinコマンド識別
+# define MY_EXIT 0
+# define MY_ECHO 1
+# define MY_CD 2
+# define MY_PWD 3
+# define MY_UNSET 4
+# define MY_ENV 5
+# define MY_EXPORT 6
 
 // typedef struct s_info
 // {
@@ -116,7 +125,7 @@ int	exe_no_builtin_cmd(char **str, t_envlist *envlist);
 int	only_one_cmd(char **dbl_arr, t_envlist **envlist);
 
 //ipc_with_pipe
-int		ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, char **envp, size_t process_cnt);
+int		ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt);
 void	child_exe(t_info *info, t_process_info *p_info, t_ms_ast *ast_node);
 char	**lst_to_arr(t_list *arglst);
 void	convert_to_cmd_full_path(t_info *info, t_process_info *p_info);

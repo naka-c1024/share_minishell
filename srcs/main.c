@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/10 05:12:35 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/13 15:14:37 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	envlist = create_envlist(envp);
 	while (1)
 	{
 		init_signal(SIGINT, sigint_before_rl);
@@ -42,9 +43,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		ms_ast = lexer_and_parser(line, &process_cnt);
 		here_doc_set(ms_ast);
-		envlist = create_envlist(envp); // freeするときはfree_list(envlist)する
+		//envlist = create_envlist(envp); // freeするときはfree_list(envlist)する
 		expander(&ms_ast, envlist); // expander関数でms_astを書き換える
-		executor(ms_ast, &envlist, envp, process_cnt);
+		executor(ms_ast, &envlist, process_cnt);
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);
 	}

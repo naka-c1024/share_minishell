@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/09 05:08:25 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/13 13:52:25 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
 
 // executor
 t_envlist	*create_envlist(char **envp);
-void		executor(t_ms_ast *ms_ast, t_envlist **envlist, char **envp, size_t process_cnt);
+void		executor(t_ms_ast *ms_ast, t_envlist **envlist, size_t process_cnt);
 
 // exe_cmd/utils.c
 void	safe_free(char **ptr);

@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/10 05:44:42 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/13 17:14:39 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ void	free_info(t_info **info)
 {
 	if (!*info)
 		return ;
-	if ((*info)->envlist)
-		envlist_clear((*info)->envlist);
+	//if ((*info)->envlist)
+		//envlist_clear((*info)->envlist);
+	if ((*info)->envp)
+		;//free_darray((*info)->envp);
 	if ((*info)->ms_ast)
 		free_ast((*info)->ms_ast);
 	if ((*info)->ms_ast)
@@ -66,10 +68,40 @@ void	free_info(t_info **info)
 	*info = NULL;
 }
 
+size_t	envlist_len(t_envlist *envlist)
+{
+	size_t	len;
+
+	len = 0;
+	while(envlist)
+	{
+		len++;
+		envlist = envlist->next;
+	}
+	return (len);
+}
+
+char	**create_env_arr(t_envlist *envlist)
+{
+	char	**env_arr;
+	size_t	idx;
+
+	env_arr = (char **)ft_calloc(envlist_len(envlist) + 1, sizeof(t_envlist));
+	if (!env_arr)
+		return (NULL);
+	idx = 0;
+	while (envlist)
+	{
+		env_arr[idx] = ft_strjoin(envlist->key, envlist->value);
+		envlist = envlist->next;
+		idx ++;
+	}
+	return (env_arr);
+}
+
 void	small_ipc_table(t_info *info, t_ms_ast *ast_node, int i)
 {
 	t_process_info	*p_info;
-
 
 	p_info = (t_process_info *)ft_calloc(1, sizeof(t_process_info));
 	p_info->section = info->process_cnt - i;
@@ -107,14 +139,14 @@ static void crawl_ast_in_ipc_table(t_ms_ast *ms_ast, t_info *info, int i)
 	return ;
 }
 
-int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, char **envp, size_t process_cnt)
+int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 {
 	t_info	*info;
 	int		wstatus;
 
 	info = (t_info *)ft_calloc(1, sizeof(t_info));
-	info->envp = envp;
 	info->envlist = envlist;
+	info->envp = create_env_arr(envlist);
 	info->ms_ast = ms_ast;
 	info->process_cnt = process_cnt;
 	info->pid = (pid_t *)malloc(sizeof(pid_t) * info->process_cnt);
