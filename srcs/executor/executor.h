@@ -6,12 +6,12 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/13 18:44:58 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/24 14:11:51 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
+#ifndef executor_h
+# define executor_h
 
 # include "../../libft/libft.h"
 # include "../../includes/minishell.h"
@@ -67,25 +67,27 @@ typedef struct s_file_info
 	int		out_redirect;
 	int		in_fd;
 	int		out_fd;
+	int		tmp_stdin;
+	int		tmp_stdout;
 }	t_file_info;
 
 typedef	struct s_heredoc_info
 {
 	int		*here_doc_pipe;
 	bool	is_here_doc;
-	char	*buffer;
+	char	*buffer;//executor_main51ではmallocしてないためfreeするとまずいように見える
 	char	*delimiter;
 }	t_heredoc_info;
 
 typedef struct s_process_info
 {
-	t_list			*cmd_list;
+	t_list			*cmd_list;//これはft_lstnewでmallocされていないためms_astをfreeするならこれはfreeすべきでない
 	char			*cmd_full_path;
 	char			**cmd;
 	int				section;
-	t_file_info		*file_info;
+	t_file_info		*file_info;//free
 	bool			is_here_doc;
-	t_heredoc_info	*hrdc_info;
+	t_heredoc_info	*hrdc_info;//free
 }	t_process_info;
 
 // envlist.c
@@ -134,6 +136,23 @@ void	dup2_func(t_info *info, t_process_info *p_info);
 void	close_func(t_info *info, t_process_info *p_info);
 void	heredoc_dup2(t_info *info, t_process_info *proc_info);
 void	heredoc_close(t_info *info, t_process_info *proc_info);
+ssize_t	pipex_putstr(char *s);
 int		safe_func(int res, void *info);
+void	free_process_info(t_process_info **proc_info_addr);
+//int		is_some_redirect(char *one_token);
+t_list	*ms_lstnew(char *content);
 
-#endif // EXE_CMD_H
+//single_builtin
+bool			only_builtin_assign_func \
+	(char builtin_list[7][7], t_ms_ast *ms_ast, char *cmd_name, t_envlist **envlist);
+t_process_info	*serch_redirection(t_ms_ast *ms_ast);
+void			dup_and_close(t_process_info *proc_info);
+void			restore_redirection(t_process_info *proc_info);
+void			free_twod_array(char **darray);
+
+//single_builtin set_file
+void	sb_set_in_file(t_process_info *proc_info, char *file_name);
+void	sb_set_out_file(t_process_info *proc_info, char *file_name, int redirect_type);
+void	sb_set_heredoc(t_ms_ast *ast_node, t_process_info *proc_info);
+
+#endif // exe_cmd_h

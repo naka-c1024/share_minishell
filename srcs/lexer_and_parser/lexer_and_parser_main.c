@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/24 11:10:04 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/17 12:22:07 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_ms_ast	*lexer_and_parser(char *str, size_t *process_cnt)
 
 	tokenized_line = tokenize_main(str);
 	if (!tokenized_line)
-		;
+		return (NULL);
 	// print_tokenized_line(tokenized_line);
 	splited_pipe = split_by_pipe(tokenized_line, process_cnt);
 	if (!splited_pipe)

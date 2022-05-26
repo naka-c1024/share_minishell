@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:57:06 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/06 20:13:15 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/21 12:00:28 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_ms_ast	*new_pipe_node(t_make_ast_info *ma_info, t_ms_ast *right)
 {
 	t_ms_ast	*ms_pipe_node;
 
-	ms_pipe_node = (t_ms_ast *)malloc(sizeof(t_ms_ast));
+	ms_pipe_node = (t_ms_ast *)ft_calloc(1, sizeof(t_ms_ast));
 	if (!ms_pipe_node)
 		error_occuration_at_make_ast(ma_info, right, true);
 	ms_pipe_node->type = PIPE;
@@ -54,7 +54,7 @@ t_ms_ast	*new_cmd_node(char ***all_cmd_line, t_make_ast_info *ma_info)
 {
 	t_ms_ast	*ms_cmd_node;
 
-	ms_cmd_node = (t_ms_ast *)malloc(sizeof(t_ms_ast));
+	ms_cmd_node = (t_ms_ast *)ft_calloc(1, sizeof(t_ms_ast));
 	if (!ms_cmd_node)
 		error_occuration_at_make_ast(ma_info, NULL, true);
 	ms_cmd_node->type = COMMAND;

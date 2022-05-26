@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/05/09 05:46:11 by kahirose         ###   ########.fr        #
+#    Updated: 2022/05/19 18:53:56 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CC		:=	gcc
 RM		:=	rm -f
 # CFLAGS	:=	-Wall -Wextra -Werror
 
-DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
+#DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
+DEBUG_FLAGS	:= -fsanitize=address -g3
 # For M1MacBook, run the command below.
 # export MallocNanoZone=0
 # make debug
@@ -82,6 +83,7 @@ fclean	: clean
 	$(RM) $(NAME)
 
 re		: fclean all
+# make leak
 
 bonus	: $(NAME)
 
@@ -95,7 +97,7 @@ nm		: fclean $(OBJS)
 	make -C $(HDI_PA_PATH)
 	make -C $(SIGNAL_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
 	nm -u $(NAME)
 
 debug	: fclean $(OBJS)
@@ -104,7 +106,7 @@ debug	: fclean $(OBJS)
 	make -C $(HDI_PA_PATH)
 	make -C $(SIGNAL_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LA_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(SIGNAL_ARC) $(EXE_CMD_ARC) -o $(NAME)
 
 leak	:
 	leaks -quiet -atExit -- ./$(NAME)

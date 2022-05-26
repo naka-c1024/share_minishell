@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/13 17:14:39 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/22 15:57:23 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	free_info(t_info **info)
 	//if ((*info)->envlist)
 		//envlist_clear((*info)->envlist);
 	if ((*info)->envp)
-		;//free_darray((*info)->envp);
+		free_darray((void **)(*info)->envp);
 	if ((*info)->ms_ast)
 		free_ast((*info)->ms_ast);
 	if ((*info)->ms_ast)
@@ -99,6 +99,35 @@ char	**create_env_arr(t_envlist *envlist)
 	return (env_arr);
 }
 
+void	free_double_arr(void **d_arr)
+{
+	size_t	idx;
+
+	idx = 0;
+	while (d_arr[idx])
+	{
+		free(d_arr[idx]);
+		idx++;
+	}
+	free(d_arr[idx]);
+	free(d_arr);
+}
+
+void	free_process_info(t_process_info **proc_info_addr)
+{
+	//free_double_arr((*proc_info_addr)->cmd);
+	if (!proc_info_addr || !(*proc_info_addr))
+		return ;
+	if ((*proc_info_addr)->cmd_list)
+		list_clear((*proc_info_addr)->cmd_list);
+	if ((*proc_info_addr)->hrdc_info)
+		free((*proc_info_addr)->hrdc_info);
+	if ((*proc_info_addr)->file_info)
+		free((*proc_info_addr)->file_info);
+	free(*proc_info_addr);
+	*proc_info_addr = NULL;
+}
+
 void	small_ipc_table(t_info *info, t_ms_ast *ast_node, int i)
 {
 	t_process_info	*p_info;
@@ -112,7 +141,7 @@ void	small_ipc_table(t_info *info, t_ms_ast *ast_node, int i)
 	if (info->pid[p_info->section] == -1)
 		exit (1);// exit(free_all_info(info, true, 1));
 	else if (info->pid[p_info->section] == 0)
-		child_exe(info, p_info, ast_node);
+		child_exe(info, p_info, ast_node);//リークの原因は子プロセスではないみたい
 	else
 	{
 		if (p_info->section != 0)
@@ -121,7 +150,7 @@ void	small_ipc_table(t_info *info, t_ms_ast *ast_node, int i)
 			safe_func(close(info->pipefd[p_info->section - 1][1]), info);
 		}
 	}
-	// free_p_info(&p_info);
+	free_process_info(&p_info);
 }
 
 static void crawl_ast_in_ipc_table(t_ms_ast *ms_ast, t_info *info, int i)
@@ -143,6 +172,7 @@ int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 {
 	t_info	*info;
 	int		wstatus;
+	int		i;
 
 	info = (t_info *)ft_calloc(1, sizeof(t_info));
 	info->envlist = envlist;
@@ -151,14 +181,13 @@ int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 	info->process_cnt = process_cnt;
 	info->pid = (pid_t *)malloc(sizeof(pid_t) * info->process_cnt);
 	info->pipefd = (int **)ft_calloc(info->process_cnt, sizeof(int *));
-	int i = 0;
+	i = 0;
 	while (i < info->process_cnt)
 		info->pipefd[i++] = (int *)ft_calloc(2, sizeof(int));
 	crawl_ast_in_ipc_table(ms_ast, info, 0);
 	i = 0;
 	while (i < info->process_cnt)
 	{
-		// printf("%d\n", info->pid[i]);
 		safe_func(waitpid(info->pid[i], &wstatus, WUNTRACED), info);
 		i++;
 	}

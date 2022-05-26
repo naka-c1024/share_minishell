@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/13 13:52:25 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/22 10:42:43 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,6 @@ typedef struct s_info
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char *str, size_t *process_cnt);
 void		here_doc_set(t_ms_ast *ms_ast);
-void		free_ast(t_ms_ast *ms_ast);
-void		free_node(t_ms_ast *ms_ast);
-
 // expnader
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
 
@@ -108,5 +105,9 @@ void	free_split(char **ptr);
 void	print_error(char *cmd, char *cmd_arg, int error_number);
 
 //utils
+void	free_ast(t_ms_ast *ms_ast);
+void	free_node(t_ms_ast *ms_ast);
+void	list_clear(t_list *list);
+
 
 #endif

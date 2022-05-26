@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:57:12 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/17 12:12:42 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/12 13:59:38 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,3 +69,4 @@ int	my_echo(char **split_ln)
 			return (1);
 	return (0);
 }
+

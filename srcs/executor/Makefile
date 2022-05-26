@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/29 15:34:53 by ynakashi          #+#    #+#              #
-#    Updated: 2022/05/09 05:23:37 by kahirose         ###   ########.fr        #
+#    Updated: 2022/05/24 14:05:22 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,17 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 RM		=	rm -rf
 
-VPATH   :=  exe_cmd:ipc_with_pipe
+VPATH   :=  exe_cmd:ipc_with_pipe:single_builtin
 
 IPCSRCS =	ipc_table.c\
 			ipc_executor.c\
 			ipc_executor2.c\
 			get_cmd_path.c
+
+SBSRCS	=	single_builtin_executor.c\
+			single_builtin_redirection.c\
+			sb_serch_redirection.c\
+			sb_set_file.c
 
 EXESRCS	=	cd.c\
 			no_builtin.c\
@@ -38,9 +43,10 @@ EXESRCS	=	cd.c\
 			unset.c\
 			utils.c\
 			only_one_cmd.c\
+			single_builtin_executor.c\
 			executor_utils.c
 
-SRCS	=	$(IPCSRCS) $(EXESRCS)
+SRCS	=	$(IPCSRCS) $(SBSRCS) $(EXESRCS)
 
 OBJDIR	:=	./objs
 OBJS := $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))

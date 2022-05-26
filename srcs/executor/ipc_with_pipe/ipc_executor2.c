@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 13:51:49 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/12 12:48:19 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/17 12:03:17 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	is_some_redirect(char *one_token)
 	return (0);
 }
 
-static ssize_t	pipex_putstr(char *s)
+ssize_t	pipex_putstr(char *s)
 {
 	ssize_t	res;
 
@@ -134,7 +134,6 @@ void	dup2_func(t_info *info, t_process_info *proc_info)
 	}
 	else if (proc_info->section == info->process_cnt - 1)
 	{
-		// printf("runnig270\n");
 		if (proc_info->file_info->in_file == false)
 		{
 			safe_func(dup2(info->pipefd[proc_info->section - 1][PIPEIN], STDIN), proc_info);

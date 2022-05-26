@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:02:46 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/04 22:18:45 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/16 07:17:15 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	free_2d_line(char **two_d_line)
 	{
 		while (two_d_line[idx])
 			free(two_d_line[idx++]);
+		free(two_d_line[idx]);
 		//最後free(two_d_line[idx]);しないとだめだろ
 	}
 	free(two_d_line);
@@ -212,9 +213,7 @@ char	***split_by_pipe(char **tokenized_line, size_t *process_cnt)
 		res_i++;
 	}
 	result[res_i] = NULL;
-	// free_2d_line(tokenized_line);
-	// if (*process_cnt != 1)
-	// 	sort_by_heredoc(result);
+	free_2d_line(tokenized_line);
 	return (result);
 }
 

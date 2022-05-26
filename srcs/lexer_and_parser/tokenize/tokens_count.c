@@ -6,35 +6,11 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 01:09:22 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/07 12:09:04 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/05/18 10:51:35 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer_and_parser.h"
-
-static bool	is_quote(t_tokenize_info *t_info)
-{
-	if (t_info->line[*(t_info->line_index)] == '\'' || \
-		t_info->line[*(t_info->line_index)] == '"')
-		return (true);
-	return (false);
-}
-
-static bool	is_single_redirect(t_tokenize_info *t_info)
-{
-	if (t_info->line[*(t_info->line_index)] == '>' || \
-		t_info->line[*(t_info->line_index)] == '<')
-		return (true);
-	return (false);
-}
-
-static bool	is_double_redirect(t_tokenize_info *t_info)
-{
-	if (!ft_strncmp(&(t_info->line[*(t_info->line_index)]), ">>", 2) || \
-		!ft_strncmp(&(t_info->line[*(t_info->line_index)]), "<<", 2))
-		return (true);
-	return (false);
-}
 
 static bool	is_valid_pre_string(int line_index, char target)
 {
