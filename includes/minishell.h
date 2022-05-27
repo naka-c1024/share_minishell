@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 17:48:20 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/05/22 10:42:43 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 # include "../libft/libft.h"
 # include "../srcs/signal/signal.h"
-# include "../srcs/executor/exe_cmd/exe_cmd.h"
+// # include "../srcs/executor/executor.h"
+
+extern int	g_exit_status;
 
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h> // rl_clear_history, add_history
@@ -46,32 +48,66 @@
 # define LEFT 0
 # define RIGHT 1
 
-// typedef	struct s_cmd_info
-// {
-// 	// execve(info->cmd_full_path[cmd_index], info->cmd[cmd_index], info->envp);
-// 	//上のexecveの引数用に以下のデータ構造を取る
-// 	char	*cmd_full_path; // ex) "/bin/cat" 要らなそう
-// 	char	**cmd_line; //  ex) "cat -e" ここをリストにする
-// 	int		redirect; // redirect_listにしても良さそう（sudoさんの参考に)
-// }	t_cmd_info;
+typedef struct s_envlist
+{
+	char				*key;
+	char				*value;
+	struct s_envlist	*next;
+}	t_envlist;
 
 typedef	struct s_ms_ast
 {
 	int				type;
-	t_list		*cmd_info_list;
-	struct s_ms_ast		*left_node;
-	struct s_ms_ast		*right_node;
+	t_list			*cmd_info_list;
+	bool			is_here_doc;
+	char			*buffer;
+	char			*delimiter;
+	struct s_ms_ast	*left_node;
+	struct s_ms_ast	*right_node;
 }	t_ms_ast;
 
-// lexer_and_parser
-t_ms_ast	*lexer_and_parser(char *line);
-void		free_ast(t_ms_ast *ms_ast);
-void		free_node(t_ms_ast *ms_ast);
+typedef struct s_info
+{
+	char		**envp;//no
+	t_envlist	*envlist;//malloc
+	t_ms_ast	*ms_ast;//malloc
+	int			**pipefd;//malloc
+	pid_t		*pid;//malloc
+	int			process_cnt;//no
 
+}	t_info;
+
+// typedef struct s_process_info
+// {
+// 	char	*cmd_full_path;//malloc
+// 	char	**cmd;//malloc ms_astと別でさらにmallocしてる
+// 	char	*file;//mallocする予定
+// 	int		section;//no
+// 	int		redirect;//mallocしない予定
+// 	bool	is_here_doc;//no
+// 	char	*total_document;//malloc
+// 	char	*limiter;//mallocする予定
+// }	t_process_info;
+
+// lexer_and_parser
+t_ms_ast	*lexer_and_parser(char *str, size_t *process_cnt);
+void		here_doc_set(t_ms_ast *ms_ast);
 // expnader
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
 
 // executor
-void	executor(t_ms_ast *ms_ast, t_envlist **envlist);
+t_envlist	*create_envlist(char **envp);
+void		executor(t_ms_ast *ms_ast, t_envlist **envlist, size_t process_cnt);
+
+// exe_cmd/utils.c
+void	safe_free(char **ptr);
+void	free_split(char **ptr);
+void	print_error(char *cmd, char *cmd_arg, int error_number);
+
+//utils
+void	free_ast(t_ms_ast *ms_ast);
+void	free_node(t_ms_ast *ms_ast);
+void	list_clear(t_list *list);
+
 
 #endif

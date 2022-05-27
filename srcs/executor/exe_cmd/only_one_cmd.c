@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exe_cmd.h"
+#include "executor.h"
 
 int	only_one_cmd(char **two_dim_arr, t_envlist **envlist)
 {

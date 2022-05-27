@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:57:12 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:40:53 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/05/17 12:12:42 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exe_cmd.h"
+#include "executor.h"
 
 static int	safe_putstr_fd(char *s, int fd)
 {

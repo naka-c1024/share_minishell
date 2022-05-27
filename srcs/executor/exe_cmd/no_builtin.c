@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exe_cmd.h"
+#include "executor.h"
 
 static int	abs_rel_exe(char **str)
 {

@@ -3,42 +3,40 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/29 15:34:53 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/29 15:53:37 by ynakashi         ###   ########.fr        #
+#    Created: 2022/05/09 05:21:11 by kahirose          #+#    #+#              #
+#    Updated: 2022/05/09 05:27:41 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME	=	here_doc_input
 
-NAME	=	libexe_cmd.a
-
-CC		=	cc
+CC		=	gcc
 
 CFLAGS	=	-Wall -Wextra -Werror
 
 RM		=	rm -rf
 
-SRCS	=	cd.c\
-			no_builtin.c\
-			echo.c\
-			env.c\
-			envlist.c\
-			exit_utils.c\
-			exit.c\
-			export.c\
-			pwd.c\
-			unset.c\
-			utils.c\
-			only_one_cmd.c
+VPATH	=	get_next_line
 
-OBJDIR	:=	./objs
-OBJS := $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
+HDISRCS	=	here_doc_input.c
 
-# suffix rule
+GNLSRCS =	get_next_line.c\
+			get_next_line_utils.c
+
+SRCS	=	$(HDISRCS) $(GNLSRCS)
+
+OBJDIR	=	./objs
+
+OBJS	:=	$(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
+
+MSINCDIR	:= -I../../includes
+HDIINCDIR	:= -I./
+
 $(OBJDIR)/%.o:	%.c
 	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(MSINCDIR) $(HDIINCDIR) -c $< -o $@
 
 $(NAME)	: $(OBJS)
 	ar rc $(NAME) $(OBJS)

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:56:29 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:40:43 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/23 03:13:57 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exe_cmd.h"
+#include "executor.h"
 
 static char	*get_home_value(t_envlist *envlist)
 {
