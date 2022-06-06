@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:30:32 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/22 10:40:13 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/05 18:37:59 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ typedef struct s_make_ast_info
 	int			*sec;
 }	t_make_ast_info;
 
+#define PIPE 1
+#define QUOTE 2
+#define CORRECT 0
+
 //debug用==============================================
 void	print_ast(t_ms_ast *ms_ast);
 void	print_sbp(char ***sbp);
@@ -39,7 +43,7 @@ void	print_tokenized_line(char **tokenized_line);
 //debug用===============================================
 
 char		**tokenize_main(char *line);
-void		*error_occuration_at_tokenize(t_tokenize_info **t_info, bool is_syntax);
+void		error_occuration_at_tokenize(t_tokenize_info **t_info, char *target);
 size_t		tokens_count(t_tokenize_info *t_info);
 char		***split_by_pipe(char **cmd_line, size_t *process_cnt);
 void		free_2d_line(char **two_d_line);
@@ -60,6 +64,5 @@ bool	single_redirect_separator(t_tokenize_info *t_info);
 bool	pipe_separator(t_tokenize_info *t_info);
 bool	quote_separator(t_tokenize_info *t_info);
 bool	take_pre_string(t_tokenize_info *t_info);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 23:27:47 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/26 01:41:59 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/01 23:07:36 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,14 @@ char	**lst_to_arr(t_list *arglst)
 		list_cnt++;
 		cp_arglst = cp_arglst->next;
 	}
-	rtn = malloc(sizeof(char *) * (list_cnt) + 1);
+	rtn = x_malloc(sizeof(char *) * (list_cnt) + 1);
 	if (!rtn)
 		return (NULL);
 	i = 0;
 	while (arglst)
 	{
 		content_len = ft_strlen(arglst->content);
-		rtn[i] = (char *)malloc(content_len + 1);
-		if (!rtn[i])
-		{
-			perror("malloc");
-			free_2darray(rtn);
-			return (NULL);
-		}
+		rtn[i] = (char *)x_malloc(content_len + 1);
 		ft_strlcpy(rtn[i], arglst->content, content_len + 1);
 		arglst = arglst->next;
 		i++;

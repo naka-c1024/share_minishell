@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 13:27:46 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/26 01:38:38 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:40:51 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	free_twod_array(char **darray)
 	size_t	i;
 
 	i = 0;
+	if (!darray)
+		return ;
 	while (darray[i])
 	{
 		free(darray[i]);
@@ -31,10 +33,10 @@ t_list	*ms_lstnew(char *content)
 
 	if (!content)
 		return (NULL);
-	new_element = (t_list *)malloc(sizeof(t_list));
+	new_element = (t_list *)x_malloc(sizeof(t_list));
 	if (!new_element)
 		return (NULL);
-	new_element->content = ft_strdup(content);
+	new_element->content = ft_x_strdup(content);
 	if (!new_element->content)
 	{
 		free(new_element);

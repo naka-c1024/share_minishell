@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/22 15:57:23 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/06 21:12:32 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,17 @@ size_t	envlist_len(t_envlist *envlist)
 char	**create_env_arr(t_envlist *envlist)
 {
 	char	**env_arr;
+	char	*prefix;
 	size_t	idx;
 
-	env_arr = (char **)ft_calloc(envlist_len(envlist) + 1, sizeof(t_envlist));
-	if (!env_arr)
-		return (NULL);
+	env_arr = (char **)ft_x_calloc(envlist_len(envlist) + 1, sizeof(t_envlist));
 	idx = 0;
 	while (envlist)
 	{
-		env_arr[idx] = ft_strjoin(envlist->key, envlist->value);
+		prefix = ft_x_strjoin(envlist->key, "=");
+		env_arr[idx] = ft_x_strjoin(prefix, envlist->value);
 		envlist = envlist->next;
+		free(prefix);
 		idx ++;
 	}
 	return (env_arr);
@@ -132,11 +133,10 @@ void	small_ipc_table(t_info *info, t_ms_ast *ast_node, int i)
 {
 	t_process_info	*p_info;
 
-	p_info = (t_process_info *)ft_calloc(1, sizeof(t_process_info));
+	p_info = (t_process_info *)ft_x_calloc(1, sizeof(t_process_info));
 	p_info->section = info->process_cnt - i;
-	if (p_info->section + 1 != info->process_cnt && \
-					pipe(info->pipefd[p_info->section]) < 0)
-		exit (1);// exit(free_all_info(info, true, 1));
+	if (p_info->section + 1 != info->process_cnt)
+		safe_func(pipe(info->pipefd[p_info->section]));
 	info->pid[p_info->section] = fork();
 	if (info->pid[p_info->section] == -1)
 		exit (1);// exit(free_all_info(info, true, 1));
@@ -146,8 +146,8 @@ void	small_ipc_table(t_info *info, t_ms_ast *ast_node, int i)
 	{
 		if (p_info->section != 0)
 		{
-			safe_func(close(info->pipefd[p_info->section - 1][0]), info);
-			safe_func(close(info->pipefd[p_info->section - 1][1]), info);
+			safe_func(close(info->pipefd[p_info->section - 1][0]));
+			safe_func(close(info->pipefd[p_info->section - 1][1]));
 		}
 	}
 	free_process_info(&p_info);
@@ -174,21 +174,21 @@ int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 	int		wstatus;
 	int		i;
 
-	info = (t_info *)ft_calloc(1, sizeof(t_info));
+	info = (t_info *)ft_x_calloc(1, sizeof(t_info));
 	info->envlist = envlist;
 	info->envp = create_env_arr(envlist);
 	info->ms_ast = ms_ast;
 	info->process_cnt = process_cnt;
-	info->pid = (pid_t *)malloc(sizeof(pid_t) * info->process_cnt);
-	info->pipefd = (int **)ft_calloc(info->process_cnt, sizeof(int *));
+	info->pid = (pid_t *)x_malloc(sizeof(pid_t) * info->process_cnt);
+	info->pipefd = (int **)ft_x_calloc(info->process_cnt, sizeof(int *));
 	i = 0;
 	while (i < info->process_cnt)
-		info->pipefd[i++] = (int *)ft_calloc(2, sizeof(int));
+		info->pipefd[i++] = (int *)ft_x_calloc(2, sizeof(int));
 	crawl_ast_in_ipc_table(ms_ast, info, 0);
 	i = 0;
 	while (i < info->process_cnt)
 	{
-		safe_func(waitpid(info->pid[i], &wstatus, WUNTRACED), info);
+		safe_func(waitpid(info->pid[i], &wstatus, WUNTRACED));
 		i++;
 	}
 	free_info(&info);
