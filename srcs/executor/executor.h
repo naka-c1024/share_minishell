@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/24 14:11:51 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/06 20:41:53 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@
 # define NOFILE -2
 # define FD_MAX 256
 # define PATH_PREFIX 4
+
+//builtin redirection
+#define IN 1
+#define HERE 2
+#define OUT 3
+
+#define PIPE 1
+#define SINGLE_QUOTE 2
+#define DOUBLE_QUOTE 3
+
 
 //builtinコマンド識別
 # define MY_EXIT 0
@@ -137,22 +147,21 @@ void	close_func(t_info *info, t_process_info *p_info);
 void	heredoc_dup2(t_info *info, t_process_info *proc_info);
 void	heredoc_close(t_info *info, t_process_info *proc_info);
 ssize_t	pipex_putstr(char *s);
-int		safe_func(int res, void *info);
 void	free_process_info(t_process_info **proc_info_addr);
-//int		is_some_redirect(char *one_token);
 t_list	*ms_lstnew(char *content);
 
 //single_builtin
 bool			only_builtin_assign_func \
 	(char builtin_list[7][7], t_ms_ast *ms_ast, char *cmd_name, t_envlist **envlist);
-t_process_info	*serch_redirection(t_ms_ast *ms_ast);
+t_process_info	*serch_redirection(t_ms_ast *ms_ast, bool *is_success);
 void			dup_and_close(t_process_info *proc_info);
 void			restore_redirection(t_process_info *proc_info);
 void			free_twod_array(char **darray);
 
 //single_builtin set_file
-void	sb_set_in_file(t_process_info *proc_info, char *file_name);
-void	sb_set_out_file(t_process_info *proc_info, char *file_name, int redirect_type);
+bool	sb_set_in_file(t_process_info *proc_info, char *file_name);
+bool	sb_set_out_file(t_process_info *proc_info, char *file_name, int redirect_type);
 void	sb_set_heredoc(t_ms_ast *ast_node, t_process_info *proc_info);
+int		is_some_redirect(char *one_token);
 
 #endif // exe_cmd_h

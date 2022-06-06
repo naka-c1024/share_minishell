@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:17:07 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/19 18:46:32 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/03 19:33:06:48 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@ static bool	take_last_string(t_tokenize_info *t_info)
 	last_token = t_info->tokenized_line[(*(t_info->tl_index)) - 1][0];
 	if (last_token == '|' || last_token == '>' || last_token == '<')
 	{
-		error_occuration_at_tokenize(&t_info, true);
+		error_occuration_at_tokenize(&t_info, "newline\0");
 		return (false);
 	}
 	return (true);
-	// free(line);//free_lexer_infoと同じくここも後ほど
-	// free(t_info);
 }
 
 bool	take_pre_string(t_tokenize_info *t_info)
@@ -43,13 +41,8 @@ bool	take_pre_string(t_tokenize_info *t_info)
 		t_info->line[(*(t_info->line_index)) - 1]))
 	{
 		t_info->tokenized_line[(*(t_info->tl_index))++] = \
-			ft_substr(t_info->line, *(t_info->line_start_index), \
+			ft_x_substr(t_info->line, *(t_info->line_start_index), \
 				*(t_info->line_index) - *(t_info->line_start_index));
-		if (!(t_info->tokenized_line[(*(t_info->tl_index)) - 1]))
-		{
-			error_occuration_at_tokenize(&t_info, false);
-			return (false);
-		}
 	}
 	return (true);
 }
@@ -61,9 +54,7 @@ static char	**tokenize(t_tokenize_info *t_info)
 	bool	is_ok;
 
 	tl_len = tokens_count(t_info);
-	tokenized_line = (char **)ft_calloc(sizeof(char *), tl_len + 1);
-	if (!tokenized_line)
-		return (error_occuration_at_tokenize(&t_info, false));
+	tokenized_line = (char **)ft_x_calloc(sizeof(char *), tl_len + 1);
 	t_info->tokenized_line = tokenized_line;
 	is_ok = true;
 	while (t_info->line[*(t_info->line_index)])
@@ -99,9 +90,7 @@ char	**tokenize_main(char *line)
 	line_index = 0;
 	line_start_index = 0;
 	tl_index = 0;
-	t_info = (t_tokenize_info *)malloc(sizeof(t_tokenize_info));
-	if (!t_info)
-		return((char **)error_occuration_at_tokenize(NULL, false));
+	t_info = (t_tokenize_info *)x_malloc(sizeof(t_tokenize_info));
 	t_info->line = line;
 	t_info->line_index = &line_index;
 	t_info->line_start_index = &line_start_index;

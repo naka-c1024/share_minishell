@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 17:38:15 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/24 13:22:26 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/03 17:17:01 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,18 @@ static void	single_builtin_only(t_ms_ast *ms_ast, \
 {
 	char			**plain_cmd;
 	t_process_info	*proc_info;
+	bool			is_success;
 
-	proc_info = serch_redirection(ms_ast);
-	dup_and_close(proc_info);
-	if (!proc_info)
-		;//free処理
-	plain_cmd = lst_to_arr(proc_info->cmd_list);
-	according_to_cmd(cmd_type, plain_cmd, envlist);
-	restore_redirection(proc_info);
-	free_twod_array(plain_cmd);
+	is_success = true;
+	proc_info = serch_redirection(ms_ast, &is_success);
+	if (is_success)
+	{
+		dup_and_close(proc_info);
+		plain_cmd = lst_to_arr(proc_info->cmd_list);
+		according_to_cmd(cmd_type, plain_cmd, envlist);
+		restore_redirection(proc_info);
+		free_twod_array(plain_cmd);
+	}
 	free_ast(ms_ast);
 	free_process_info(&proc_info);
 }

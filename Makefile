@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/05/19 18:53:56 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/05 16:11:33 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,9 @@ VPATH	:=	srcs:srcs/expander:srcs/executor:srcs/utils:srcs/here_doc_input
 SRCS	:=	main.c\
 			here_doc_input.c\
 			executor_main.c\
-			expander_main.c
+			expander_main.c\
+			xalloc.c\
+			safe_system_call.c
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include

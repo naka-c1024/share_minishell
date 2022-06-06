@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 01:09:22 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/18 10:51:35 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/04 20:56:30 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static bool	is_valid_pre_string(int line_index, char target)
 
 static int	last_section(t_tokenize_info *t_info)
 {
-	char	last_token;
 	int		i;
 
 	i = 0;
@@ -48,7 +47,6 @@ static int	space_section(t_tokenize_info *t_info)
 static int	pipe_section(t_tokenize_info *t_info)
 {
 	int		i;
-	char	last_token;
 
 	i = 0;
 	if (is_valid_pre_string(*(t_info->line_index), \
@@ -68,8 +66,6 @@ static int	quote_section(t_tokenize_info *t_info)
 	while (t_info->line[*(t_info->line_index)] && \
 			t_info->line[*(t_info->line_index)] != target)
 		(*(t_info->line_index))++;
-	if (t_info->line[*(t_info->line_index)] != target)
-		error_occuration_at_tokenize(&t_info, true);
 	(*(t_info->line_index))++;
 	return (1);
 }
@@ -77,7 +73,6 @@ static int	quote_section(t_tokenize_info *t_info)
 static int	single_redirect_section(t_tokenize_info *t_info)
 {
 	int i;
-	char	last_token;
 
 	i = 0;
 	if (is_valid_pre_string(*(t_info->line_index), \
@@ -91,7 +86,6 @@ static int	single_redirect_section(t_tokenize_info *t_info)
 static	int	double_redirect_section(t_tokenize_info *t_info)
 {
 	int		i;
-	char	last_token;
 
 	i = 0;
 	if (is_valid_pre_string(*(t_info->line_index), \
@@ -124,7 +118,6 @@ size_t  tokens_count(t_tokenize_info *t_info)
 	}
 	tl_count += last_section(t_info);
 	*(t_info->line_index) = 0;
-	// printf("tl_count:%zu\n", tl_count);
 	return (tl_count);
 }
 

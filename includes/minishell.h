@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/22 10:42:43 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/06 20:05:15 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_info
 // }	t_process_info;
 
 // lexer_and_parser
-t_ms_ast	*lexer_and_parser(char *str, size_t *process_cnt);
+t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt);
 void		here_doc_set(t_ms_ast *ms_ast);
 // expnader
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
@@ -108,6 +108,17 @@ void	print_error(char *cmd, char *cmd_arg, int error_number);
 void	free_ast(t_ms_ast *ms_ast);
 void	free_node(t_ms_ast *ms_ast);
 void	list_clear(t_list *list);
+int		safe_func(int result_status);
+int		safe_func_with_file(int result_status, char *file_name);
+
+//x_allcate
+void	*x_malloc(size_t size);
+char	**ft_x_split(const char *s, char c);
+char	*ft_x_strjoin(const char *s1, const char *s2);
+void	*ft_x_calloc(size_t count, size_t size);
+void	*ft_x_strdup(const char *s1);
+char	*ft_x_substr(const char *s, unsigned int start, size_t len);
+t_list	*ft_x_lstnew(void *content);
 
 
 #endif

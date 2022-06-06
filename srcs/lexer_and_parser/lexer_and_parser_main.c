@@ -6,63 +6,109 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/17 12:22:07 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/06 15:26:26 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer_and_parser.h"
 
-t_ms_ast	*lexer_and_parser(char *str, size_t *process_cnt)
+bool	last_pipe_check(char *line)
+{
+	size_t	idx;
+	size_t	position;
+
+	idx = 0;
+	position = 0;
+	while (line[idx])
+	{
+		if (line[idx] == '|')
+			position = idx;
+		idx++;
+	}
+	if (position != 0)
+	{
+		position++;
+		while (line[position] && line[position] == ' ')
+			position++;
+		if (line[position] == '\0')
+			return (false);
+	}
+	return (true);
+}
+
+bool	quote_integrity_check(char *line)
+{
+	char	target_quote;
+	size_t	idx;
+
+	idx = 0;
+	target_quote = '\0';
+	while (line[idx])
+	{
+		if (line[idx] == '\'' || line[idx] == '"')
+		{
+			if (!target_quote)
+				target_quote = line[idx];
+			else if (line[idx] == target_quote)
+				target_quote = '\0';
+		}
+		idx++;
+	}
+	if (target_quote)
+		return (false);
+	return (true);
+}
+
+int	is_syntax_status(char *line)
+{
+	if (!quote_integrity_check(line))
+		return (QUOTE);
+	if (!last_pipe_check(line))
+		return (PIPE);
+	return (CORRECT);
+}
+
+char	*pre_syntax_check(char *line)
+{
+	char	*result;
+	char	*temp;
+	char	*nl_temp;
+	int		state;
+
+	state = is_syntax_status(line);
+	while (state)
+	{
+		if (state == QUOTE)
+		{
+			nl_temp = ft_x_strjoin(line, "\n");
+			free(line);
+			line = nl_temp;
+		}
+		temp = readline(">");
+		result = ft_x_strjoin(line, temp);
+		state = is_syntax_status(result);
+		free(temp);
+		free(line);
+		line = result;
+	}
+	return (line);
+}
+
+t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt)
 {
 	char		**tokenized_line;
 	char		***splited_pipe;
 	t_ms_ast	*ms_ast;
 
-	tokenized_line = tokenize_main(str);
+	*line = pre_syntax_check(*line);
+	tokenized_line = tokenize_main(*line);
 	if (!tokenized_line)
 		return (NULL);
-	// print_tokenized_line(tokenized_line);
 	splited_pipe = split_by_pipe(tokenized_line, process_cnt);
-	if (!splited_pipe)
-		;
-	// print_sbp(splited_pipe);
 	ms_ast = make_ast(splited_pipe);
-	if (!ms_ast)
-		;
-	// printf("\n↓print_ast\n\n");
-	// print_ast(ms_ast);
 	return (ms_ast);
 }
 
-
-// __attribute__((destructor))
-// static void destructor() {
-//     system("leaks -q lexer_and_parser");
-// }
-
-// int	main(void)
-// {
-// 	// char 		str[] = "<cat file2|grep \"he' ohayo-'llo\"||||wc -l  ><<< > file2 >";
-// 	// char		str[] = ">>ls |<<| cat file2 >> file3|| grep -i  \"first\" | wc -l >> outfile";
-// 	// char		str[] = "cat file file2 file3  | grep aius\"fir'hello'\"st | wc    | ss >>";
-// 	char		str[] = "export TEST=\"hello\"";
-// 	// char 		str[] = "";
-// 	char 		**tokenized_line;
-// 	t_ms_ast	*ms_ast;
-// 	size_t		tl_len;
-
-// 	printf("source_line:[%s]\n", str);
-// 	ms_ast = lexer_and_parser(str);
-// 	if (!ms_ast)
-// 		return (0);
-// 	// system("leaks -q lexer_and_parser");
-// 	free_ast(ms_ast);
-// 	// system("leaks -q lexer_and_parser");
-// 	return (0);
-// }
-
-//パイプが最初or最後にあればsyntax_error
-//クォーとが偶数子でなかった場合
 //パイプが二つ続く場合
-//リダイレクト関係
-// < |
+//> | こういう場合にはlexer_and_parser時点でエラーを出す
+//parse error near '|'的なエラー文

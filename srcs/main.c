@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/25 19:33:01 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/06 15:22:13 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
 		line = readline(RL_MSG); // 入力受付
 		if (!line) // ctrl+DではsignalではなくEOFが送られる,readlineはEOFを受け取ったらNULLを返す
 		{
-			write(STDERR_FILENO, "exit\n", 5);
+			safe_func(write(STDERR_FILENO, "exit\n", 5));
 			exit (EXIT_SUCCESS);//ここ、returnからexitに変えました
 		}
 		init_signal(SIGINT, sigint_after_rl);
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **envp)
 			safe_free(&line);
 			continue ;
 		}
-		ms_ast = lexer_and_parser(line, &process_cnt);
+		ms_ast = lexer_and_parser(&line, &process_cnt);
 		if (ms_ast)
 		{
 			here_doc_set(ms_ast);

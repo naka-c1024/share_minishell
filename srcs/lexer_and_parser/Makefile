@@ -6,14 +6,14 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/05/18 10:24:45 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/05 16:11:01 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:=	lexer_and_parser
 CC		:=	gcc #-fsanitize=address -g3
 RM		:= rm -f
-#CFLAGS	:= -Wall -Werror -Wextra
+CFLAGS	:= -Wall -Werror -Wextra
 
 VPATH   :=  tokenize:split_by_pipe:make_ast:debug_utils:../utils
 SRCS	:=	lexer_and_parser_main.c \
@@ -26,8 +26,7 @@ SRCS	:=	lexer_and_parser_main.c \
 			make_ast_utils.c \
 			error_tokenize.c \
 			split_by_pipe.c \
-			free_ast.c \
-			print_data.c
+			free_ast.c
 
 OBJDIR	:=	./objs
 OBJS	:= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
