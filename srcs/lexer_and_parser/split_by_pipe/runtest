@@ -1,0 +1,7 @@
+set -e #どこかのコマンドでエラーが発生した場合そこスクリプトが停止する
+gcc -I../ -I../../../includes/ split_by_pipe.c ../../../libft/libft.a ../debug_utils/print_data.c;
+echo "\033[32mcompile success→→→ \033[m";
+./a.out
+
+
+

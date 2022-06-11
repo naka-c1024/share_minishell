@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:02:46 by kahirose          #+#    #+#             */
-/*   Updated: 2022/04/06 17:59:09 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/01 18:53:22 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	token_counter(char **cmd_line_start)
 	count = 0;
 	while (cmd_line_start[count] && cmd_line_start[count][0] != '|')
 		count++;
-	// printf("count:%d\n", count);
 	return (count);
 }
 
@@ -32,6 +31,7 @@ void	free_2d_line(char **two_d_line)
 	{
 		while (two_d_line[idx])
 			free(two_d_line[idx++]);
+		free(two_d_line[idx]);
 	}
 	free(two_d_line);
 }
@@ -62,7 +62,8 @@ void	error_occuration_at_sbp(char **tokenized_line, char ***result)
 	printf("error\n");
 }
 
-static void	result_init(char **tokenized_line, char ****result)
+static void	result_init(char **tokenized_line, \
+						char ****result, size_t *proc_cnt)
 {
 	int		idx;
 	int		counter;
@@ -75,9 +76,8 @@ static void	result_init(char **tokenized_line, char ****result)
 			counter++;
 		idx++;
 	}
-	*result = (char ***)ft_calloc(sizeof(char **), counter * 2);
-	if (!(*result))
-		error_occuration_at_sbp(tokenized_line, *result);
+	*result = (char ***)ft_x_calloc(sizeof(char **), counter * 2);
+	*proc_cnt = counter;
 }
 
 static int	make_single_proc_line(char **tokenized_line, \
@@ -88,14 +88,10 @@ static int	make_single_proc_line(char **tokenized_line, \
 
 	res_j = 0;
 	token_cnt = token_counter(&(tokenized_line[tl_i]));
-	result[res_i] = (char **)ft_calloc(token_cnt + 1, sizeof(char *));
-	if (!result[res_i])
-		error_occuration_at_sbp(tokenized_line, result);
+	result[res_i] = (char **)ft_x_calloc(token_cnt + 1, sizeof(char *));
 	while (tokenized_line[tl_i] && tokenized_line[tl_i][0] != '|')
 	{
-		result[res_i][res_j] = ft_strdup(tokenized_line[tl_i]);
-		if (!result[res_i][res_j])
-			error_occuration_at_sbp(tokenized_line, result);
+		result[res_i][res_j] = ft_x_strdup(tokenized_line[tl_i]);
 		tl_i++;
 		res_j++;
 	}
@@ -106,25 +102,20 @@ static int	make_single_proc_line(char **tokenized_line, \
 static int	make_pipe_line(char **tokenized_line, \
 						int tl_i, char ***result, int res_i)
 {
-	result[res_i] = (char **)ft_calloc(sizeof(char *), 2);
-	if (!result[res_i])
-		error_occuration_at_sbp(tokenized_line, result);
-	result[res_i][0] = ft_strdup(tokenized_line[tl_i++]);
-	if (!result[res_i][0])
-		error_occuration_at_sbp(tokenized_line, result);
+	result[res_i] = (char **)ft_x_calloc(sizeof(char *), 2);
+	result[res_i][0] = ft_x_strdup(tokenized_line[tl_i++]);//ft_x_strdup("|")のほうが可読性は高い気がする
 	result[res_i][1] = NULL;
 	return (tl_i);
 }
 
-char	***split_by_pipe(char **tokenized_line)
+char	***split_by_pipe(char **tokenized_line, size_t *process_cnt)
 {
 	char	***result;
 	int		tl_i;
 	int		res_i;
 	int		res_j;
-	int		token_cnt;
 
-	result_init(tokenized_line, &result);
+	result_init(tokenized_line, &result, process_cnt);
 	tl_i = 0;
 	res_i = 0;
 	while (tokenized_line[tl_i])

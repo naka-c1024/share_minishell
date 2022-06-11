@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   envlist.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:16 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/04 17:38:04 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/05/29 18:18:13 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exe_cmd.h"
+#include "executor.h"
 
 void	free_list(t_envlist *list)
 {
@@ -51,9 +51,9 @@ static void	add_oldpwd(t_envlist **envlist)
 {
 	char	**two_dim_arr;
 
-	two_dim_arr = (char **)malloc(sizeof(char *) * 3);
-	two_dim_arr[0] = ft_strdup("export");
-	two_dim_arr[1] = ft_strdup("OLDPWD");
+	two_dim_arr = (char **)x_malloc(sizeof(char *) * 3);
+	two_dim_arr[0] = ft_x_strdup("export");
+	two_dim_arr[1] = ft_x_strdup("OLDPWD");
 	two_dim_arr[2] = NULL;
 	my_export(two_dim_arr, envlist);
 	free(two_dim_arr[0]);
@@ -70,19 +70,19 @@ t_envlist	*create_envlist(char **envp)
 	head = NULL;
 	while (*envp)
 	{
-		newlist = (t_envlist *)malloc(sizeof(t_envlist));
-		if (!newlist)
-		{
-			print_error("malloc", NULL, errno);
-			free_list(head);
-			return (NULL);
-		}
+		newlist = (t_envlist *)x_malloc(sizeof(t_envlist));
+		//if (!newlist)
+		//{
+			//print_error("malloc", NULL, errno);
+			//free_list(head);
+			//return (NULL);
+		//}
 		str = *envp;
 		while (*str && *str != '=')
 			str++;
 		*str = '\0';
-		newlist->key = ft_strdup(*envp++);
-		newlist->value = ft_strdup(++str);
+		newlist->key = ft_x_strdup(*envp++);
+		newlist->value = ft_x_strdup(++str);
 		newlist->next = NULL;
 		ms_lstadd_back(&head, newlist);
 	}

@@ -3,75 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   executor_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:57:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/07 17:27:14 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/03 17:15:11 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "executor.h"
 
-static void	free_darray(char **darray)
+static void	make_builtin_list(char builtin_list[7][7])
 {
-	size_t	i;
-
-	i = 0;
-	while (darray[i])
-	{
-		free(darray[i]);
-		i++;
-	}
-	free(darray);
+	ft_strlcpy(builtin_list[0], "exit", 5);
+	ft_strlcpy(builtin_list[1], "echo", 5);
+	ft_strlcpy(builtin_list[2], "cd", 3);
+	ft_strlcpy(builtin_list[3], "pwd", 4);
+	ft_strlcpy(builtin_list[4], "unset", 6);
+	ft_strlcpy(builtin_list[5], "env", 4);
+	ft_strlcpy(builtin_list[6], "export", 7);
 }
 
-static char	**lst_to_arr(t_list *arglst)
+t_list	*cmd_name_trim(t_list *cmd_info_list)
 {
-	char	**rtn;
-	size_t	i;
-	t_list	*cp_arglst;
-	size_t	list_cnt;
-	size_t	content_len;
+	int				redirect_type;
+	t_list			*list;
+	t_list			*result_list;
 
-	cp_arglst = arglst;
-	list_cnt = 0;
-	while (cp_arglst)
+	result_list = NULL;
+	list = cmd_info_list;
+	while (list)
 	{
-		list_cnt++;
-		cp_arglst = cp_arglst->next;
-	}
-	rtn = malloc(sizeof(char *) * (list_cnt) + 1);
-	if (!rtn)
-		return (NULL);
-	i = 0;
-	while (arglst)
-	{
-		content_len = ft_strlen(arglst->content);
-		rtn[i] = (char *)malloc(content_len + 1);
-		if (!rtn[i])
+		redirect_type = is_some_redirect(list->content);
+		if (redirect_type != 0)
 		{
-			perror("malloc");
-			free_darray(rtn);
-			return (NULL);
+			list = list->next;
+			if (list)
+				list = list->next;
 		}
-		ft_strlcpy(rtn[i], arglst->content, content_len + 1);
-		arglst = arglst->next;
-		i++;
+		else
+		{
+			ft_lstadd_back(&result_list, ms_lstnew(list->content));
+			list = list->next;
+		}
 	}
-	rtn[i] = NULL;
-	return (rtn);
+	return (result_list);
 }
 
-void	executor(t_ms_ast *ms_ast, t_envlist **envlist)
+void	case_of_cmd_not_exist(t_ms_ast *ms_ast, t_list *cmd_name_list)
 {
-	char	**two_dim_arr;
-
-	// パイプやリダイレクトの処理の中でonly_one_cmd使う
-
-	two_dim_arr = lst_to_arr(ms_ast->cmd_info_list);
 	free_ast(ms_ast);
-	if (!two_dim_arr)
-		exit(EXIT_FAILURE);
-	g_exit_status = only_one_cmd(two_dim_arr, envlist);
-	free_darray(two_dim_arr);
+	list_clear(cmd_name_list);
+	g_exit_status = 0;
+}
+
+void	executor(t_ms_ast *ms_ast, t_envlist **envlist, size_t process_cnt)
+{
+	char	builtin_list[7][7];
+	t_list	*cmd_name_list;
+
+	if (ms_ast->type == COMMAND)
+	{
+		make_builtin_list(builtin_list);
+		cmd_name_list = cmd_name_trim(ms_ast->cmd_info_list);
+		if (!cmd_name_list)
+			return (case_of_cmd_not_exist(ms_ast, cmd_name_list));
+		if (!only_builtin_assign_func(builtin_list, ms_ast, cmd_name_list->content, envlist))
+			g_exit_status = ipc_table(ms_ast, *envlist, process_cnt);
+		list_clear(cmd_name_list);
+	}
+	else
+		g_exit_status = ipc_table(ms_ast, *envlist, process_cnt);
 }

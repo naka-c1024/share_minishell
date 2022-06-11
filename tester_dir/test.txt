@@ -1,0 +1,3 @@
+ls
+cat < includes/minishell.h
+pwd

@@ -25,7 +25,11 @@ void	list_clear(t_list *list)
 void	free_node(t_ms_ast *ms_ast)
 {
 	if (ms_ast)
+	{
 		list_clear(ms_ast->cmd_info_list);
+		free(ms_ast->delimiter);
+		free(ms_ast->buffer);
+	}
 	free(ms_ast);
 }
 
