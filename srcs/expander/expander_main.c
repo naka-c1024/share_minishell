@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/13 09:00:23 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/04/15 16:51:22 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void	expand_single(char **str)
 	*str = ptr;
 }
 
-static void	expand_double(char **str)
+static void	expand_double(char **str, t_envlist *envlist)
 {
 	char	*ptr;
 	size_t	i;
@@ -120,6 +120,7 @@ static void	expand_double(char **str)
 	ptr[j] = '\0';
 	free(*str);
 	*str = ptr;
+	// expand_dollar(str, envlist);
 }
 
 static void	send_single_token(t_list **list, t_envlist *envlist)
@@ -140,11 +141,13 @@ static void	send_single_token(t_list **list, t_envlist *envlist)
 			}
 			if (((*cp_list)->content)[i] == '\"')
 			{
-				expand_double(&((*cp_list)->content));
+				expand_double(&((*cp_list)->content), envlist);
+				break ;
 			}
 			if (((*cp_list)->content)[i] == '$')
 			{
 				expand_dollar(&((*cp_list)->content), envlist);
+				break ;
 			}
 			i++;
 		}

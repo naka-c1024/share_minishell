@@ -25,3 +25,5 @@ echo $OLDPWD
 echo "hello world"
 echo a"bc"d"ef"g
 echo a'bc'd'ef'g
+echo "'$HOME'"
+echo '"$HOME"'
