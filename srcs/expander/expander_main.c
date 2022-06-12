@@ -6,16 +6,31 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 15:15:33 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 18:36:03 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	expand_exit_status(char **dollar_str)
+static void	expand_exit_status(char **dollar_str, size_t dollar_loc)
 {
+	char	*pre_dollar_str;
+	char	*post_dollar_str;
+	size_t	post_size;
+	char	*dollar;
+	char	*tmp;
+
+	post_size = ft_strlen(*dollar_str + dollar_loc + 2);
+	pre_dollar_str = ft_x_substr(*dollar_str, 0, dollar_loc);
+	post_dollar_str = ft_x_substr(*dollar_str, dollar_loc + 2, post_size);
+	dollar = ft_x_itoa(g_exit_status);
 	free(*dollar_str);
-	*dollar_str = ft_x_itoa(g_exit_status);
+	tmp = ft_x_strjoin(pre_dollar_str, dollar);
+	*dollar_str = ft_x_strjoin(tmp, post_dollar_str);
+	free(pre_dollar_str);
+	free(post_dollar_str);
+	free(dollar);
+	free(tmp);
 }
 
 static void	expand_env_var(char **dollar_str, t_envlist *envlist)
@@ -42,11 +57,12 @@ static void	expand_dollar(char **str, t_envlist *envlist)
 		{
 			if ((*str)[i + 1] == '?')
 			{
-				expand_exit_status(str);
+				expand_exit_status(str, i);
 			}
 			else
 			{
 				expand_env_var(str, envlist);
+				// 前後に文字があってもしっかり展開できるようになったらi = 0;にした方がいいかも
 			}
 		}
 		i++;
@@ -115,7 +131,7 @@ static void	expand_double(char **str, t_envlist *envlist)
 	ptr[j] = '\0';
 	free(*str);
 	*str = ptr;
-	// expand_dollar(str, envlist);
+	expand_dollar(str, envlist);
 }
 
 static void	send_single_token(t_list **list, t_envlist *envlist)
@@ -129,14 +145,14 @@ static void	send_single_token(t_list **list, t_envlist *envlist)
 		i = 0;
 		while (((*cp_list)->content)[i])
 		{
-			if (((*cp_list)->content)[i] == '\'')
+			if (((*cp_list)->content)[i] == '\'') // 最初に'が来たら'だけを処理する
 			{
 				expand_single(&((*cp_list)->content));
 				break ; // single内ではdouble quoteや環境変数展開はしない
 			}
 			if (((*cp_list)->content)[i] == '\"')
 			{
-				expand_double(&((*cp_list)->content), envlist);
+				expand_double(&((*cp_list)->content), envlist); // この中でもdollar展開はする
 				break ;
 			}
 			if (((*cp_list)->content)[i] == '$')
