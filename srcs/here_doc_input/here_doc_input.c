@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 05:18:00 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/07 04:05:48 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/12 16:51:54 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	here_doc_set_table(t_ms_ast *cmd_node)
 	{
 		if (!ft_strncmp(tmp_node->content, "<<", 2))
 		{
+			init_signal(SIGQUIT, SIG_IGN); // here docの中ではSIGQUITを無視
 			set_here_doc(cmd_node, tmp_node->next->content);
 			tmp_node = tmp_node->next->next;
 		}
@@ -82,4 +83,5 @@ static void	crawl_ast(t_ms_ast *ms_ast)
 void	here_doc_set(t_ms_ast *ms_ast)
 {
 	crawl_ast(ms_ast);
+	init_signal(SIGQUIT, sigquit_after_rl); // here docが終わったらまた元のルールに設定する
 }

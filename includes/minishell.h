@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 15:38:48 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 16:01:11 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
-# include "../srcs/signal/signal.h"
+// # include "../srcs/signal/signal.h"
 // # include "../srcs/executor/executor.h"
 
 extern int	g_exit_status;
@@ -88,6 +88,12 @@ typedef struct s_info
 // 	char	*total_document;//malloc
 // 	char	*limiter;//mallocする予定
 // }	t_process_info;
+
+// signal
+void	sigint_before_rl(int not_use);
+void	sigint_after_rl(int not_use);
+void	sigquit_after_rl(int not_use);
+void	init_signal(int sig_num, void (*func)(int not_use));
 
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt);

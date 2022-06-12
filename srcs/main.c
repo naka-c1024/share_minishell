@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 15:52:11 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 16:55:28 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	main(int argc, char **argv, char **envp)
 			safe_func(write(STDERR_FILENO, "exit\n", 5));
 			exit (EXIT_SUCCESS);//ここ、returnからexitに変えました
 		}
-		// init_signal(SIGINT, sigint_after_rl);
-		init_signal(SIGQUIT, sigquit_after_rl); // プロセス実行時は無視できないのでこれを使う
+		init_signal(SIGINT, sigint_after_rl);
+		init_signal(SIGQUIT, sigquit_after_rl); // プロセス実行時は無視できないのでこれを使う, here docの後に書くことができるのでもし行数が足りなければこの行は削除する
 		if (ft_strlen(line) == 0) // 改行だけの場合,空文字列がくる
 		{
 			safe_free(&line);
