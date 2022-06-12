@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/06 15:26:26 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 01:49:56 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,3 @@ t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt)
 	ms_ast = make_ast(splited_pipe);
 	return (ms_ast);
 }
-
-//パイプが二つ続く場合
-//> | こういう場合にはlexer_and_parser時点でエラーを出す
-//parse error near '|'的なエラー文

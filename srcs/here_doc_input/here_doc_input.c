@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 05:18:00 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/03 16:30:35 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 04:05:48 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	here_doc_set_table(t_ms_ast *cmd_node)
 	}
 }
 
-static void crawl_ast(t_ms_ast *ms_ast)
+static void	crawl_ast(t_ms_ast *ms_ast)
 {
 	if (ms_ast->left_node && ms_ast->type == PIPE)
 		crawl_ast(ms_ast->left_node);

@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/06 20:05:15 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 04:55:54 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void		executor(t_ms_ast *ms_ast, t_envlist **envlist, size_t process_cnt);
 void	safe_free(char **ptr);
 void	free_split(char **ptr);
 void	print_error(char *cmd, char *cmd_arg, int error_number);
+void	free_three_d_arr(char ***three_d_line);
+void	free_two_d_arr(char **two_d_line);
 
 //utils
 void	free_ast(t_ms_ast *ms_ast);

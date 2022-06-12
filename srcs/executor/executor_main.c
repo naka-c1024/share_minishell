@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:57:25 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/03 17:15:11 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 04:11:18 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	executor(t_ms_ast *ms_ast, t_envlist **envlist, size_t process_cnt)
 		cmd_name_list = cmd_name_trim(ms_ast->cmd_info_list);
 		if (!cmd_name_list)
 			return (case_of_cmd_not_exist(ms_ast, cmd_name_list));
-		if (!only_builtin_assign_func(builtin_list, ms_ast, cmd_name_list->content, envlist))
+		if (!only_builtin_assign_func \
+				(builtin_list, ms_ast, cmd_name_list->content, envlist))
 			g_exit_status = ipc_table(ms_ast, *envlist, process_cnt);
 		list_clear(cmd_name_list);
 	}

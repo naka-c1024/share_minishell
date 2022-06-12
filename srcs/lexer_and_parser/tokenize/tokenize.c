@@ -6,19 +6,11 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:17:07 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/03 19:33:06:48 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 03:38:04 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer_and_parser.h"
-
-static bool	is_valid_pre_string(int line_index, char target)
-{
-	if (line_index == 0 || target == '|' || target == ' ' || \
-		target == '"' || target == '\'' || target == '>' || target == '<')
-		return (false);
-	return (true);
-}
 
 static bool	take_last_string(t_tokenize_info *t_info)
 {
@@ -49,13 +41,8 @@ bool	take_pre_string(t_tokenize_info *t_info)
 
 static char	**tokenize(t_tokenize_info *t_info)
 {
-	char	**tokenized_line;
-	size_t	tl_len;
 	bool	is_ok;
 
-	tl_len = tokens_count(t_info);
-	tokenized_line = (char **)ft_x_calloc(sizeof(char *), tl_len + 1);
-	t_info->tokenized_line = tokenized_line;
 	is_ok = true;
 	while (t_info->line[*(t_info->line_index)])
 	{
@@ -95,6 +82,8 @@ char	**tokenize_main(char *line)
 	t_info->line_index = &line_index;
 	t_info->line_start_index = &line_start_index;
 	t_info->tl_index = &tl_index;
+	t_info->tokenized_line = \
+		(char **)ft_x_calloc(sizeof(char *), tokens_count(t_info) + 1);
 	tokenized_line = tokenize(t_info);
 	free(t_info);
 	return (tokenized_line);

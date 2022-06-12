@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/06 20:41:53 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 05:36:25 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,10 +138,13 @@ int	only_one_cmd(char **dbl_arr, t_envlist **envlist);
 
 //ipc_with_pipe
 int		ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt);
+char	**create_env_arr(t_envlist *envlist);
+void	free_info(t_info **info);
+void	free_process_info(t_process_info **proc_info_addr);
 void	child_exe(t_info *info, t_process_info *p_info, t_ms_ast *ast_node);
 char	**lst_to_arr(t_list *arglst);
 void	convert_to_cmd_full_path(t_info *info, t_process_info *p_info);
-void	redirection_seqence(t_ms_ast *ast_node, t_process_info *p_info, t_info *info);
+void	redirection_seqence(t_ms_ast *ast_node, t_process_info *p_info);
 void	dup2_func(t_info *info, t_process_info *p_info);
 void	close_func(t_info *info, t_process_info *p_info);
 void	heredoc_dup2(t_info *info, t_process_info *proc_info);
@@ -161,7 +164,7 @@ void			free_twod_array(char **darray);
 //single_builtin set_file
 bool	sb_set_in_file(t_process_info *proc_info, char *file_name);
 bool	sb_set_out_file(t_process_info *proc_info, char *file_name, int redirect_type);
-void	sb_set_heredoc(t_ms_ast *ast_node, t_process_info *proc_info);
+bool	sb_set_heredoc(t_ms_ast *ast_node, t_process_info *proc_info);
 int		is_some_redirect(char *one_token);
 
 #endif // exe_cmd_h
