@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/06 15:22:13 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/11 11:16:07 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **envp)
 		if (ms_ast)
 		{
 			here_doc_set(ms_ast);
-		//expander(&ms_ast, envlist); // expander関数でms_astを書き換える
+		expander(&ms_ast, envlist); // expander関数でms_astを書き換える
 			executor(ms_ast, &envlist, process_cnt);
 		}
 		add_history(line); // 履歴の付け足し

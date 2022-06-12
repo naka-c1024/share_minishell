@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/15 16:51:22 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/11 11:18:26 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 static void	expand_exit_status(char **dollar_str)
 {
 	char	*dollar_ptr;
-	// char	*pre_tmp;
-	// char	*post_tmp;
 
-	// dollar_ptr = ft_strnstr(*dollar_str, "$?", ft_strlen(*dollar_str));
 	free(*dollar_str);
 	*dollar_str = ft_itoa(g_exit_status);
 }
@@ -171,8 +168,6 @@ static void crawl_ast(t_ms_ast **ms_ast, t_envlist *envlist)
 
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist)
 {
-	(void)ms_ast; // フラッグ用,削除してください
-	(void)envlist; // フラッグ用,削除してください
 	if (!(*ms_ast))
 		return ;
 	crawl_ast(ms_ast, envlist);
