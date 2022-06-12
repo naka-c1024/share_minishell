@@ -1,6 +1,29 @@
-cd ..\npwd
+./a.out
+../dir/a.out
+
+cd .. \n pwd
+cd \n pwd
+cd .. \n export
+unset HOME \n cd
+mkdir hoge \n cd hoge \n rm -r ../hoge \n cd . \n cd ..
+mkdir hoge \n cd hoge \n chmod 000 ../hoge \n cd . \n cd ..
 echo hello
 echo hello world
 pwd
-cd .\nexport
+env
 export
+export +a
+export a \n export \n env
+export a= \n export \n env
+export aaa=hoge bbb=hoge \n export
+export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
+
+echo a$?b
+echo $?$?
+echo $OLDPWD
+
+echo "hello world"
+echo a"bc"d"ef"g
+echo a'bc'd'ef'g
+echo "'$HOME'"
+echo '"$HOME"'
