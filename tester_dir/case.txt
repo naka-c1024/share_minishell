@@ -21,6 +21,10 @@ export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
 echo a$?b
 echo $?$?
 echo $OLDPWD
+echo a$HOME
+echo $HOMEa
+echo $HOME"a"
+echo $HOME'a'
 
 echo "hello world"
 echo a"bc"d"ef"g

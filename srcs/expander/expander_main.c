@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 18:36:03 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 22:51:33 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,90 @@ static void	expand_exit_status(char **dollar_str, size_t dollar_loc)
 	char	*pre_dollar_str;
 	char	*post_dollar_str;
 	size_t	post_size;
-	char	*dollar;
+	char	*status;
 	char	*tmp;
 
 	post_size = ft_strlen(*dollar_str + dollar_loc + 2);
 	pre_dollar_str = ft_x_substr(*dollar_str, 0, dollar_loc);
 	post_dollar_str = ft_x_substr(*dollar_str, dollar_loc + 2, post_size);
-	dollar = ft_x_itoa(g_exit_status);
+	status = ft_x_itoa(g_exit_status);
 	free(*dollar_str);
-	tmp = ft_x_strjoin(pre_dollar_str, dollar);
+	tmp = ft_x_strjoin(pre_dollar_str, status);
 	*dollar_str = ft_x_strjoin(tmp, post_dollar_str);
 	free(pre_dollar_str);
 	free(post_dollar_str);
-	free(dollar);
+	free(status);
 	free(tmp);
 }
 
-static void	expand_env_var(char **dollar_str, t_envlist *envlist)
+static size_t	loc_meta_char(char *str)
 {
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+		{
+			return (i);
+		}
+		if (str[i] == '\"')
+		{
+			return (i);
+		}
+		if (str[i] == '\n')
+		{
+			return (i);
+		}
+		if (str[i] == '$')
+		{
+			return (i);
+		}
+		i++;
+	}
+	return (0);
+}
+// echo abc$HOME"a"を想定, dollar_loc=3, meta_loc=4
+static void	expand_env_var(char **dollar_str, t_envlist *envlist, size_t dollar_loc)
+{
+	char	*pre_dollar_str;
+	char	*post_dollar_str;
+	size_t	meta_loc;
+	size_t	post_size;
+	char	*tmp;
+	char	*env_var;
+
+	pre_dollar_str = ft_x_substr(*dollar_str, 0, dollar_loc);
+	meta_loc = loc_meta_char(*dollar_str + dollar_loc + 1);
+	if (meta_loc)
+	{
+		post_size = ft_strlen(*dollar_str + dollar_loc + meta_loc + 1);
+		post_dollar_str = ft_x_substr(*dollar_str, dollar_loc + meta_loc + 1, post_size);
+	}
+	else
+	{
+		post_dollar_str = (char *)ft_x_strdup("");
+	}
 	while (envlist)
 	{
-		if (ft_strncmp(&((*dollar_str)[1]), envlist->key, ft_strlen(*dollar_str) + 1) == 0)
+		if (ft_strncmp(&((*dollar_str)[dollar_loc + 1]), envlist->key, ft_strlen(*dollar_str + dollar_loc) - post_size - 1) == 0)
 		{
 			free(*dollar_str);
-			*dollar_str = ft_strdup(envlist->value);
+			env_var = ft_strdup(envlist->value);
+			tmp = ft_x_strjoin(pre_dollar_str, env_var);
+			*dollar_str = ft_x_strjoin(tmp, post_dollar_str);
+			free(pre_dollar_str);
+			free(post_dollar_str);
+			free(env_var);
+			free(tmp);
+			return ;
 		}
 		envlist = envlist->next;
 	}
+	free(*dollar_str);
+	*dollar_str = ft_x_strjoin(pre_dollar_str, post_dollar_str);
+	free(pre_dollar_str);
+	free(post_dollar_str);
 }
 
 static void	expand_dollar(char **str, t_envlist *envlist)
@@ -58,11 +115,12 @@ static void	expand_dollar(char **str, t_envlist *envlist)
 			if ((*str)[i + 1] == '?')
 			{
 				expand_exit_status(str, i);
+				break ;
 			}
 			else
 			{
-				expand_env_var(str, envlist);
-				// 前後に文字があってもしっかり展開できるようになったらi = 0;にした方がいいかも
+				expand_env_var(str, envlist, i);
+				break ;
 			}
 		}
 		i++;
@@ -158,7 +216,8 @@ static void	send_single_token(t_list **list, t_envlist *envlist)
 			if (((*cp_list)->content)[i] == '$')
 			{
 				expand_dollar(&((*cp_list)->content), envlist);
-				break ;
+				i = 0;
+				continue ;
 			}
 			i++;
 		}
