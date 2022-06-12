@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 16:01:11 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 16:59:49 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
-// # include "../srcs/signal/signal.h"
-// # include "../srcs/executor/executor.h"
 
 extern int	g_exit_status;
 

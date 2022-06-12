@@ -6,11 +6,10 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:01:56 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 16:32:37 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 16:59:42 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "signal.h"
 #include "../../includes/minishell.h"
 
 // ctrl+C
