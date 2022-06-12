@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:57:06 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/04 20:57:16 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 04:46:01 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@ static t_list	*make_cmd_list(char ***all_cmd_line, t_make_ast_info *ma_info)
 	t_list	*new_node;
 	t_list	*list;
 
-	list = ft_x_lstnew(ft_x_strdup(all_cmd_line[*(ma_info->fir)][*(ma_info->sec)]));
+	list = ft_x_lstnew \
+		(ft_x_strdup(all_cmd_line[*(ma_info->fir)][*(ma_info->sec)]));
 	(*(ma_info->sec))++;
 	while (all_cmd_line[*(ma_info->fir)][*(ma_info->sec)] != NULL)
 	{
-		new_node = ft_x_lstnew(ft_x_strdup(all_cmd_line[*(ma_info->fir)][*(ma_info->sec)]));
+		new_node = ft_x_lstnew \
+			(ft_x_strdup(all_cmd_line[*(ma_info->fir)][*(ma_info->sec)]));
 		ft_lstadd_back(&list, new_node);
 		(*(ma_info->sec))++;
 	}

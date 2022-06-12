@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/05 16:11:33 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/07 04:56:18 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ SRCS	:=	main.c\
 			here_doc_input.c\
 			executor_main.c\
 			expander_main.c\
-			xalloc.c\
+			xalloc1.c\
+			xalloc2.c\
+			free_array.c\
 			safe_system_call.c
 
 RL_PATH	:=/usr/local/opt/readline

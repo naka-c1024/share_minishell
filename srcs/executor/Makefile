@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/29 15:34:53 by ynakashi          #+#    #+#              #
-#    Updated: 2022/05/24 14:05:22 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/07 05:40:45 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,10 @@ RM		=	rm -rf
 VPATH   :=  exe_cmd:ipc_with_pipe:single_builtin
 
 IPCSRCS =	ipc_table.c\
+			ipc_table_utils.c\
 			ipc_executor.c\
 			ipc_executor2.c\
+			create_envlist.c\
 			get_cmd_path.c
 
 SBSRCS	=	single_builtin_executor.c\

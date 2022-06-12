@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 05:18:11 by kahirose          #+#    #+#             */
-/*   Updated: 2022/05/09 05:20:54 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 04:04:02 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "minishell.h"
 # include "../../libft/libft.h"
-# include "get_next_line/get_next_line.h"
-
 
 void	here_doc_set(t_ms_ast *ms_ast);
 

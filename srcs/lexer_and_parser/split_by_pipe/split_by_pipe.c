@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:02:46 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/01 18:53:22 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 05:23:27 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,46 +20,6 @@ static int	token_counter(char **cmd_line_start)
 	while (cmd_line_start[count] && cmd_line_start[count][0] != '|')
 		count++;
 	return (count);
-}
-
-void	free_2d_line(char **two_d_line)
-{
-	size_t	idx;
-
-	idx = 0;
-	if (two_d_line)
-	{
-		while (two_d_line[idx])
-			free(two_d_line[idx++]);
-		free(two_d_line[idx]);
-	}
-	free(two_d_line);
-}
-
-void	free_3d_line(char ***three_d_line)
-{
-	size_t	fir;
-	size_t	sec;
-
-	fir = 0;
-	if (three_d_line)
-	{
-		while (three_d_line[fir])
-		{
-			sec = 0;
-			while (three_d_line[fir][sec])
-				free(three_d_line[fir][sec++]);
-			free(three_d_line[fir++]);
-		}
-	}
-	free (three_d_line);
-}
-
-void	error_occuration_at_sbp(char **tokenized_line, char ***result)
-{
-	free_2d_line(tokenized_line);
-	free_3d_line(result);
-	printf("error\n");
 }
 
 static void	result_init(char **tokenized_line, \
@@ -103,7 +63,7 @@ static int	make_pipe_line(char **tokenized_line, \
 						int tl_i, char ***result, int res_i)
 {
 	result[res_i] = (char **)ft_x_calloc(sizeof(char *), 2);
-	result[res_i][0] = ft_x_strdup(tokenized_line[tl_i++]);//ft_x_strdup("|")のほうが可読性は高い気がする
+	result[res_i][0] = ft_x_strdup(tokenized_line[tl_i++]);
 	result[res_i][1] = NULL;
 	return (tl_i);
 }
@@ -129,6 +89,6 @@ char	***split_by_pipe(char **tokenized_line, size_t *process_cnt)
 		res_i++;
 	}
 	result[res_i] = NULL;
-	free_2d_line(tokenized_line);
+	free_two_d_arr(tokenized_line);
 	return (result);
 }

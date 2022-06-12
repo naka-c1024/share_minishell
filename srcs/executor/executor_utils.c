@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 23:27:47 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/01 23:07:36 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/07 04:25:39 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ char	**lst_to_arr(t_list *arglst)
 		cp_arglst = cp_arglst->next;
 	}
 	rtn = x_malloc(sizeof(char *) * (list_cnt) + 1);
-	if (!rtn)
-		return (NULL);
 	i = 0;
 	while (arglst)
 	{

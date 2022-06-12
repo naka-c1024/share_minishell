@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/06/05 16:11:01 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/07 03:35:43 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ VPATH   :=  tokenize:split_by_pipe:make_ast:debug_utils:../utils
 SRCS	:=	lexer_and_parser_main.c \
 			tokenize.c \
 			tokens_count.c \
+			token_section.c \
 			token_checker.c \
 			separator.c \
 			make_ast_main.c \

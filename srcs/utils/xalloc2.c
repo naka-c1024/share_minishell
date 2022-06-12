@@ -1,66 +1,65 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xalloc.c                                           :+:      :+:    :+:   */
+/*   xalloc2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/28 03:37:49 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/02 16:57:11 by kahirose         ###   ########.fr       */
+/*   Created: 2022/06/07 04:07:12 by kahirose          #+#    #+#             */
+/*   Updated: 2022/06/07 04:08:13 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*x_malloc(size_t size)
+char	**ft_x_split(const char *s, char c)
 {
-	void	*ptr;
+	char	**result;
 
-	ptr = malloc(size);
-	if (!ptr)
+	result = ft_split(s, c);
+	if (!result)
 	{
 		perror("minishell");
 		exit(1);
 	}
-	return (ptr);
+	return (result);
 }
 
-void	*ft_x_calloc(size_t count, size_t size)
+char	*ft_x_strjoin(const char *s1, const char *s2)
 {
-	void	*ptr;
+	char	*result;
 
-	ptr = ft_calloc(count, size);
-	if (!ptr)
+	result = ft_strjoin(s1, s2);
+	if (!result)
 	{
 		perror("minishell");
 		exit(1);
 	}
-	return (ptr);
+	return (result);
 }
 
-t_list	*ft_x_lstnew(void *content)
+void	*ft_x_strdup(const char *s1)
 {
-	t_list	*new_element;
+	void	*result;
 
-	new_element = ft_lstnew(content);
-	if (!new_element)
+	result = ft_strdup(s1);
+	if (!result)
 	{
 		perror("minishell");
 		exit(1);
 	}
-	return (new_element);
+	return (result);
 }
-//ft_calloc
-//ft_split
-//ft_strjoin
-//ft_lst系
 
-//int	main(void)
-//{
-	//char	*str1 = "aaebbelle";
-	//char	**result;
+char	*ft_x_substr(const char *s, unsigned int start, size_t len)
+{
+	char	*result;
 
-	//result = ft_x_split(str1, 'e');
-	//printf("%s\n", result[2]);
-	//return (0);
-//}
+	result = ft_substr(s, start, len);
+	if (!result)
+	{
+		perror("minishell");
+		exit(1);
+	}
+	return (result);
+}
