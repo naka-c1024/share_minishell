@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/11 11:18:26 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 15:15:33 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static void	expand_exit_status(char **dollar_str)
 {
-	char	*dollar_ptr;
-
 	free(*dollar_str);
-	*dollar_str = ft_itoa(g_exit_status);
+	*dollar_str = ft_x_itoa(g_exit_status);
 }
 
 static void	expand_env_var(char **dollar_str, t_envlist *envlist)
@@ -158,11 +156,23 @@ static void crawl_ast(t_ms_ast **ms_ast, t_envlist *envlist)
 	if ((*ms_ast)->left_node && (*ms_ast)->type == PIPE)
 		crawl_ast(&((*ms_ast)->left_node), envlist);
 	if ((*ms_ast)->left_node && (*ms_ast)->left_node->cmd_info_list)
+	{
+		if ((*ms_ast)->buffer)
+			expand_dollar(&((*ms_ast)->buffer), envlist);
 		send_single_token(&((*ms_ast)->left_node->cmd_info_list), envlist);
+	}
 	if ((*ms_ast)->right_node && (*ms_ast)->right_node->cmd_info_list)
+	{
+		if ((*ms_ast)->buffer)
+			expand_dollar(&((*ms_ast)->buffer), envlist);
 		send_single_token(&((*ms_ast)->right_node->cmd_info_list), envlist);
+	}
 	if ((*ms_ast)->cmd_info_list)
+	{
+		if ((*ms_ast)->buffer)
+			expand_dollar(&((*ms_ast)->buffer), envlist);
 		send_single_token(&((*ms_ast)->cmd_info_list), envlist);
+	}
 	return ;
 }
 

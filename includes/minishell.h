@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/07 04:55:54 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/12 15:38:48 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ typedef struct s_info
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt);
 void		here_doc_set(t_ms_ast *ms_ast);
-// expnader
+
+// expander
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
 
 // executor
@@ -121,6 +122,7 @@ void	*ft_x_calloc(size_t count, size_t size);
 void	*ft_x_strdup(const char *s1);
 char	*ft_x_substr(const char *s, unsigned int start, size_t len);
 t_list	*ft_x_lstnew(void *content);
+char	*ft_x_itoa(int n);
 
 
 #endif
