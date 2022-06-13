@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 22:51:33 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/12 22:59:44 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,18 @@ static size_t	loc_meta_char(char *str)
 	while (str[i])
 	{
 		if (str[i] == '\'')
-		{
 			return (i);
-		}
 		if (str[i] == '\"')
-		{
 			return (i);
-		}
 		if (str[i] == '\n')
-		{
 			return (i);
-		}
 		if (str[i] == '$')
-		{
 			return (i);
-		}
 		i++;
 	}
 	return (0);
 }
-// echo abc$HOME"a"を想定, dollar_loc=3, meta_loc=4
+
 static void	expand_env_var(char **dollar_str, t_envlist *envlist, size_t dollar_loc)
 {
 	char	*pre_dollar_str;
