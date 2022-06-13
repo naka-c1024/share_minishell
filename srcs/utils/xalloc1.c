@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xalloc1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 03:37:49 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/07 04:09:24 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/12 13:01:11 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,19 @@ t_list	*ft_x_lstnew(void *content)
 		exit(1);
 	}
 	return (new_element);
+}
+
+char	*ft_x_itoa(int n)
+{
+	char	*ptr;
+
+	ptr = ft_itoa(n);
+	if (!ptr)
+	{
+		perror("minishell");
+		exit(1);
+	}
+	return (ptr);
 }
 //ft_calloc
 //ft_split

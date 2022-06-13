@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe_system_call.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 16:10:16 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/06 20:11:52 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:28:58 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

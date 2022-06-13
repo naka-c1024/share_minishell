@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ipc_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 13:37:29 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/07 04:40:32 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:19:39 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
