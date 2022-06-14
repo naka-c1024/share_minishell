@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 05:18:00 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/14 11:23:01 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/14 12:07:26 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ static void	receive_buffer(t_ms_ast *ms_ast, int pipefd[2])
 		temp2 = (char *)ft_x_calloc(101, sizeof(char));
 		read_flag = safe_func(read(pipefd[0], temp2, 100));
 		if (read_flag == 0)
+		{
+			free(temp2);
 			return ;
+		}
 		ms_ast->buffer = ft_x_strjoin(temp1, temp2);
 		free(temp1);
 		free(temp2);
