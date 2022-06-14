@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 05:18:00 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/12 17:08:15 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/14 11:09:09 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ static size_t	get_here_doc_init(t_ms_ast *ms_ast, char *delimiter)
 	return (len);
 }
 
-void	set_here_doc(t_ms_ast *ms_ast, char *delimiter)
+static void	make_buffer(t_ms_ast *ms_ast, char *delimiter, int pipefd[2])
 {
 	size_t	len;
 	char	*a_temp;
 	char	*b_temp;
 	char	*new_document;
 
-	if (!delimiter)
-		;
 	ms_ast->is_here_doc = true;
 	len = get_here_doc_init(ms_ast, delimiter);
 	b_temp = readline(">");
@@ -49,6 +47,52 @@ void	set_here_doc(t_ms_ast *ms_ast, char *delimiter)
 		free(b_temp);
 	}
 	free(a_temp);
+	len = ft_strlen(ms_ast->buffer);
+	write(pipefd[1], ms_ast->buffer, len + 1);
+	exit(0);
+}
+
+static void	receive_buffer(t_ms_ast *ms_ast, int pipefd[2])
+{
+	char	*temp1;
+	char	*temp2;
+	int		read_flag;
+
+	read_flag = 0;
+	ms_ast->buffer = ft_x_strdup("");
+	while (1)
+	{
+		temp1 = ms_ast->buffer;
+		temp2 = (char *)ft_x_calloc(101, sizeof(char));
+		read_flag = safe_func(read(pipefd[0], temp2, 100));
+		if (read_flag == 0)
+			return ;
+		ms_ast->buffer = ft_x_strjoin(temp1, temp2);
+		free(temp1);
+		free(temp2);
+	}
+}
+
+static void	set_here_doc(t_ms_ast *ms_ast, char *delimiter)
+{
+	pid_t	pid;
+	int		pipefd[2];
+	int		wstatus;
+
+	safe_func(pipe(pipefd));
+	pid = safe_func(fork());
+	if (pid == 0)
+	{
+		safe_func(close(pipefd[0]));
+		make_buffer(ms_ast, delimiter, pipefd);
+	}
+	else
+	{
+		safe_func(close(pipefd[1]));
+		waitpid(pid, &wstatus, WUNTRACED);
+		receive_buffer(ms_ast, pipefd);
+		safe_func(close(pipefd[0]));
+	}
 }
 
 static void	here_doc_set_table(t_ms_ast *cmd_node)
