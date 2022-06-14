@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/13 11:04:04 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/14 11:05:26 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,8 @@ int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 	i = 0;
 	while (i < info->process_cnt)
 	{
-		// WIFSIGNALED, 子プロセスがシグナルにより終了した場合に真を返す。
-		waitpid(info->pid[i], &wstatus, WUNTRACED); // 仮のコード
-		// safe_func(waitpid(info->pid[i], &wstatus, WUNTRACED)); // これだとexitしてしまうので×
+		if ((waitpid(info->pid[i], &wstatus, WUNTRACED) == -1) && (WIFSIGNALED(wstatus) == false))
+			safe_func(-1);
 		i++;
 	}
 	free_info(&info);
