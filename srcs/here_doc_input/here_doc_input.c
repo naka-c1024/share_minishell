@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 05:18:00 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/14 12:07:26 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/17 14:06:43 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static size_t	get_here_doc_init(t_ms_ast *ms_ast, char *delimiter)
 {
 	size_t	len;
 
+	free(ms_ast->buffer);//これ必要なはずかつ、callocで作ってるはずだから最初ダブルフリー起きないはず
+	free(ms_ast->delimiter);
 	ms_ast->buffer = ft_x_strdup("");
 	len = ft_strlen(delimiter);
 	ms_ast->delimiter = (char *)ft_x_calloc(len + 1, sizeof(char));
@@ -24,7 +26,7 @@ static size_t	get_here_doc_init(t_ms_ast *ms_ast, char *delimiter)
 	return (len);
 }
 
-static void	make_buffer(t_ms_ast *ms_ast, char *delimiter, int pipefd[2])
+static size_t	make_buffer(t_ms_ast *ms_ast, char *delimiter)
 {
 	size_t	len;
 	char	*a_temp;
@@ -33,7 +35,11 @@ static void	make_buffer(t_ms_ast *ms_ast, char *delimiter, int pipefd[2])
 
 	ms_ast->is_here_doc = true;
 	len = get_here_doc_init(ms_ast, delimiter);
-	b_temp = readline(">");
+	b_temp = readline("> ");
+	if (!b_temp)
+	{
+		return (0);
+	}
 	a_temp = ft_x_strjoin(b_temp, "\n");
 	free(b_temp);
 	while (ft_strncmp(a_temp, ms_ast->delimiter, len + 1))
@@ -42,14 +48,16 @@ static void	make_buffer(t_ms_ast *ms_ast, char *delimiter, int pipefd[2])
 		free(ms_ast->buffer);
 		free(a_temp);
 		ms_ast->buffer = new_document;
-		b_temp = readline(">");
+		b_temp = readline("> ");
+		if (!b_temp)
+		{
+			return (0);
+		}
 		a_temp = ft_x_strjoin(b_temp, "\n");
 		free(b_temp);
 	}
 	free(a_temp);
-	len = ft_strlen(ms_ast->buffer);
-	write(pipefd[1], ms_ast->buffer, len + 1);
-	exit(0);
+	return (ft_strlen(ms_ast->buffer));
 }
 
 static void	receive_buffer(t_ms_ast *ms_ast, int pipefd[2])
@@ -76,60 +84,81 @@ static void	receive_buffer(t_ms_ast *ms_ast, int pipefd[2])
 	}
 }
 
-static void	set_here_doc(t_ms_ast *ms_ast, char *delimiter)
+static void	here_doc_set_table(t_ms_ast *cmd_node, int pipefd[2])
+{
+	t_list	*tmp_node;
+	size_t	len;
+
+	tmp_node = cmd_node->cmd_info_list;
+	len = 0;
+	while (tmp_node)
+	{
+		if (!ft_strncmp(tmp_node->content, "<<", 2))
+		{
+			len = make_buffer(cmd_node, tmp_node->next->content);
+			tmp_node = tmp_node->next->next;
+		}
+		else
+			tmp_node = tmp_node->next;
+	}
+	if (len)
+	{
+		write(pipefd[1], cmd_node->buffer, len + 1);
+	}
+}
+
+static void	crawl_ast(t_ms_ast *ms_ast, int pipefd[2])
+{
+	if (ms_ast->left_node && ms_ast->type == PIPE)
+		crawl_ast(ms_ast->left_node, pipefd);
+	if (ms_ast->right_node && ms_ast->right_node->cmd_info_list)
+		here_doc_set_table(ms_ast->right_node, pipefd);
+	if (ms_ast->cmd_info_list)
+		here_doc_set_table(ms_ast, pipefd);
+	return ;
+}
+
+static bool	here_doc_set(t_ms_ast *ms_ast)
 {
 	pid_t	pid;
 	int		pipefd[2];
 	int		wstatus;
 
 	safe_func(pipe(pipefd));
-	pid = safe_func(fork());
+	pid = fork();
 	if (pid == 0)
 	{
+		init_signal(SIGINT, sigint_after_rl_in_heredoc); // here docが終わったらまた元のルールに設定する
 		safe_func(close(pipefd[0]));
-		make_buffer(ms_ast, delimiter, pipefd);
+		crawl_ast(ms_ast, pipefd);
+		exit(0);
 	}
 	else
 	{
 		safe_func(close(pipefd[1]));
-		if ((waitpid(pid, &wstatus, WUNTRACED) == -1) && (WIFSIGNALED(wstatus) == false))
-			safe_func(-1);
-		receive_buffer(ms_ast, pipefd);
-		safe_func(close(pipefd[0]));
-	}
-}
-
-static void	here_doc_set_table(t_ms_ast *cmd_node)
-{
-	t_list	*tmp_node;
-
-	tmp_node = cmd_node->cmd_info_list;
-	while (tmp_node)
-	{
-		if (!ft_strncmp(tmp_node->content, "<<", 2))
+		wstatus = 0;
+		if (safe_func(waitpid(pid, &wstatus, WUNTRACED)))
 		{
-			init_signal(SIGQUIT, SIG_IGN); // here docの中ではSIGQUITを無視
-			set_here_doc(cmd_node, tmp_node->next->content);
-			tmp_node = tmp_node->next->next;
+			if (WIFSIGNALED(wstatus))
+			{
+				safe_func(close(pipefd[0]));
+				return (false);
+			}
+			receive_buffer(ms_ast, pipefd);
+			safe_func(close(pipefd[0]));
 		}
-		else
-			tmp_node = tmp_node->next;
 	}
+	return (true);
 }
 
-static void	crawl_ast(t_ms_ast *ms_ast)
+bool	here_doc_init(t_ms_ast *ms_ast)
 {
-	if (ms_ast->left_node && ms_ast->type == PIPE)
-		crawl_ast(ms_ast->left_node);
-	if (ms_ast->right_node && ms_ast->right_node->cmd_info_list)
-		here_doc_set_table(ms_ast->right_node);
-	if (ms_ast->cmd_info_list)
-		here_doc_set_table(ms_ast);
-	return ;
-}
+	bool	is_signal;
 
-void	here_doc_set(t_ms_ast *ms_ast)
-{
-	crawl_ast(ms_ast);
+	init_signal(SIGQUIT, SIG_IGN); // here docの中ではSIGQUITを無視
+	init_signal(SIGINT, SIG_IGN); // SIGQUITを無視
+	is_signal = here_doc_set(ms_ast);
 	init_signal(SIGQUIT, sigquit_after_rl); // here docが終わったらまた元のルールに設定する
+	init_signal(SIGINT, sigint_after_rl); // here docが終わったらまた元のルールに設定する
+	return (is_signal);
 }

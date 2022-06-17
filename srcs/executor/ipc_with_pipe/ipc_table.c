@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ipc_table.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/14 11:05:26 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:33:28 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,37 @@ int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 	i = 0;
 	while (i < info->process_cnt)
 		info->pipefd[i++] = (int *)ft_x_calloc(2, sizeof(int));
+
+	init_signal(SIGINT, SIG_IGN); // SIGQUITを無視
+	init_signal(SIGQUIT, SIG_IGN); // SIGQUITを無視
 	crawl_ast_in_ipc_table(ms_ast, info, 0);
 	i = 0;
 	while (i < info->process_cnt)
 	{
-		if ((waitpid(info->pid[i], &wstatus, WUNTRACED) == -1) && (WIFSIGNALED(wstatus) == false))
-			safe_func(-1);
+		wstatus = 0;
+		if (safe_func(waitpid(info->pid[i], &wstatus, WUNTRACED)))
+		{
+			if (WIFSIGNALED(wstatus))
+			{
+				if (WTERMSIG(wstatus) == SIGINT)
+					ft_putchar_fd('\n', STDERR);
+				else if (WTERMSIG(wstatus) == SIGQUIT)
+				{
+					ft_putstr_fd("Quit: ", STDERR);
+					ft_putnbr_fd(WTERMSIG(wstatus), STDERR);
+					ft_putchar_fd('\n', STDERR);
+				}
+			}
+		}
 		i++;
 	}
 	free_info(&info);
+	init_signal(SIGINT, sigint_after_rl);
+	init_signal(SIGQUIT, sigquit_after_rl);
 	return (WEXITSTATUS(wstatus));
 }
+
+//waitpid でエラー判定して
+//成功だったらシグナルかどうかさらにシグナルがctrl＋c稼働か判別
+//そうだった場合1を立てる
+

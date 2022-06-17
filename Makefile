@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/07 04:56:18 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/17 12:01:36 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,8 @@ SRCS	:=	main.c\
 			safe_system_call.c
 
 RL_PATH	:=/usr/local/opt/readline
-RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
-RL_ARC	:=	-L$(RL_PATH)/lib -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+RL_INCDIR	:=	-I $(shell brew --prefix readline)/include -I$(RL_PATH)/include
+RL_ARC	:=	 -L$(shell brew --prefix readline)/lib -L$(RL_PATH)/lib -lreadline -lhistory
 
 INCDIR	:= -I./includes
 OBJDIR	:=	./objs

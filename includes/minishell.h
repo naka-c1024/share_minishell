@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/14 10:52:42 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:33:04 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,11 @@ void	sigint_before_rl(int not_use);
 void	sigint_after_rl(int not_use);
 void	sigquit_after_rl(int not_use);
 void	init_signal(int sig_num, void (*func)(int not_use));
+void	sigint_after_rl_in_heredoc(int not_use);
 
 // lexer_and_parser
 t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt);
-void		here_doc_set(t_ms_ast *ms_ast);
+bool		here_doc_init(t_ms_ast *ms_ast);
 
 // expander
 void	expander(t_ms_ast **ms_ast, t_envlist *envlist);
