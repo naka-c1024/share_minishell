@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 16:43:43 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:21:15 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,46 +53,47 @@ static size_t	loc_meta_char(char *str)
 	return (0);
 }
 
-static void	expand_env_var(char **dollar_str, t_envlist *envlist, size_t dollar_loc)
+static void	expand_env_var(char **str, t_envlist *envlist, size_t dollar_loc)
 {
-	char	*pre_dollar_str;
-	char	*post_dollar_str;
+	char	*pre_dollar;
+	char	*post_dollar;
 	size_t	meta_loc;
 	size_t	post_size;
 	char	*tmp;
 	char	*env_var;
 
-	pre_dollar_str = ft_x_substr(*dollar_str, 0, dollar_loc);
-	meta_loc = loc_meta_char(*dollar_str + dollar_loc + 1);
+	pre_dollar = ft_x_substr(*str, 0, dollar_loc);
+	meta_loc = loc_meta_char(*str + dollar_loc + 1);
 	if (meta_loc)
 	{
-		post_size = ft_strlen(*dollar_str + dollar_loc + meta_loc + 1);
-		post_dollar_str = ft_x_substr(*dollar_str, dollar_loc + meta_loc + 1, post_size);
+		post_size = ft_strlen(*str + dollar_loc + meta_loc + 1);
+		post_dollar = ft_x_substr(*str, dollar_loc + meta_loc + 1, post_size);
 	}
 	else
 	{
-		post_dollar_str = (char *)ft_x_strdup("");
+		post_dollar = (char *)ft_x_strdup("");
 	}
 	while (envlist)
 	{
-		if (ft_strncmp(&((*dollar_str)[dollar_loc + 1]), envlist->key, ft_strlen(*dollar_str + dollar_loc) - post_size - 1) == 0)
+		if (ft_strncmp(&((*str)[dollar_loc + 1]), envlist->key,
+			ft_strlen(*str + dollar_loc) - post_size - 1) == 0)
 		{
-			free(*dollar_str);
+			free(*str);
 			env_var = ft_strdup(envlist->value);
-			tmp = ft_x_strjoin(pre_dollar_str, env_var);
-			*dollar_str = ft_x_strjoin(tmp, post_dollar_str);
-			free(pre_dollar_str);
-			free(post_dollar_str);
+			tmp = ft_x_strjoin(pre_dollar, env_var);
+			*str = ft_x_strjoin(tmp, post_dollar);
+			free(pre_dollar);
+			free(post_dollar);
 			free(env_var);
 			free(tmp);
 			return ;
 		}
 		envlist = envlist->next;
 	}
-	free(*dollar_str);
-	*dollar_str = ft_x_strjoin(pre_dollar_str, post_dollar_str);
-	free(pre_dollar_str);
-	free(post_dollar_str);
+	free(*str);
+	*str = ft_x_strjoin(pre_dollar, post_dollar);
+	free(pre_dollar);
+	free(post_dollar);
 }
 
 static void	expand_dollar(char **str, t_envlist *envlist)
@@ -195,14 +196,14 @@ static void	send_single_token(t_list **list, t_envlist *envlist)
 		i = 0;
 		while (((*cp_list)->content)[i])
 		{
-			if (((*cp_list)->content)[i] == '\'') // 最初に'が来たら'だけを処理する
+			if (((*cp_list)->content)[i] == '\'')
 			{
 				expand_single(&((*cp_list)->content));
-				break ; // single内ではdouble quoteや環境変数展開はしない
+				break ;
 			}
 			if (((*cp_list)->content)[i] == '\"')
 			{
-				expand_double(&((*cp_list)->content), envlist); // この中でもdollar展開はする
+				expand_double(&((*cp_list)->content), envlist);
 				break ;
 			}
 			if (((*cp_list)->content)[i] == '$')
@@ -218,7 +219,7 @@ static void	send_single_token(t_list **list, t_envlist *envlist)
 	return ;
 }
 
-static void crawl_ast(t_ms_ast **ms_ast, t_envlist *envlist)
+static void	crawl_ast(t_ms_ast **ms_ast, t_envlist *envlist)
 {
 	if ((*ms_ast)->left_node && (*ms_ast)->type == PIPE)
 		crawl_ast(&((*ms_ast)->left_node), envlist);
