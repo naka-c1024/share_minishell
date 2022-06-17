@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 17:21:15 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:38:15 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,22 @@ static size_t	loc_meta_char(char *str)
 	return (0);
 }
 
+// static void	init_env_ver(char **str, char *pre_dollar, char *post_dollar, size_t dollar_loc)
+// {
+// 	size_t meta_loc;
+// 	size_t	post_size;
+
+// 	pre_dollar = ft_x_substr(*str, 0, dollar_loc);
+// 	meta_loc = loc_meta_char(*str + dollar_loc + 1);
+// 	if (meta_loc)
+// 	{
+// 		post_size = ft_strlen(*str + dollar_loc + meta_loc + 1);
+// 		post_dollar = ft_x_substr(*str, dollar_loc + meta_loc + 1, post_size);
+// 	}
+// 	else
+// 		post_dollar = (char *)ft_x_strdup("");
+// }
+
 static void	expand_env_var(char **str, t_envlist *envlist, size_t dollar_loc)
 {
 	char	*pre_dollar;
@@ -70,9 +86,7 @@ static void	expand_env_var(char **str, t_envlist *envlist, size_t dollar_loc)
 		post_dollar = ft_x_substr(*str, dollar_loc + meta_loc + 1, post_size);
 	}
 	else
-	{
 		post_dollar = (char *)ft_x_strdup("");
-	}
 	while (envlist)
 	{
 		if (ft_strncmp(&((*str)[dollar_loc + 1]), envlist->key,
