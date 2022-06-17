@@ -6,216 +6,49 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 21:58:36 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/18 08:24:27 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-static void	expand_exit_status(char **dollar_str, size_t dollar_loc)
-{
-	char	*pre_dollar_str;
-	char	*post_dollar_str;
-	size_t	post_size;
-	char	*status;
-	char	*tmp;
-
-	post_size = ft_strlen(*dollar_str + dollar_loc + 2);
-	pre_dollar_str = ft_x_substr(*dollar_str, 0, dollar_loc);
-	post_dollar_str = ft_x_substr(*dollar_str, dollar_loc + 2, post_size);
-	status = ft_x_itoa(g_exit_status);
-	free(*dollar_str);
-	tmp = ft_x_strjoin(pre_dollar_str, status);
-	*dollar_str = ft_x_strjoin(tmp, post_dollar_str);
-	free(pre_dollar_str);
-	free(post_dollar_str);
-	free(status);
-	free(tmp);
-}
-
-static size_t	loc_meta_char(char *str)
+static void	find_meta_char(t_list **cp_list, t_envlist *envlist)
 {
 	size_t	i;
 
 	i = 0;
-	while (str[i])
+	while (((*cp_list)->content)[i])
 	{
-		if (str[i] == '\'')
-			return (i);
-		if (str[i] == '\"')
-			return (i);
-		if (str[i] == '\n')
-			return (i);
-		if (str[i] == '$')
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-static void	three_strjoin(char **str, char *value, char *pre_dollar, char *post_dollar)
-{
-	char	*env_var;
-	char	*tmp;
-
-	free(*str);
-	env_var = ft_strdup(value);
-	tmp = ft_x_strjoin(pre_dollar, env_var);
-	*str = ft_x_strjoin(tmp, post_dollar);
-	free(env_var);
-	free(tmp);
-	free(pre_dollar);
-	free(post_dollar);
-}
-
-static void	expand_env_var(char **str, t_envlist *envlist, size_t dollar_loc)
-{
-	char	*pre_dollar;
-	char	*post_dollar;
-	size_t	meta_loc;
-	size_t	post_size;
-
-	pre_dollar = ft_x_substr(*str, 0, dollar_loc);
-	meta_loc = loc_meta_char(*str + dollar_loc + 1);
-	post_size = ft_strlen(*str + dollar_loc + meta_loc + 1);
-	post_dollar = ft_x_substr(*str, dollar_loc + meta_loc + 1, post_size);
-	while (envlist)
-	{
-		if (ft_strncmp(&((*str)[dollar_loc + 1]), envlist->key,
-			ft_strlen(*str + dollar_loc) - post_size - 1) == 0)
+		if (((*cp_list)->content)[i] == '\'')
 		{
-			three_strjoin(str, envlist->value, pre_dollar, post_dollar);
-			return ;
+			expand_single(&((*cp_list)->content));
+			break ;
 		}
-		envlist = envlist->next;
-	}
-	free(*str);
-	*str = ft_x_strjoin(pre_dollar, post_dollar);
-	free(pre_dollar);
-	free(post_dollar);
-}
-
-static void	expand_dollar(char **str, t_envlist *envlist)
-{
-	size_t	i;
-
-	i = 0;
-	while ((*str)[i])
-	{
-		if ((*str)[i] == '$')
+		if (((*cp_list)->content)[i] == '\"')
 		{
-			if ((*str)[i + 1] == '?')
-			{
-				expand_exit_status(str, i);
-				break ;
-			}
-			else
-			{
-				expand_env_var(str, envlist, i);
-				break ;
-			}
+			expand_double(&((*cp_list)->content), envlist);
+			break ;
+		}
+		if (((*cp_list)->content)[i] == '$')
+		{
+			expand_dollar(&((*cp_list)->content), envlist);
+			i = 0;
+			continue ;
 		}
 		i++;
 	}
-}
-
-static size_t	count_quote(char *str, int c)
-{
-	size_t	i;
-
-	i = 0;
-	while (*str)
-	{
-		if (*str == c)
-			i++;
-		str++;
-	}
-	return (i);
-}
-
-static void	expand_single(char **str)
-{
-	char	*ptr;
-	size_t	i;
-	size_t	j;
-	size_t	quote_cnt;
-
-	quote_cnt = count_quote(*str, '\'');
-	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
-	i = 0;
-	j = 0;
-	while ((*str)[i] != '\0')
-	{
-		if ((*str)[i] != '\'')
-		{
-			ptr[j] = (*str)[i];
-			j++;
-		}
-		i++;
-	}
-	ptr[j] = '\0';
-	free(*str);
-	*str = ptr;
-}
-
-static void	expand_double(char **str, t_envlist *envlist)
-{
-	char	*ptr;
-	size_t	i;
-	size_t	j;
-	size_t	quote_cnt;
-
-	quote_cnt = count_quote(*str, '\"');
-	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
-	i = 0;
-	j = 0;
-	while ((*str)[i] != '\0')
-	{
-		if ((*str)[i] != '\"')
-		{
-			ptr[j] = (*str)[i];
-			j++;
-		}
-		i++;
-	}
-	ptr[j] = '\0';
-	free(*str);
-	*str = ptr;
-	expand_dollar(str, envlist);
 }
 
 static void	send_single_token(t_list **list, t_envlist *envlist)
 {
 	t_list	**cp_list;
-	size_t	i;
 
 	cp_list = list;
 	while (*cp_list)
 	{
-		i = 0;
-		while (((*cp_list)->content)[i])
-		{
-			if (((*cp_list)->content)[i] == '\'')
-			{
-				expand_single(&((*cp_list)->content));
-				break ;
-			}
-			if (((*cp_list)->content)[i] == '\"')
-			{
-				expand_double(&((*cp_list)->content), envlist);
-				break ;
-			}
-			if (((*cp_list)->content)[i] == '$')
-			{
-				expand_dollar(&((*cp_list)->content), envlist);
-				i = 0;
-				continue ;
-			}
-			i++;
-		}
+		find_meta_char(cp_list, envlist);
 		cp_list = &((*cp_list)->next);
 	}
-	return ;
 }
 
 static void	crawl_ast(t_ms_ast **ms_ast, t_envlist *envlist)

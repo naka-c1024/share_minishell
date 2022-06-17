@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/17 16:37:12 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/17 17:59:01 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/18 08:25:50 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,9 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 RM		=	rm -rf
 
-HDISRCS	=	expander_main.c
-
-SRCS	=	$(HDISRCS)
+SRCS	=	expander_main.c\
+			expand_dollar.c\
+			expand_quote.c
 
 OBJDIR	=	./objs
 
