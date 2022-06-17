@@ -6,11 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 22:59:44 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:43:43 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "expander.h"
 
 static void	expand_exit_status(char **dollar_str, size_t dollar_loc)
 {

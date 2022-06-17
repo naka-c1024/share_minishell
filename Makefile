@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/17 15:27:02 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/17 17:10:51 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,13 +51,16 @@ HDI_PA_PATH		=	./srcs/here_doc_input/
 HDI_PA_ARC		=	./srcs/here_doc_input/here_doc_input
 EXE_CMD_PATH	=	./srcs/executor/
 EXE_CMD_ARC		=	./srcs/executor/executor
+EXPANDER_PATH	=	./srcs/expander/
+EXPANDER_ARC	=	./srcs/expander/expander
 
 $(NAME)	: $(OBJS)
 	make bonus -C $(LIBFT_PATH)
 	make -C $(LE_PA_PATH)
 	make -C $(HDI_PA_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	make -C $(EXPANDER_PATH)
+	$(CC) $(CFLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) $(EXPANDER_ARC) -o $(NAME)
 
 # suffix rule
 $(OBJDIR)/%.o:	%.c
@@ -71,6 +74,7 @@ clean	:
 	make clean -C $(LE_PA_PATH)
 	make clean -C $(HDI_PA_PATH)
 	make clean -C $(EXE_CMD_PATH)
+	make clean -C $(EXPANDER_PATH)
 	if [ -e $(OBJDIR) ]; then \
 		rm -rf $(OBJDIR);\
 	fi
@@ -80,6 +84,7 @@ fclean	: clean
 	make fclean -C $(LE_PA_PATH)
 	make fclean -C $(HDI_PA_PATH)
 	make fclean -C $(EXE_CMD_PATH)
+	make fclean -C $(EXPANDER_PATH)
 	$(RM) $(NAME)
 
 re		: fclean all
@@ -95,7 +100,8 @@ nm		: fclean $(OBJS)
 	make -C $(LE_PA_PATH)
 	make -C $(HDI_PA_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	make -C $(EXPANDER_PATH)
+	$(CC) $(CFLAGS) $(NO_BUILTIN_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) $(EXPANDER_ARC) -o $(NAME)
 	nm -u $(NAME)
 
 debug	: fclean $(OBJS)
@@ -103,7 +109,8 @@ debug	: fclean $(OBJS)
 	make -C $(LE_PA_PATH)
 	make -C $(HDI_PA_PATH)
 	make -C $(EXE_CMD_PATH)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) -o $(NAME)
+	make -C $(EXPANDER_PATH)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) $(EXPANDER_ARC) -o $(NAME)
 
 leak	:
 	leaks -quiet -atExit -- ./$(NAME)
