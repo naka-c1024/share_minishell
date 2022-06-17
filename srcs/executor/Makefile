@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
+#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/29 15:34:53 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/07 05:40:45 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/17 15:37:23 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,6 @@ SBSRCS	=	single_builtin_executor.c\
 			sb_set_file.c
 
 EXESRCS	=	cd.c\
-			no_builtin.c\
 			echo.c\
 			env.c\
 			envlist.c\
@@ -44,7 +43,6 @@ EXESRCS	=	cd.c\
 			pwd.c\
 			unset.c\
 			utils.c\
-			only_one_cmd.c\
 			single_builtin_executor.c\
 			executor_utils.c
 

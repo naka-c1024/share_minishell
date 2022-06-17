@@ -6,14 +6,14 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/17 15:17:00 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/17 15:27:02 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:=	minishell
 CC		:=	gcc
 RM		:=	rm -f
-# CFLAGS	:=	-Wall -Wextra -Werror
+CFLAGS	:=	-Wall -Wextra -Werror
 
 #DEBUG_FLAGS	:=	-g -fsanitize=address -fsanitize=undefined
 DEBUG_FLAGS	:= -fsanitize=address -g3
@@ -83,7 +83,6 @@ fclean	: clean
 	$(RM) $(NAME)
 
 re		: fclean all
-# make leak
 
 bonus	: $(NAME)
 

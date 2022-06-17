@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:52 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/03/29 15:41:21 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:30:21 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	lst_to_arr3(t_envlist **envlist, size_t *key_len, size_t *value_len)
 	if (ft_strncmp((*envlist)->key, "_", 2) == 0)
 	{
 		(*envlist) = (*envlist)->next;
-		return (1); // continue
+		return (1);
 	}
 	*key_len = ft_strlen((*envlist)->key);
 	if ((*envlist)->value == NULL)
@@ -49,7 +49,7 @@ static int	lst_to_arr4(size_t *i, char **rtn,
 	{
 		(*envlist) = (*envlist)->next;
 		(*i)++;
-		return (1); // continue
+		return (1);
 	}
 	return (0);
 }
@@ -89,7 +89,7 @@ static char	**list_to_darray(t_envlist *envlist)
 	size_t			list_size;
 
 	list_size = list_cnt(envlist);
-	list_size -= 1; // -1してるのはアンダースコアがいらないから
+	list_size -= 1;
 	rtn = malloc(sizeof(char *) * (list_size) + 1);
 	if (!rtn)
 	{
@@ -206,8 +206,8 @@ static int	set_new_node(char *str, t_envlist **envlist)
 	eq_location = str;
 	while (eq_location && *eq_location != '=')
 		eq_location++;
-	*eq_location = '\0'; // '='を'\0'に変える
-	remove_duplicate(str, envlist); // 重複している環境変数をあらかじめ削除
+	*eq_location = '\0';
+	remove_duplicate(str, envlist);
 	newlist->key = ft_strdup(str);
 	newlist->value = ft_strdup(++eq_location);
 	newlist->next = NULL;
@@ -222,7 +222,7 @@ static bool	can_export(char *str)
 	if (ft_isdigit(str[0]))
 		return (false);
 	i = 0;
-	while (str[i] && str[i] != '=') // メタ文字は無視
+	while (str[i] && str[i] != '=')
 	{
 		if ('#' <= str[i] && str[i] <= '/')
 			return (false);
@@ -258,7 +258,7 @@ static bool	is_env_key(char *str, t_envlist *envlist)
 	len = ft_strlen(str);
 	while (envlist)
 	{
-		if (ft_strncmp(str, envlist->key, len + 1) == 0) // +1するのはnull文字まで見るため
+		if (ft_strncmp(str, envlist->key, len + 1) == 0)
 			return (true);
 		envlist = envlist->next;
 	}
@@ -269,7 +269,7 @@ static int	no_equal(char *str, t_envlist **envlist)
 {
 	t_envlist	*newlist;
 
-	if (is_env_key(str, *envlist) == true) // すでにkeyがある場合は何もしない
+	if (is_env_key(str, *envlist) == true)
 	{
 		return (0);
 	}
@@ -280,7 +280,7 @@ static int	no_equal(char *str, t_envlist **envlist)
 		return (1);
 	}
 	newlist->key = ft_strdup(str);
-	newlist->value = NULL; // valueをnullにしている,envもexport単体もvalueがnullかどうかで出力をコントロールする
+	newlist->value = NULL;
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);
 	return (0);
@@ -310,9 +310,9 @@ static int	set_env(char **split_ln, t_envlist **envlist)
 		else if (is_equal(split_ln[i]) == false)
 		{
 			if (exit_status == 1)
-				no_equal(split_ln[i], envlist); // valueがないパターンの関数
+				no_equal(split_ln[i], envlist);
 			else if (exit_status == 0)
-				exit_status = no_equal(split_ln[i], envlist); // valueがないパターンの関数
+				exit_status = no_equal(split_ln[i], envlist);
 		}
 		else if (exit_status == 1)
 			set_new_node(split_ln[i], envlist);
