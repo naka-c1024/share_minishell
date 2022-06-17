@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/12 17:08:21 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:33:12 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ int	main(int argc, char **argv, char **envp)
 		ms_ast = lexer_and_parser(&line, &process_cnt);
 		if (ms_ast)
 		{
-			here_doc_set(ms_ast);
-			expander(&ms_ast, envlist);
-			executor(ms_ast, &envlist, process_cnt);
+			if (here_doc_init(ms_ast) == true)
+			{
+				expander(&ms_ast, envlist);
+				executor(ms_ast, &envlist, process_cnt);
+			}
 		}
 		add_history(line); // 履歴の付け足し
 		safe_free(&line);

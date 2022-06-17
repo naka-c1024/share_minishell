@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ipc_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 13:37:29 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/14 10:50:39 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 12:47:32 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	case_of_command_not_found(char *cmd_name)
 
 void	child_exe(t_info *info, t_process_info *proc_info, t_ms_ast *ast_node)
 {
+	init_signal(SIGINT, sigint_after_rl);
+	init_signal(SIGQUIT, sigquit_after_rl);
 	proc_info->file_info = (t_file_info *)ft_x_calloc(1, sizeof(t_file_info));
 	proc_info->file_info->in_fd = STDIN;
 	proc_info->file_info->out_fd = STDOUT;
