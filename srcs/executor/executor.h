@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 16:04:31 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:17:31 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,12 @@ char	**list_to_darray(t_envlist *envlist);
 
 // export_print.c
 void	print_export(t_envlist *envlist);
+
+// export_set_env_utils.c
+bool	can_export(char *str);
+bool	is_equal(char *str);
+int		no_equal(char *str, t_envlist **envlist);
+void	not_a_valid_identifier(char *str);
 
 // pwd.c
 int		my_pwd(void);
