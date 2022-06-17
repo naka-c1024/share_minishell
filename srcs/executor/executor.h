@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 15:50:24 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:04:31 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,9 @@ int		my_export(char **split_ln, t_envlist **envlist);
 
 // export_lst_to_arr.c
 char	**list_to_darray(t_envlist *envlist);
+
+// export_print.c
+void	print_export(t_envlist *envlist);
 
 // pwd.c
 int		my_pwd(void);

@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/29 15:34:53 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/17 15:50:43 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/17 16:04:47 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ EXESRCS	=	cd.c\
 			exit.c\
 			export.c\
 			export_lst_to_arr.c\
+			export_print.c\
 			pwd.c\
 			unset.c\
 			utils.c\

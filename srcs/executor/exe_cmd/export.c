@@ -6,80 +6,33 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:52 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 15:49:43 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:03:40 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static void	free_darray(char **darray)
+static int	set_new_node(char *str, t_envlist **envlist)
 {
-	size_t	i;
+	t_envlist	*newlist;
+	char		*eq_location;
 
-	i = 0;
-	while (darray[i])
+	newlist = (t_envlist *)malloc(sizeof(t_envlist));
+	if (!newlist)
 	{
-		free(darray[i]);
-		i++;
+		print_error("export: malloc", NULL, errno);
+		return (1);
 	}
-	free(darray);
-}
-
-static int	my_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
+	eq_location = str;
+	while (eq_location && *eq_location != '=')
+		eq_location++;
+	*eq_location = '\0';
+	remove_duplicate(str, envlist);
+	newlist->key = ft_strdup(str);
+	newlist->value = ft_strdup(++eq_location);
+	newlist->next = NULL;
+	ms_lstadd_back(envlist, newlist);
 	return (0);
-}
-
-static char	**bubble_sort(char **darray)
-{
-	int		i;
-	int		j;
-	char	*tmp;
-
-	i = 0;
-	while (darray[i])
-	{
-		j = i + 1;
-		while (darray[j])
-		{
-			if (my_strcmp(darray[i], darray[j]) > 0)
-			{
-				tmp = darray[i];
-				darray[i] = darray[j];
-				darray[j] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-	return (darray);
-}
-
-static void	print_export(t_envlist *envlist)
-{
-	char	**darray;
-	size_t	i;
-
-	darray = list_to_darray(envlist);
-	if (!darray)
-		return ;
-	darray = bubble_sort(darray);
-	i = 0;
-	while (darray[i])
-	{
-		ft_putendl_fd(darray[i], STDOUT_FILENO);
-		i++;
-	}
-	free_darray(darray);
 }
 
 void	remove_duplicate(char *str, t_envlist **envlist)
@@ -103,29 +56,6 @@ void	remove_duplicate(char *str, t_envlist **envlist)
 		}
 		cp_elist = &(*cp_elist)->next;
 	}
-}
-
-static int	set_new_node(char *str, t_envlist **envlist)
-{
-	t_envlist	*newlist;
-	char		*eq_location;
-
-	newlist = (t_envlist *)malloc(sizeof(t_envlist));
-	if (!newlist)
-	{
-		print_error("export: malloc", NULL, errno);
-		return (1);
-	}
-	eq_location = str;
-	while (eq_location && *eq_location != '=')
-		eq_location++;
-	*eq_location = '\0';
-	remove_duplicate(str, envlist);
-	newlist->key = ft_strdup(str);
-	newlist->value = ft_strdup(++eq_location);
-	newlist->next = NULL;
-	ms_lstadd_back(envlist, newlist);
-	return (0);
 }
 
 static bool	can_export(char *str)
