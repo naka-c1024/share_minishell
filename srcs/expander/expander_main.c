@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 17:38:15 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/17 21:58:36 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,23 @@ static size_t	loc_meta_char(char *str)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (i);
 }
 
-// static void	init_env_ver(char **str, char *pre_dollar, char *post_dollar, size_t dollar_loc)
-// {
-// 	size_t meta_loc;
-// 	size_t	post_size;
+static void	three_strjoin(char **str, char *value, char *pre_dollar, char *post_dollar)
+{
+	char	*env_var;
+	char	*tmp;
 
-// 	pre_dollar = ft_x_substr(*str, 0, dollar_loc);
-// 	meta_loc = loc_meta_char(*str + dollar_loc + 1);
-// 	if (meta_loc)
-// 	{
-// 		post_size = ft_strlen(*str + dollar_loc + meta_loc + 1);
-// 		post_dollar = ft_x_substr(*str, dollar_loc + meta_loc + 1, post_size);
-// 	}
-// 	else
-// 		post_dollar = (char *)ft_x_strdup("");
-// }
+	free(*str);
+	env_var = ft_strdup(value);
+	tmp = ft_x_strjoin(pre_dollar, env_var);
+	*str = ft_x_strjoin(tmp, post_dollar);
+	free(env_var);
+	free(tmp);
+	free(pre_dollar);
+	free(post_dollar);
+}
 
 static void	expand_env_var(char **str, t_envlist *envlist, size_t dollar_loc)
 {
@@ -75,31 +74,17 @@ static void	expand_env_var(char **str, t_envlist *envlist, size_t dollar_loc)
 	char	*post_dollar;
 	size_t	meta_loc;
 	size_t	post_size;
-	char	*tmp;
-	char	*env_var;
 
 	pre_dollar = ft_x_substr(*str, 0, dollar_loc);
 	meta_loc = loc_meta_char(*str + dollar_loc + 1);
-	if (meta_loc)
-	{
-		post_size = ft_strlen(*str + dollar_loc + meta_loc + 1);
-		post_dollar = ft_x_substr(*str, dollar_loc + meta_loc + 1, post_size);
-	}
-	else
-		post_dollar = (char *)ft_x_strdup("");
+	post_size = ft_strlen(*str + dollar_loc + meta_loc + 1);
+	post_dollar = ft_x_substr(*str, dollar_loc + meta_loc + 1, post_size);
 	while (envlist)
 	{
 		if (ft_strncmp(&((*str)[dollar_loc + 1]), envlist->key,
 			ft_strlen(*str + dollar_loc) - post_size - 1) == 0)
 		{
-			free(*str);
-			env_var = ft_strdup(envlist->value);
-			tmp = ft_x_strjoin(pre_dollar, env_var);
-			*str = ft_x_strjoin(tmp, post_dollar);
-			free(pre_dollar);
-			free(post_dollar);
-			free(env_var);
-			free(tmp);
+			three_strjoin(str, envlist->value, pre_dollar, post_dollar);
 			return ;
 		}
 		envlist = envlist->next;
