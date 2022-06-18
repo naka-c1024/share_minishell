@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
+#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/18 10:06:19 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/18 11:28:04 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ $(NAME)	: $(OBJS)
 # suffix rule
 $(OBJDIR)/%.o:	%.c
 	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCDIR) $(RL_INCDIR) -c $< -o $@
 
 all		: $(NAME)
 

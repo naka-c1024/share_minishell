@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/18 09:58:18 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:29:10 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <stdio.h> // readlineのFILE用(必須)
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h> // rl_clear_history, add_history
 # include <stdio.h> // printf, perror
