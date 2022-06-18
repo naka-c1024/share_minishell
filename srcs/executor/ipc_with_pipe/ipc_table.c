@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:51:30 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/17 13:33:28 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/18 09:42:26 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,47 @@ static void	crawl_ast_in_ipc_table(t_ms_ast *ms_ast, t_info *info, int i)
 	return ;
 }
 
+void	signals_put(bool sigint_flag, bool sigquit_flag, int wstatus)
+{
+	if (sigint_flag)
+		ft_putchar_fd('\n', STDERR);
+	else if (sigquit_flag)
+	{
+		ft_putstr_fd("Quit: ", STDERR);
+		ft_putnbr_fd(WTERMSIG(wstatus), STDERR);
+		ft_putchar_fd('\n', STDERR);
+	}
+}
+
+static int	proccess_waiting(t_info *info)
+{
+	int		i;
+	int		wstatus;
+	bool	sigint_flag;
+	bool	sigquit_flag;
+
+	i = 0;
+	sigint_flag = false;
+	while (i < info->process_cnt)
+	{
+		wstatus = 0;
+		sigquit_flag = false;
+		if (safe_func(waitpid(info->pid[i], &wstatus, WUNTRACED)))
+		{
+			if (WIFSIGNALED(wstatus))
+			{
+				if (WTERMSIG(wstatus) == SIGINT)
+					sigint_flag = true;
+				else if (WTERMSIG(wstatus) == SIGQUIT)
+					sigquit_flag = true;
+			}
+		}
+		i++;
+	}
+	signals_put(sigint_flag, sigquit_flag, wstatus);
+	return (wstatus);
+}
+
 int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 {
 	t_info	*info;
@@ -67,30 +108,10 @@ int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 	i = 0;
 	while (i < info->process_cnt)
 		info->pipefd[i++] = (int *)ft_x_calloc(2, sizeof(int));
-
-	init_signal(SIGINT, SIG_IGN); // SIGQUITを無視
-	init_signal(SIGQUIT, SIG_IGN); // SIGQUITを無視
+	init_signal(SIGINT, SIG_IGN);
+	init_signal(SIGQUIT, SIG_IGN);
 	crawl_ast_in_ipc_table(ms_ast, info, 0);
-	i = 0;
-	while (i < info->process_cnt)
-	{
-		wstatus = 0;
-		if (safe_func(waitpid(info->pid[i], &wstatus, WUNTRACED)))
-		{
-			if (WIFSIGNALED(wstatus))
-			{
-				if (WTERMSIG(wstatus) == SIGINT)
-					ft_putchar_fd('\n', STDERR);
-				else if (WTERMSIG(wstatus) == SIGQUIT)
-				{
-					ft_putstr_fd("Quit: ", STDERR);
-					ft_putnbr_fd(WTERMSIG(wstatus), STDERR);
-					ft_putchar_fd('\n', STDERR);
-				}
-			}
-		}
-		i++;
-	}
+	wstatus = proccess_waiting(info);
 	free_info(&info);
 	init_signal(SIGINT, sigint_after_rl);
 	init_signal(SIGQUIT, sigquit_after_rl);
@@ -100,4 +121,3 @@ int	ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt)
 //waitpid でエラー判定して
 //成功だったらシグナルかどうかさらにシグナルがctrl＋c稼働か判別
 //そうだった場合1を立てる
-
