@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/18 09:40:38 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/18 09:58:18 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
-
-extern int	g_exit_status;
-
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h> // rl_clear_history, add_history
 # include <stdio.h> // printf, perror
@@ -31,7 +28,6 @@ extern int	g_exit_status;
 # include <sys/ioctl.h> // ioctl
 # include <termios.h> // tcsetattr, tcgetattr
 # include <term.h> // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-
 # include <limits.h> // macro
 # include <stdint.h> // macro(linux)
 # include <stdbool.h> // bool
@@ -45,6 +41,8 @@ extern int	g_exit_status;
 // # define QUOTE 2
 # define LEFT 0
 # define RIGHT 1
+
+extern int	g_exit_status;
 
 typedef struct s_envlist
 {
@@ -66,7 +64,7 @@ typedef	struct s_ms_ast
 
 typedef struct s_info
 {
-	char		**envp;//no
+	char		**envp;
 	t_envlist	*envlist;//malloc
 	t_ms_ast	*ms_ast;//malloc
 	int			**pipefd;//malloc

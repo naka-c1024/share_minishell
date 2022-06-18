@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:56:29 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/04/23 03:13:57 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:28:35 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 		print_error("cd: malloc", NULL, errno);
 		return (1);
 	}
-	remove_duplicate("OLDPWD", envlist); // 重複している環境変数をあらかじめ削除
+	remove_duplicate("OLDPWD", envlist);
 	newlist->key = ft_strdup("OLDPWD");
 	newlist->value = ft_strdup(oldpwd);
 	newlist->next = NULL;
@@ -64,7 +64,7 @@ static int	set_pwd(t_envlist **envlist)
 		free(pwd);
 		return (1);
 	}
-	remove_duplicate("PWD", envlist); // 重複している環境変数をあらかじめ削除
+	remove_duplicate("PWD", envlist);
 	newlist->key = ft_strdup("PWD");
 	newlist->value = ft_strdup(pwd);
 	newlist->next = NULL;
@@ -92,7 +92,7 @@ int	my_cd(char **split_ln, t_envlist **envlist)
 {
 	char	*oldpwd;
 
-	oldpwd = getcwd(NULL, 0); // nullの場合も無視
+	oldpwd = getcwd(NULL, 0);
 	if (split_ln[1] == NULL)
 	{
 		if (chdir(get_home_value(*envlist)) == -1)

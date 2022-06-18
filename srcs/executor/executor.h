@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/07 05:36:25 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:17:31 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "../../libft/libft.h"
 # include "../../includes/minishell.h"
-
-// extern int	g_exit_status;
 
 # include <stdio.h> // printf, perror
 # include <stdlib.h> // malloc, free, exit, getenv
@@ -103,7 +101,6 @@ typedef struct s_process_info
 // envlist.c
 void		free_list(t_envlist *list);
 void		ms_lstadd_back(t_envlist **lst, t_envlist *element);
-// t_envlist	*create_envlist(char **envp);
 
 // cd.c
 int		my_cd(char **split_ln, t_envlist **envlist);
@@ -124,17 +121,23 @@ void	numeric_argument_required(char *str);
 void	remove_duplicate(char *str, t_envlist **envlist);
 int		my_export(char **split_ln, t_envlist **envlist);
 
+// export_lst_to_arr.c
+char	**list_to_darray(t_envlist *envlist);
+
+// export_print.c
+void	print_export(t_envlist *envlist);
+
+// export_set_env_utils.c
+bool	can_export(char *str);
+bool	is_equal(char *str);
+int		no_equal(char *str, t_envlist **envlist);
+void	not_a_valid_identifier(char *str);
+
 // pwd.c
 int		my_pwd(void);
 
 // unset.c
 int		my_unset(char **split_ln, t_envlist **envlist);
-
-// no_builtin.c
-int	exe_no_builtin_cmd(char **str, t_envlist *envlist);
-
-// only_one_cmd.c
-int	only_one_cmd(char **dbl_arr, t_envlist **envlist);
 
 //ipc_with_pipe
 int		ipc_table(t_ms_ast *ms_ast, t_envlist *envlist, size_t process_cnt);

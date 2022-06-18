@@ -5,25 +5,33 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/28 14:21:38 by ynakashi          #+#    #+#              #
-#    Updated: 2022/03/29 15:47:24 by ynakashi         ###   ########.fr        #
+#    Created: 2022/06/17 16:37:12 by ynakashi          #+#    #+#              #
+#    Updated: 2022/06/18 08:25:50 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= libsignal.a
+NAME	=	expander
 
-CC		= cc
+CC		=	gcc
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror
 
-RM		= rm -rf
+RM		=	rm -rf
 
-SRCS	= signal.c
+SRCS	=	expander_main.c\
+			expand_dollar.c\
+			expand_quote.c
 
-OBJS	= $(SRCS:.c=.o)
+OBJDIR	=	./objs
 
-.c.o	:
-	$(CC) $(CFLAGS) -c $< -o $@
+OBJS	:=	$(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
+
+MSINCDIR	:= -I../../includes
+HDIINCDIR	:= -I./
+
+$(OBJDIR)/%.o:	%.c
+	mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) $(MSINCDIR) $(HDIINCDIR) -c $< -o $@
 
 $(NAME)	: $(OBJS)
 	ar rc $(NAME) $(OBJS)
@@ -31,7 +39,9 @@ $(NAME)	: $(OBJS)
 all		: $(NAME)
 
 clean	:
-	$(RM) $(OBJS)
+	if [ -e $(OBJDIR) ]; then \
+		rm -rf $(OBJDIR);\
+	fi
 
 fclean	: clean
 	$(RM) $(NAME)

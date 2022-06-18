@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 13:33:12 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/18 08:36:39 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,14 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		init_signal(SIGINT, sigint_before_rl);
-		init_signal(SIGQUIT, SIG_IGN); // SIGQUITを無視
-		line = readline(RL_MSG); // 入力受付
-		if (!line) // ctrl+DではsignalではなくEOFが送られる,readlineはEOFを受け取ったらNULLを返す
+		init_signal(SIGQUIT, SIG_IGN);
+		line = readline(RL_MSG);
+		if (!line)
 		{
 			safe_func(write(STDERR_FILENO, "exit\n", 5));
-			exit (EXIT_SUCCESS);//ここ、returnからexitに変えました
+			exit (g_exit_status);
 		}
-		init_signal(SIGINT, sigint_after_rl);
-		init_signal(SIGQUIT, sigquit_after_rl); // プロセス実行時は無視できないのでこれを使う, here docの後に書くことができるのでもし行数が足りなければこの行は削除する
-		if (ft_strlen(line) == 0) // 改行だけの場合,空文字列がくる
+		if (ft_strlen(line) == 0)
 		{
 			safe_free(&line);
 			continue ;
@@ -50,8 +48,7 @@ int	main(int argc, char **argv, char **envp)
 				executor(ms_ast, &envlist, process_cnt);
 			}
 		}
-		add_history(line); // 履歴の付け足し
+		add_history(line);
 		safe_free(&line);
 	}
-	return (g_exit_status);
 }

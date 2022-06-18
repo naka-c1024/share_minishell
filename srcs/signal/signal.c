@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:01:56 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 13:37:40 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/18 08:28:47 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,16 @@
 void	sigint_before_rl(int not_use)
 {
 	(void)not_use;
-
 	write(STDOUT_FILENO, "\n", 1);
-	//rl_replace_line("", 0); // 入力されたものをclear, m1macだとコンパイルできないためコメントアウトしている
-	rl_on_new_line(); // 次の行に移動
-	rl_redisplay(); // -再表示して以上の操作を画面上に反映
+	//rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 	g_exit_status = 1;
 }
 
 void	sigint_after_rl_in_heredoc(int not_use)
 {
 	(void)not_use;
-
-	//write(STDOUT_FILENO, "\n", 1);
-	////rl_replace_line("", 0); // 入力されたものをclear, m1macだとコンパイルできないためコメントアウトしている
-	//rl_on_new_line(); // 次の行に移動
-	//rl_redisplay(); // -再表示して以上の操作を画面上に反映
-	//g_exit_status = 130;
 	write(STDERR_FILENO, "\n", 1);
 	exit(130);
 }
@@ -40,11 +33,10 @@ void	sigint_after_rl_in_heredoc(int not_use)
 void	sigint_after_rl(int not_use)
 {
 	(void)not_use;
-
 	write(STDOUT_FILENO, "\n", 1);
-	//rl_replace_line("", 0); // 入力されたものをclear, m1macだとコンパイルできないためコメントアウトしている
-	rl_on_new_line(); // 次の行に移動
-	rl_redisplay(); // -再表示して以上の操作を画面上に反映
+	//rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 	g_exit_status = 130;
 }
 
@@ -52,11 +44,10 @@ void	sigint_after_rl(int not_use)
 void	sigquit_after_rl(int not_use)
 {
 	(void)not_use;
-
 	write(STDERR_FILENO, "Quit: 3\n", 8);
-	//rl_replace_line("", 0); // 入力されたものをclear, m1macだとコンパイルできないためコメントアウトしている
-	rl_on_new_line(); // 次の行に移動
-	rl_redisplay(); // -再表示して以上の操作を画面上に反映
+	//rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 	g_exit_status = 131;
 }
 
