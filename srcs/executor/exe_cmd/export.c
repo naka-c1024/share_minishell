@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:52 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 16:14:58 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/18 13:50:09 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static int	set_new_node(char *str, t_envlist **envlist)
 		eq_location++;
 	*eq_location = '\0';
 	remove_duplicate(str, envlist);
-	newlist->key = ft_strdup(str);
-	newlist->value = ft_strdup(++eq_location);
+	newlist->key = ft_x_strdup(str);
+	newlist->value = ft_x_strdup(++eq_location);
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);
 	return (0);

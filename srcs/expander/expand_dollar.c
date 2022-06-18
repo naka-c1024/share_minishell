@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 08:18:30 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/18 08:19:38 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/18 13:50:16 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	three_strjoin(char **str, char *value, char *pre_dl, char *post_dl)
 	char	*tmp;
 
 	free(*str);
-	env_var = ft_strdup(value);
+	env_var = ft_x_strdup(value);
 	tmp = ft_x_strjoin(pre_dl, env_var);
 	*str = ft_x_strjoin(tmp, post_dl);
 	free(env_var);
