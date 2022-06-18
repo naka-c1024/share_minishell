@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:13:52 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 16:16:24 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/18 13:49:59 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	no_equal(char *str, t_envlist **envlist)
 		print_error("export: malloc:", NULL, errno);
 		return (1);
 	}
-	newlist->key = ft_strdup(str);
+	newlist->key = ft_x_strdup(str);
 	newlist->value = NULL;
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);

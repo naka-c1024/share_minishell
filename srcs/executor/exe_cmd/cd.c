@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:56:29 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 15:28:35 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/18 13:49:15 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static int	set_oldpwd(char *oldpwd, t_envlist **envlist)
 		return (1);
 	}
 	remove_duplicate("OLDPWD", envlist);
-	newlist->key = ft_strdup("OLDPWD");
-	newlist->value = ft_strdup(oldpwd);
+	newlist->key = ft_x_strdup("OLDPWD");
+	newlist->value = ft_x_strdup(oldpwd);
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);
 	return (0);
@@ -65,8 +65,8 @@ static int	set_pwd(t_envlist **envlist)
 		return (1);
 	}
 	remove_duplicate("PWD", envlist);
-	newlist->key = ft_strdup("PWD");
-	newlist->value = ft_strdup(pwd);
+	newlist->key = ft_x_strdup("PWD");
+	newlist->value = ft_x_strdup(pwd);
 	newlist->next = NULL;
 	ms_lstadd_back(envlist, newlist);
 	free(pwd);

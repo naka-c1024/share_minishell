@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 08:24:08 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/18 08:24:52 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/18 13:54:42 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	expand_single(char **str)
 	size_t	quote_cnt;
 
 	quote_cnt = count_quote(*str, '\'');
-	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
+	ptr = (char *)x_malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
 	i = 0;
 	j = 0;
 	while ((*str)[i] != '\0')
@@ -59,7 +59,7 @@ void	expand_double(char **str, t_envlist *envlist)
 	size_t	quote_cnt;
 
 	quote_cnt = count_quote(*str, '\"');
-	ptr = (char *)malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
+	ptr = (char *)x_malloc(sizeof(char) * ft_strlen(*str) - quote_cnt + 1);
 	i = 0;
 	j = 0;
 	while ((*str)[i] != '\0')
