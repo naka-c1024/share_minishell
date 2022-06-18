@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:57:12 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/17 12:12:42 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:28:47 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	my_echo(char **split_ln)
 
 	display_return = 1;
 	i = 0;
-	if (split_ln[++i] == NULL) // listの最後がnull埋めされている前提
+	if (split_ln[++i] == NULL)
 	{
 		if (safe_putstr_fd("\n", STDOUT_FILENO))
 			return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envlist.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 20:01:16 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/05/29 18:18:13 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:29:01 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,6 @@ t_envlist	*create_envlist(char **envp)
 	while (*envp)
 	{
 		newlist = (t_envlist *)x_malloc(sizeof(t_envlist));
-		//if (!newlist)
-		//{
-			//print_error("malloc", NULL, errno);
-			//free_list(head);
-			//return (NULL);
-		//}
 		str = *envp;
 		while (*str && *str != '=')
 			str++;
