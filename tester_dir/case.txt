@@ -20,6 +20,9 @@ echo $HOMEa
 echo $HOME"a"
 echo $HOME'a'
 echo "$USER aiu"
+$
+$a
+$HOME
 
 echo "hello world"
 echo a"bc"d"ef"g
