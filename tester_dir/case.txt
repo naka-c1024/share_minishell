@@ -1,14 +1,7 @@
-./a.out
-../dir/a.out
-
-cd .. \n pwd
-cd \n pwd
-cd .. \n export
 unset HOME \n cd
 mkdir hoge \n cd hoge \n rm -r ../hoge \n cd . \n cd ..
 mkdir hoge \n cd hoge \n chmod 000 ../hoge \n cd . \n cd ..
-echo hello
-echo hello world
+echo
 pwd
 env
 export
@@ -25,6 +18,7 @@ echo a$HOME
 echo $HOMEa
 echo $HOME"a"
 echo $HOME'a'
+echo "$USER aiu"
 
 echo "hello world"
 echo a"bc"d"ef"g
