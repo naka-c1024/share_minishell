@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 22:13:52 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/19 23:44:59 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,26 @@ static void	crawl_ast(t_ms_ast **ms_ast, t_envlist *envlist)
 	return ;
 }
 
-void	expander(t_ms_ast **ms_ast, t_envlist *envlist)
+bool	expander(t_ms_ast **ms_ast, t_envlist *envlist)
 {
-	if (!(*ms_ast))
-		return ;
+	t_envlist	*cp_elist;
+
+	cp_elist = envlist;
+	if ((*ms_ast)->cmd_info_list->content[0] == '$')
+	{
+		while (cp_elist)
+		{
+			if (my_strcmp((*ms_ast)->cmd_info_list->content + 1, cp_elist->key)
+				== 0)
+				break ;
+			cp_elist = cp_elist->next;
+		}
+		if (cp_elist == NULL)
+		{
+			free_ast(*ms_ast);
+			return (false);
+		}
+	}
 	crawl_ast(ms_ast, envlist);
+	return (true);
 }

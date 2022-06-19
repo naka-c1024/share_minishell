@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 22:20:44 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/19 23:44:19 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,11 @@ static void	ms_component(char **line, t_envlist *envlist)
 	size_t		process_cnt;
 
 	ms_ast = lexer_and_parser(line, &process_cnt);
-	if (ms_ast)
+	if (ms_ast
+		&& here_doc_init(ms_ast) == true
+		&& expander(&ms_ast, envlist) == true)
 	{
-		if (here_doc_init(ms_ast) == true)
-		{
-			expander(&ms_ast, envlist);
-			executor(ms_ast, &envlist, process_cnt);
-		}
+		executor(ms_ast, &envlist, process_cnt);
 	}
 	add_history(*line);
 	safe_free(line);

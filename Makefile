@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/19 15:54:26 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/19 22:57:08 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ SRCS	:=	main.c\
 			free_array.c\
 			safe_system_call.c\
 			signal.c\
-			signal2.c
+			signal2.c\
+			my_strcmp.c
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include

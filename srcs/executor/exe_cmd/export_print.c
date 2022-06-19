@@ -6,25 +6,11 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:03:22 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/17 16:03:59 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/19 22:58:45 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
-static int	my_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
-}
 
 static char	**bubble_sort(char **darray)
 {

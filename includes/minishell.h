@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 22:21:47 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/19 22:56:43 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		sigint_after_rl_in_heredoc(int not_use);
 void		sigint_after_rl_in_command_read(int not_use);
 t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt);
 bool		here_doc_init(t_ms_ast *ms_ast);
-void		expander(t_ms_ast **ms_ast, t_envlist *envlist);
+bool		expander(t_ms_ast **ms_ast, t_envlist *envlist);
 void		executor(t_ms_ast *ms_ast, t_envlist **envlist, size_t process_cnt);
 t_envlist	*create_envlist(char **envp);
 void		safe_free(char **ptr);
@@ -100,5 +100,6 @@ void		*ft_x_strdup(const char *s1);
 char		*ft_x_substr(const char *s, unsigned int start, size_t len);
 t_list		*ft_x_lstnew(void *content);
 char		*ft_x_itoa(int n);
+int			my_strcmp(const char *s1, const char *s2);
 
 #endif

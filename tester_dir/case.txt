@@ -1,6 +1,7 @@
 unset HOME \n cd
 mkdir hoge \n cd hoge \n rm -r ../hoge \n cd . \n cd ..
 mkdir hoge \n cd hoge \n chmod 000 ../hoge \n cd . \n cd ..
+mkdir hoge \n cd hoge \n rm -r ../hoge \n pwd
 echo
 pwd
 env
@@ -20,9 +21,12 @@ echo $HOMEa
 echo $HOME"a"
 echo $HOME'a'
 echo "$USER aiu"
+"a"
 $
 $a
-$HOME
+"$a"
+$a echo hello
+$HOME \n echo $?
 
 echo "hello world"
 echo a"bc"d"ef"g
