@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 12:19:53 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/20 00:06:43 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ bool			can_export(char *str);
 bool			is_equal(char *str);
 int				no_equal(char *str, t_envlist **envlist);
 void			not_a_valid_identifier(char *str);
-int				my_pwd(void);
+int				my_pwd(t_envlist *envlist);
 int				my_unset(char **split_ln, t_envlist **envlist);
 int				ipc_table(t_ms_ast *ms_ast, \
 				t_envlist *envlist, size_t process_cnt);

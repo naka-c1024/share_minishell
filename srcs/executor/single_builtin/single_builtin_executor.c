@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_builtin_executor.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 17:38:15 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/03 17:17:01 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/20 00:07:05 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	according_to_cmd(int cmd_type, \
 	else if (cmd_type == MY_CD)
 		g_exit_status = my_cd(plain_cmd, envlist);
 	else if (cmd_type == MY_PWD)
-		g_exit_status = my_pwd();
+		g_exit_status = my_pwd(*envlist);
 	else if (cmd_type == MY_UNSET)
 		g_exit_status = my_unset(plain_cmd, envlist);
 	else if (cmd_type == MY_ENV)

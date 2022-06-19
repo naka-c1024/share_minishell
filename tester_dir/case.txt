@@ -11,6 +11,9 @@ export a \n export \n env
 export a= \n export \n env
 export aaa=hoge bbb=hoge \n export
 export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
+export USER=hoge
+
+unset USER
 
 echo a$?b
 echo $
