@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:30:19 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 11:18:45 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/19 16:55:46 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void		sigquit_after_rl(int not_use);
 void		init_signal(int sig_num, void (*func)(int not_use));
 void		sigint_after_rl_in_heredoc(int not_use);
 void		sigint_after_rl_in_command_read(int not_use);
-t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt);
+t_ms_ast	*lexer_and_parser(char **line, size_t *process_cnt, bool *is_none);
 bool		here_doc_init(t_ms_ast *ms_ast);
 void		expander(t_ms_ast **ms_ast, t_envlist *envlist);
 void		executor(t_ms_ast *ms_ast, t_envlist **envlist, size_t process_cnt);

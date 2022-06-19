@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 15:31:14 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/19 16:57:56 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ static void	ms_component(char **line, t_envlist *envlist)
 {
 	t_ms_ast	*ms_ast;
 	size_t		process_cnt;
+	bool		is_none;
 
-	ms_ast = lexer_and_parser(line, &process_cnt);
+	is_none = false;
+	ms_ast = lexer_and_parser(line, &process_cnt, &is_none);
 	if (ms_ast)
 	{
 		if (here_doc_init(ms_ast) == true)
@@ -28,6 +30,9 @@ static void	ms_component(char **line, t_envlist *envlist)
 			executor(ms_ast, &envlist, process_cnt);
 		}
 	}
+	if (!is_none)
+		add_history(*line);
+	safe_free(line);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -54,7 +59,5 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		ms_component(&line, envlist);
-		add_history(line);
-		safe_free(&line);
 	}
 }
