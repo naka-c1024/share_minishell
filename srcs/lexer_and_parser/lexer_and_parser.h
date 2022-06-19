@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:30:32 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/07 04:53:41 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/19 15:22:12 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_make_ast_info
 # define	QUOTE	2
 # define	CORRECT	0
 
+char		*pre_syntax_check(char *line, bool *right_syntax);
 char		**tokenize_main(char *line);
 void		error_occuration_at_tokenize(t_tokenize_info **t_info, \
 														char *target);

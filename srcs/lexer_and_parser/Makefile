@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 16:01:59 by kahirose          #+#    #+#              #
-#    Updated: 2022/06/07 03:35:43 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/19 15:22:46 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CFLAGS	:= -Wall -Werror -Wextra
 
 VPATH   :=  tokenize:split_by_pipe:make_ast:debug_utils:../utils
 SRCS	:=	lexer_and_parser_main.c \
+			pre_syntax_check.c \
 			tokenize.c \
 			tokens_count.c \
 			token_section.c \

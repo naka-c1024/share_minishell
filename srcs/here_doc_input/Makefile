@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/09 05:21:11 by kahirose          #+#    #+#              #
-#    Updated: 2022/06/07 04:03:19 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/18 22:20:25 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 RM		=	rm -rf
 
-HDISRCS	=	here_doc_input.c
+HDISRCS	=	here_doc_input.c \
+			make_buffer.c \
+			receive_buffer.c
 
 SRCS	=	$(HDISRCS)
 
