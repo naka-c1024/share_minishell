@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
+#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/19 15:14:24 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/19 15:54:26 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,10 +114,6 @@ debug	: fclean $(OBJS)
 	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) $(EXPANDER_ARC) -o $(NAME)
 
 leak	:
-	while [ 1 ] \
-	do \
-	leaks -quiet minishell \
-	sleep 1 \
-	done \
+	./tester_dir/leak.sh
 
 .PHONY	: all clean fclean re bonus rloff nm debug leak
