@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:01:56 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:27:45 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/19 12:26:02 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@ void	sigint_before_rl(int not_use)
 	rl_on_new_line();
 	rl_redisplay();
 	g_exit_status = 1;
-}
-
-void	sigint_after_rl_in_heredoc(int not_use)
-{
-	(void)not_use;
-	write(STDERR_FILENO, "\n", 1);
-	exit(130);
 }
 
 void	sigint_after_rl(int not_use)

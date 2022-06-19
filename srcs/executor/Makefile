@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/29 15:34:53 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/17 16:17:52 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/19 12:07:38 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ VPATH   :=  exe_cmd:ipc_with_pipe:single_builtin
 IPCSRCS =	ipc_table.c\
 			ipc_table_utils.c\
 			ipc_executor.c\
-			ipc_executor2.c\
+			dup2_and_close.c\
+			redirection_sequence.c\
 			create_envlist.c\
 			get_cmd_path.c
 

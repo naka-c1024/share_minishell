@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/18 11:28:04 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/19 15:14:24 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ SRCS	:=	main.c\
 			xalloc2.c\
 			free_array.c\
 			safe_system_call.c\
-			signal.c
+			signal.c\
+			signal2.c
 
 RL_PATH	:=/usr/local/opt/readline
 RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
@@ -113,6 +114,10 @@ debug	: fclean $(OBJS)
 	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(INCDIR) $(OBJS) $(RL_INCDIR) $(RL_ARC) $(LIBFT_ARC) $(HDI_PA_ARC) $(LE_PA_ARC) $(EXE_CMD_ARC) $(EXPANDER_ARC) -o $(NAME)
 
 leak	:
-	leaks -quiet -atExit -- ./$(NAME)
+	while [ 1 ] \
+	do \
+	leaks -quiet minishell \
+	sleep 1 \
+	done \
 
 .PHONY	: all clean fclean re bonus rloff nm debug leak
