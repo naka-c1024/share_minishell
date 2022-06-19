@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 15:20:49 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/19 15:21:09 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/19 15:35:42 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	*inserted_eof(char *line, bool *right_syntax)
 {
 	*right_syntax = false;
 	write(STDERR_FILENO, "my_shell: syntax error: unexpected end of file\n", 48);
+	g_exit_status = 258;
 	return (line);
 }
 
