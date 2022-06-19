@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/18 08:24:27 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/19 22:01:27 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	find_meta_char(t_list **cp_list, t_envlist *envlist)
 			expand_double(&((*cp_list)->content), envlist);
 			break ;
 		}
-		if (((*cp_list)->content)[i] == '$')
+		if (((*cp_list)->content)[i] == '$' && ((*cp_list)->content)[i + 1] != '\0')
 		{
 			expand_dollar(&((*cp_list)->content), envlist);
 			i = 0;

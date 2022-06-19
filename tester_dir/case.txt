@@ -12,6 +12,7 @@ export aaa=hoge bbb=hoge \n export
 export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
 
 echo a$?b
+echo $
 echo $?$?
 echo $OLDPWD
 echo a$HOME
