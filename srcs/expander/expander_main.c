@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 20:52:44 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 23:44:59 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/20 12:09:38 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ bool	expander(t_ms_ast **ms_ast, t_envlist *envlist)
 	t_envlist	*cp_elist;
 
 	cp_elist = envlist;
-	if ((*ms_ast)->cmd_info_list->content[0] == '$')
+	if ((*ms_ast)->cmd_info_list && (*ms_ast)->cmd_info_list->content[0] == '$')
 	{
 		while (cp_elist)
 		{
