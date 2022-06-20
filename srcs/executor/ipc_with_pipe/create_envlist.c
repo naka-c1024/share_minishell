@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_envlist.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
+/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 05:12:54 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/07 05:15:22 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/20 08:45:01 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

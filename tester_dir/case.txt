@@ -2,6 +2,7 @@ unset HOME \n cd
 mkdir hoge \n cd hoge \n rm -r ../hoge \n cd . \n cd ..
 mkdir hoge \n cd hoge \n chmod 000 ../hoge \n cd . \n cd ..
 mkdir hoge \n cd hoge \n rm -r ../hoge \n pwd
+mkdir hoge \n cd hoge \n rm -r ../hoge \n pwd \n unset PWD \n pwd
 echo
 pwd
 env
@@ -14,6 +15,7 @@ export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
 export USER=hoge
 
 unset USER
+unset HOME OLDPWD PWD
 
 echo a$?b
 echo $

@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:28:42 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/19 23:51:25 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/20 11:39:13 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit_status = EXIT_SUCCESS;
 
-static void	ms_component(char **line, t_envlist *envlist)
+static void	ms_component(char **line, t_envlist **envlist)
 {
 	t_ms_ast	*ms_ast;
 	size_t		process_cnt;
@@ -22,9 +22,9 @@ static void	ms_component(char **line, t_envlist *envlist)
 	ms_ast = lexer_and_parser(line, &process_cnt);
 	if (ms_ast
 		&& here_doc_init(ms_ast) == true
-		&& expander(&ms_ast, envlist) == true)
+		&& expander(&ms_ast, *envlist) == true)
 	{
-		executor(ms_ast, &envlist, process_cnt);
+		executor(ms_ast, envlist, process_cnt);
 	}
 	add_history(*line);
 	safe_free(line);
@@ -53,6 +53,6 @@ int	main(int argc, char **argv, char **envp)
 			safe_free(&line);
 			continue ;
 		}
-		ms_component(&line, envlist);
+		ms_component(&line, &envlist);
 	}
 }
