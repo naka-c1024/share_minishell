@@ -6,7 +6,7 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/04 20:31:40 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/19 22:57:08 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/21 09:26:24 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,13 +37,13 @@ SRCS	:=	main.c\
 			signal2.c\
 			my_strcmp.c
 
-RL_PATH	:=/usr/local/opt/readline
-RL_INCDIR	:=	-I$(RL_PATH)/include -I $(shell brew --prefix readline)/include
-RL_ARC	:=	 -L$(RL_PATH)/lib -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+RL_PATH		:=	/usr/local/opt/readline
+RL_INCDIR	:=	-I$(RL_PATH)/include -I$(shell brew --prefix readline)/include
+RL_ARC		:=	-L$(RL_PATH)/lib -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
-INCDIR	:= -I./includes
+INCDIR	:=	-I./includes
 OBJDIR	:=	./objs
-OBJS := $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
+OBJS	:=	$(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
 LIBFT_PATH		=	./libft/
 LIBFT_ARC		=	-Llibft -lft
