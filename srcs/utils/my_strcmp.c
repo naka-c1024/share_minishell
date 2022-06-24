@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   my_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 20:01:02 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/20 11:39:56 by ynakashi         ###   ########.fr       */
+/*   Created: 2022/06/19 22:55:54 by ynakashi          #+#    #+#             */
+/*   Updated: 2022/06/19 22:56:29 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "minishell.h"
 
-int	my_env(t_envlist *envlist)
+int	my_strcmp(const char *s1, const char *s2)
 {
-	while (envlist)
+	size_t	i;
+
+	i = 0;
+	while (s1[i] || s2[i])
 	{
-		if (envlist->value == NULL)
-		{
-			envlist = envlist->next;
-			continue ;
-		}
-		printf("%s=%s\n", envlist->key, envlist->value);
-		envlist = envlist->next;
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
 	return (0);
 }

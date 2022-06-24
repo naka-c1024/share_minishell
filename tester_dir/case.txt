@@ -1,14 +1,9 @@
-./a.out
-../dir/a.out
-
-cd .. \n pwd
-cd \n pwd
-cd .. \n export
 unset HOME \n cd
 mkdir hoge \n cd hoge \n rm -r ../hoge \n cd . \n cd ..
 mkdir hoge \n cd hoge \n chmod 000 ../hoge \n cd . \n cd ..
-echo hello
-echo hello world
+mkdir hoge \n cd hoge \n rm -r ../hoge \n pwd
+mkdir hoge \n cd hoge \n rm -r ../hoge \n pwd \n unset PWD \n pwd
+echo
 pwd
 env
 export
@@ -17,14 +12,26 @@ export a \n export \n env
 export a= \n export \n env
 export aaa=hoge bbb=hoge \n export
 export aaa=hoge bbb=hoge \n unset xxx aaa bbb ccc \n export
+export USER=hoge
+
+unset USER
+unset HOME OLDPWD PWD
 
 echo a$?b
+echo $
 echo $?$?
 echo $OLDPWD
 echo a$HOME
 echo $HOMEa
 echo $HOME"a"
 echo $HOME'a'
+echo "$USER aiu"
+"a"
+$
+$a
+"$a"
+$a echo hello
+$HOME \n echo $?
 
 echo "hello world"
 echo a"bc"d"ef"g

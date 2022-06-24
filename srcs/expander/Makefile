@@ -6,24 +6,23 @@
 #    By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/17 16:37:12 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/18 08:25:50 by ynakashi         ###   ########.fr        #
+#    Updated: 2022/06/21 09:24:33 by ynakashi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	expander
+NAME	:=	expander
 
-CC		=	gcc
+CC		:=	gcc
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	:=	-Wall -Wextra -Werror
 
-RM		=	rm -rf
+RM		:=	rm -rf
 
-SRCS	=	expander_main.c\
+SRCS	:=	expander_main.c\
 			expand_dollar.c\
 			expand_quote.c
 
-OBJDIR	=	./objs
-
+OBJDIR	:=	./objs
 OBJS	:=	$(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
 MSINCDIR	:= -I../../includes
@@ -48,4 +47,4 @@ fclean	: clean
 
 re		: fclean all
 
-.PHONY: all clean fclean re
+.PHONY	: all clean fclean re

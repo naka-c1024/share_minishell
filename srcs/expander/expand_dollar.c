@@ -6,7 +6,7 @@
 /*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 08:18:30 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/18 13:50:16 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/19 22:01:33 by ynakashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static size_t	loc_meta_char(char *str)
 		if (str[i] == '\n')
 			return (i);
 		if (str[i] == '$')
+			return (i);
+		if (str[i] == ' ')
 			return (i);
 		i++;
 	}
