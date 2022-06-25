@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 13:57:22 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/08 16:32:41 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/25 11:11:18 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static bool	put_file_err_msg(char *file_name)
 {
 	safe_func(write(1, "minishell: ", 11));
 	perror(file_name);
+	g_exit_status = 1;
 	return (false);
 }
 

@@ -6,7 +6,7 @@
 #    By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/29 15:34:53 by ynakashi          #+#    #+#              #
-#    Updated: 2022/06/19 12:07:38 by kahirose         ###   ########.fr        #
+#    Updated: 2022/06/25 11:04:50 by kahirose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ IPCSRCS =	ipc_table.c\
 			dup2_and_close.c\
 			redirection_sequence.c\
 			create_envlist.c\
-			get_cmd_path.c
+			get_cmd_path.c\
+			get_cmd_path_utils.c
 
 SBSRCS	=	single_builtin_executor.c\
 			single_builtin_redirection.c\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynakashi <ynakashi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 15:34:57 by ynakashi          #+#    #+#             */
-/*   Updated: 2022/06/20 00:06:43 by ynakashi         ###   ########.fr       */
+/*   Updated: 2022/06/25 11:04:26 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void			child_exe(t_info *info, \
 				t_process_info *p_info, t_ms_ast *ast_node);
 char			**lst_to_arr(t_list *arglst);
 void			convert_to_cmd_full_path(t_info *info, t_process_info *p_info);
+void			no_such_fileordir(t_process_info *p_info);
+void			file_type_check(t_process_info *p_info);
 void			redirection_sequence(t_ms_ast *ast_node, \
 				t_process_info *p_info);
 void			set_out_file(t_process_info *proc_info, \
