@@ -6,7 +6,7 @@
 /*   By: kahirose <kahirose@studnt.42tokyo.jp>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 04:27:31 by kahirose          #+#    #+#             */
-/*   Updated: 2022/06/07 04:27:33 by kahirose         ###   ########.fr       */
+/*   Updated: 2022/06/25 11:03:26 by kahirose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,21 +65,22 @@ void	convert_to_cmd_full_path(t_info *info, t_process_info *p_info)
 	char	**all_paths;
 
 	if (is_full_path_case(p_info))
-		return ;
-	all_paths = get_all_paths(info);
-	if (!all_paths)
 	{
-		p_info->cmd_full_path = ft_x_strdup(p_info->cmd[0]);
+		file_type_check(p_info);
 		return ;
 	}
-	if (cmd_seaching(p_info, all_paths))
+	all_paths = get_all_paths(info);
+	if (!all_paths)
+		p_info->cmd_full_path = ft_x_strdup(p_info->cmd[0]);
+	else if (cmd_seaching(p_info, all_paths))
 	{
 		free_twod_array(all_paths);
-		return ;
+		file_type_check(p_info);
 	}
 	else
 	{
+		no_such_fileordir(p_info);
 		p_info->cmd_full_path = ft_x_strdup(p_info->cmd[0]);
-		return ;
 	}
+	return ;
 }
